@@ -1,0 +1,77 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Sửa sản phẩm:</h1>
+        </div>
+        <form action="/me/{{shoe._id}}/update/shoes?_method=PUT" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col mx-sm-3">
+                    <div class="form-group">
+                        <label for="name">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên sản phẩm"
+                            value="{{shoe.name}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Mô tả</label>
+                        <textarea class="form-control" id="description" name="description"
+                            placeholder="Nhập mô tả">{{shoe.description}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Kiểu giày</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="" selected>-- Chọn kiểu giày --</option>
+                            <option value="Giày nam" {{#ifEquals shoe.type "Giày nam" }}selected{{/ifEquals}}>Giày nam
+                            </option>
+                            <option value="Giày nữ" {{#ifEquals shoe.type "Giày nữ" }}selected{{/ifEquals}}>Giày nữ
+                            </option>
+
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="typeDetail">Kiểu dáng</label>
+                        <input type="text" class="form-control" id="typeDetail" name="typeDetail"
+                            placeholder="Nhập kiểu dáng" value="{{shoe.typeDetail}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="origin">Xuất xứ</label>
+                        <input type="text" class="form-control" id="origin" name="origin" placeholder="Nhập xuất xứ"
+                            value="{{shoe.origin}}">
+                    </div>
+                </div>
+
+                <div class="col mx-sm-3">
+                    <div class="form-group">
+                        <label for="size">Kích thước</label>
+                        <input type="text" class="form-control" id="size" name="size" placeholder="Nhập kích thước giày"
+                            value="{{shoe.size}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="material">Chất liệu</label>
+                        <input type="text" class="form-control" id="material" name="material"
+                            placeholder="Nhập chất liệu" value="{{shoe.material}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="soleMaterial">Chất liệu đế</label>
+                        <input type="text" class="form-control" id="soleMaterial" name="soleMaterial"
+                            placeholder="Nhập chất liệu đế" value="{{shoe.soleMaterial}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Chiều cao</label>
+                        <input type="text" class="form-control" id="height" name="height" placeholder="Nhập chiều cao"
+                            value="{{shoe.height}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Hình ảnh</label>
+                        <input type="file" class="form-control-file" id="image" name="image"
+                            placeholder="Nhập hình ảnh">
+                    </div>
+
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mx-sm-3">Cập nhật sản phẩm</button>
+            <a href="/me/stored/shoes" class="btn btn-success mx-sm-3">Quay lại</a>
+        </form>
+    </div>
+</div>

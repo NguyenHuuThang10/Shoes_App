@@ -1,0 +1,101 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Quản lý sản phẩm:</h1>
+            <a class="btn btn-info mt-2" href="/me/stored/shoes">Danh sách sản phẩm</a>   
+        </div>
+        <table class="table table-stored-shoes">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Kiểu giày</th>
+                    <th scope="col">Kiểu dáng</th>
+                    <th scope="col">Thời gian tạo</th>
+                    <th scope="col">Thời gian sửa</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each shoes}}
+                <tr>
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.type}}</td>
+                    <td>{{this.typeDetail}}</td>
+                    <td style="width: 20%;">{{this.createdAt}}</td>
+                    <td style="width: 20%;">{{this.updatedAt}}</td>
+                    <td>
+                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+                        
+                        <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
+                        data-target="#delete_shoe_model"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr class="text-center">
+                    <td colspan="7">Thùng rác trống.</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal confirm delete shoe -->
+<div id="delete_shoe_model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa vĩnh viễn sản phẩm?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Hành động không thể khôi phục. Bạn có chắc chắn muốn xóa sản phẩm vĩnh viễn?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-shoe" type="button" class="btn btn-danger">Xóa bỏ</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete Hidden form --}}
+    <form name="delete-shoe-form" method="POST" ></form>
+    <form name="restore-shoe-form" method="POST" ></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var btnDeleteShoe = document.getElementById('btn-delete-shoe')
+        var shoeId
+        var deleteShoeForm = document.forms['delete-shoe-form']
+        var btnRestore = $('.btn-restore')  
+        var restoreShoeForm = document.forms['restore-shoe-form']
+        
+        // When dialog confirm clicked
+        $('#delete_shoe_model').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            shoeId = button.data('id')
+            
+        })
+
+        btnDeleteShoe.onclick = function () {
+            deleteShoeForm.action = '/me/' + shoeId + '/destroy/shoes?_method=DELETE'
+            deleteShoeForm.submit()
+        }
+
+        btnRestore.click(function(e) {
+            e.preventDefault()
+            var shoeId = $(this).data('id')
+
+            restoreShoeForm.action = '/me/' + shoeId + '/restore/shoes?_method=PATCH'
+            restoreShoeForm.submit()
+        })
+
+    })
+
+</script>

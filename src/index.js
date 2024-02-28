@@ -1,38 +1,58 @@
-const express = require('express')
-const { engine } = require('express-handlebars')
-const path = require('path')
-const morgan = require('morgan')
-const routes = require('./routes')
-const app = express()
-const port = 3000
+const express = require("express");
+const { engine } = require("express-handlebars");
+const path = require("path");
+const morgan = require("morgan");
+const routes = require("./routes");
+const app = express();
+const port = 3000;
+const db = require("./config/db");
+const methodOverride = require('method-override')
 
-app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(morgan('combined'))
+// Chuyển POST -> PUT, DELETE
+app.use(methodOverride('_method'))
 
-app.engine('hbs', engine({
-    extname: '.hbs',
+db.connect();
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use(morgan("combined"));
+
+app.engine(
+  "hbs",
+  engine({
+    extname: ".hbs",
     helpers: {
-      ifEquals: function(arg1, arg2, options) { // Chuyển đổi header của client thành header của admin
-        return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-      }
-    }
-}));
-app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'resources', 'views'));
+      sum: (a, b) => a + b,
+      ifEquals: function (arg1, arg2, options) {
+        // Chuyển đổi header của client thành header của admin
+        return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+      },
+    },
+  })
+);
+app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "resources", "views"));
 
 // Chuyển đổi header của client thành header của admin
 app.use((req, res, next) => {
-  if (req.url.includes('/me')) {
-    res.locals.headerType = 'headerAdmin';
+  if (req.url.includes("/me")) {
+    res.locals.headerType = "headerAdmin";
   } else {
-    res.locals.headerType = 'header';
+    res.locals.headerType = "header";
   }
   next();
 });
 
-routes(app)
+routes(app);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`);
+});

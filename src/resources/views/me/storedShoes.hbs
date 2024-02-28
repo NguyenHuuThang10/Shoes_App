@@ -1,0 +1,92 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1 class="mb-2">Quản lý sản phẩm:</h1>
+            {{#if deletedCount}}
+                <a class="btn btn-secondary" href="/me/trash/shoes"> <i class="fa-solid fa-trash-can"></i> Thùng rác ( {{deletedCount}} )</a>
+            {{/if}}
+        </div>
+        <table class="table table-stored-shoes">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Kiểu giày</th>
+                    <th scope="col">Kiểu dáng</th>
+                    <th scope="col">Thời gian tạo</th>
+                    <th scope="col">Thời gian sửa</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each shoes}}
+                <tr>
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.type}}</td>
+                    <td>{{this.typeDetail}}</td>
+                    <td style="width: 20%;">{{this.createdAt}}</td>
+                    <td style="width: 20%;">{{this.updatedAt}}</td>
+                    <td>
+                        <a href="/me/{{this._id}}/edit/shoes" class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></a>
+                        
+                        <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
+                        data-target="#delete_shoe_model"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr class="text-center">
+                    <td colspan="7">Không có sản phẩm nào. <a href="/me/create/shoes">Thêm sản phẩm ngay</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal confirm delete course -->
+<div id="delete_shoe_model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa sản phẩm?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc chắn muốn xóa sản phẩm ?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-shoe" type="button" class="btn btn-danger">Xóa bỏ</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete Hidden form --}}
+    <form name="delete-shoe-form" method="POST" ></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var btnDeleteShoe = document.getElementById('btn-delete-shoe')
+        var shoeId
+        var deleteShoeForm = document.forms['delete-shoe-form']
+        
+        // When dialog confirm clicked
+        $('#delete_shoe_model').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            shoeId = button.data('id')
+            
+        })
+
+        btnDeleteShoe.onclick = function () {
+            deleteShoeForm.action = '/me/' + shoeId + '/delete/shoes?_method=DELETE'
+            deleteShoeForm.submit()
+        }
+
+    })
+
+</script>

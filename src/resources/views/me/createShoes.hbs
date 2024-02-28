@@ -1,0 +1,62 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Đăng sản phẩm:</h1>
+        </div>
+        <form action="/me/store/shoes" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col mx-sm-3">
+                    <div class="form-group">
+                        <label for="name">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên sản phẩm">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Mô tả</label>
+                        <textarea class="form-control" id="description" name="description" placeholder="Nhập mô tả"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Kiểu giày</label>
+                        <select class="form-control" id="type" name="type">
+                            <option value="" selected>-- Chọn kiểu giày --</option>
+                            <option value="Giày nam">Giày nam</option>
+                            <option value="Giày nữ">Giày nữ</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="typeDetail">Kiểu dáng</label>
+                        <input type="text" class="form-control" id="typeDetail" name="typeDetail" placeholder="Nhập kiểu dáng">
+                    </div>
+                    <div class="form-group">
+                        <label for="origin">Xuất xứ</label>
+                        <input type="text" class="form-control" id="origin" name="origin" placeholder="Nhập xuất xứ">
+                    </div>
+                </div>
+
+                <div class="col mx-sm-3">
+                    <div class="form-group">
+                        <label for="size">Kích thước</label>
+                        <input type="text" class="form-control" id="size" name="size" placeholder="Nhập kích thước giày">
+                    </div>
+                    <div class="form-group">
+                        <label for="material">Chất liệu</label>
+                        <input type="text" class="form-control" id="material" name="material" placeholder="Nhập chất liệu">
+                    </div>
+                    <div class="form-group">
+                        <label for="soleMaterial">Chất liệu đế</label>
+                        <input type="text" class="form-control" id="soleMaterial" name="soleMaterial" placeholder="Nhập chất liệu đế">
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Chiều cao</label>
+                        <input type="text" class="form-control" id="height" name="height" placeholder="Nhập chiều cao">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Hình ảnh</label>
+                        <input type="file" class="form-control-file" id="image" name="image" placeholder="Nhập hình ảnh">
+                    </div>
+
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mx-sm-3">Đăng sản phẩm</button>
+        </form>
+    </div>
+</div>
