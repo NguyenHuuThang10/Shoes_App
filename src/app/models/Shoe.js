@@ -16,6 +16,7 @@ const Shoe = new Schema({
     image: {type: String},
     slug: {type: String, slug: 'name', unique: true},
 }, {
+    conllection: 'shoes',
     timestamps: true
 })
 

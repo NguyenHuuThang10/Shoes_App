@@ -7,6 +7,11 @@ const app = express();
 const port = 3000;
 const db = require("./config/db");
 const methodOverride = require('method-override')
+var cookieParser = require('cookie-parser')
+
+// READ COOKIE
+app.use(cookieParser())
+
 
 
 // Chuyển POST -> PUT, DELETE

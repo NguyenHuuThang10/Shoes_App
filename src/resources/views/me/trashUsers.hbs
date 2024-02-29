@@ -1,0 +1,105 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Quản lý sản phẩm:</h1>
+            <a class="btn btn-info mt-2" href="/me/stored/users">Danh sách nguười dùng</a>   
+        </div>
+        <table class="table table-stored">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">email</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th scope="col">Thời gian tạo</th>
+                    <th scope="col" class="text-center">Phân quyền</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.phone}}</td>
+                    <td style="width: 20%;">{{this.createdAt}}</td>
+                    {{#if this.isAdmin}}
+                        <td class="text-center"><button type="button" class="btn btn-warning">Admin</button></td>
+                    {{else}}
+                        <td class="text-center"><button type="button" class="btn btn-success">Client</button></td>
+                    {{/if}}
+                    <td>
+                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+                        
+                        <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
+                        data-target="#delete_user_model"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr class="text-center">
+                    <td colspan="7">Thùng rác trống.</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal confirm delete shoe -->
+<div id="delete_user_model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa vĩnh viễn sản phẩm?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Hành động không thể khôi phục. Bạn có chắc chắn muốn xóa sản phẩm vĩnh viễn?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-user" type="button" class="btn btn-danger">Xóa bỏ</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete Hidden form --}}
+    <form name="delete-user-form" method="POST" ></form>
+    <form name="restore-user-form" method="POST" ></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var btnDeleteUser = document.getElementById('btn-delete-user')
+        var userId
+        var deleteUserForm = document.forms['delete-user-form']
+        var btnRestore = $('.btn-restore')  
+        var restoreUserForm = document.forms['restore-user-form']
+        
+        // When dialog confirm clicked
+        $('#delete_user_model').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            userId = button.data('id')
+            
+        })
+
+        btnDeleteUser.onclick = function () {
+            deleteUserForm.action = '/me/' + userId + '/destroy/shoes?_method=DELETE'
+            deleteUserForm.submit()
+        }
+
+        btnRestore.click(function(e) {
+            e.preventDefault()
+            var userId = $(this).data('id')
+
+            restoreUserForm.action = '/me/' + userId + '/restore/shoes?_method=PATCH'
+            restoreUserForm.submit()
+        })
+
+    })
+
+</script>
