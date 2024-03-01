@@ -34,6 +34,8 @@ router.get("/stored/users", meController.storedUsers);
 router.get("/trash/users", meController.trashUsers);
 router.get("/create/users", meController.createUsers);
 router.post("/create/users", meController.storeUsers);
+router.get("/:id/edit/users", meController.editUsers);
+router.put("/:id/edit/users", meController.updateUsers);
 
 
 router.get("/home", meController.index);

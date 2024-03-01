@@ -1,29 +1,29 @@
 <div class="content-wrapper" style="min-height: 650px;">
     <div class="container-fluid">
         <div class="content-header">
-            <h1>Thêm người dùng:</h1>
+            <h1>Cập nhật người dùng:</h1>
             {{#if err}}
                 <div class="alert alert-danger" role="alert">
                     {{err}}
                 </div>
             {{/if}}
         </div>
-        <form method="post">
+        <form action="?_method=PUT" method="post">
             <div class="row">
                 <div class="col mx-sm-3">
                     <div class="form-group">
                         <label for="name">Tên người dùng</label>
-                        <input type="text" class="form-control" id="name" name="name"  placeholder="Nhập tên người dùng" value="{{old.name}}">
+                        <input type="text" class="form-control" id="name" name="name"  placeholder="Nhập tên người dùng" {{#if user}} value="{{user.name}}" {{else}} value="{{old.name}}" {{/if}}>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email"  placeholder="Nhập email" value="{{old.email}}">
+                        <input type="text" class="form-control" id="email" name="email"  placeholder="Nhập email"  {{#if user}} value="{{user.email}}" {{else}} value="{{old.email}}" {{/if}}>
 
                     </div>
                     
                     <div class="form-group">
                         <label for="phone">Số điện thoại</label>
-                        <input type="text" class="form-control" id="phone" name="phone"  placeholder="Nhập số điện thoại" value="{{old.phone}}">
+                        <input type="text" class="form-control" id="phone" name="phone"  placeholder="Nhập số điện thoại"  {{#if user}} value="{{user.phone }}" {{else}} value="{{old.phone  }}" {{/if}}>
                     </div>
                 </div>
 
@@ -40,14 +40,15 @@
                         <label for="isAdmin">Phân quyền</label>
                         <select class="form-control" id="isAdmin" name="isAdmin">
                             <option value="" selected>-- Phân quyền --</option>
-                            <option value="Admin" {{#ifEquals old.isAdmin "Admin" }}selected{{/ifEquals}}>Admin</option>
-                            <option value="Client" {{#ifEquals old.isAdmin "Client" }}selected{{/ifEquals}}>Client</option>
+                            <option value="Admin" {{#ifEquals user.isAdmin true }}selected{{/ifEquals}}>Admin</option>
+                            <option value="Client" {{#ifEquals user.isAdmin false }}selected{{/ifEquals}}>Client</option>
                         </select>
                     </div>
 
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary mx-sm-3">Thêm người dùng</button>
+            <button type="submit" class="btn btn-primary mx-sm-3">Cập nhật</button>
+            <a href="/me/stored/users" class="btn btn-success mx-sm-3">Quay lại</a>
         </form>
     </div>
 </div>

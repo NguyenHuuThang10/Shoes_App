@@ -166,7 +166,6 @@ class MeController {
         }
 
         storeUsers (req, res, next) {
-            
             const { name, email, phone, password, confirm_password, isAdmin } = req.body
             const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
             const regPhone = /^0\d{9}$/
@@ -175,22 +174,22 @@ class MeController {
 
             if (!name || !email || !phone || !password || !confirm_password) {
                 return res.render('me/createUsers', {
-                    user: req.body,
+                    old: req.body,
                     err: 'Vui lòng nhập đầy đủ thông tin!'
                 })
             }else if (!isCheckEmail){
                 return res.render('me/createUsers', {
-                    user: req.body,
+                    old: req.body,
                     err: 'Email không đúng định dạng!'
                 })
             }else if (!isCheckPhone){
                 return res.render('me/createUsers', {
-                    user: req.body,
+                    old: req.body,
                     err: 'Số điện thoại không đúng định dạng!'
                 })
             } else if (password !== confirm_password) {
                 return res.render('me/createUsers', {
-                    user: req.body,
+                    old: req.body,
                     err: 'Nhập lại mật khẩu không trùng khớp!'
                 })
             }
@@ -199,7 +198,7 @@ class MeController {
                 .then(data => {
                     if(data){
                         res.render('me/createUsers', {
-                            user: req.body,
+                            old: req.body,
                             err: 'Email đã tồn tại trong hệ thống!'
                         })
                     }else{
@@ -219,6 +218,78 @@ class MeController {
                 .catch(err => {
                     console.log("ERR: " + err)
                     res.status(500).json("Tạo tài khoản thất bại!")
+                })
+                .catch(next)
+        }
+
+        // [GET] /me/:id/edit/users
+        editUsers (req, res, next) {
+            User.findById(req.params.id)
+                .then(user => { 
+                    res.render('me/editUsers', {
+                        user: mongooseToObject(user)
+                    })
+                })
+                .catch(next)
+        }
+
+        // [PUT] /me/:id/edit/user
+        updateUsers (req, res, next) {
+            const { name, email, phone, password, confirm_password, isAdmin } = req.body
+            const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+            const regPhone = /^0\d{9}$/
+            const isCheckEmail = regEmail.test(email)
+            const isCheckPhone = regPhone.test(phone)
+
+            if (!name || !email || !phone || !password || !confirm_password) {
+                return res.render('me/editUsers', {
+                    old: req.body,
+                    err: 'Vui lòng nhập đầy đủ thông tin!'
+                })
+            }else if (!isCheckEmail){
+                return res.render('me/editUsers', {
+                    old: req.body,
+                    err: 'Email không đúng định dạng!'
+                })
+            }else if (!isCheckPhone){
+                return res.render('me/editUsers', {
+                    old: req.body,
+                    err: 'Số điện thoại không đúng định dạng!'
+                })
+            } else if (password !== confirm_password) {
+                return res.render('me/editUsers', {
+                    old: req.body,
+                    err: 'Nhập lại mật khẩu không trùng khớp!'
+                })
+            }
+
+            User.findOne({ email: req.body.email, _id: { $ne: req.params.id } })
+                .then(data => {
+                    if(data){
+                        res.render('me/editUsers', {
+                            old: req.body,
+                            err: 'Email đã tồn tại trong hệ thống!'
+                        })
+                    }else{
+
+                        if(isAdmin === "Admin"){
+                            req.body.isAdmin = true
+                        }else{
+                            req.body.isAdmin = false
+                        }
+
+                        req.body.password = bcrypt.hashSync(password, 10)
+                        
+                        
+                        User.updateOne({ _id: req.params.id}, req.body)
+                            .then(() => {
+                                res.redirect('/me/stored/users')    
+                            })
+                    }
+                })
+                .catch(err => {
+                    console.log("ERR: " + err)
+                    res.status(500).json("Cập nhật tài khoản thất bại!")
                 })
                 .catch(next)
         }
