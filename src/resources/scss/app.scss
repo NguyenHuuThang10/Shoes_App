@@ -1,84 +1,157 @@
 .ml-2 {
-    margin-left: 2px;
+  margin-left: 2px;
 }
 
-.icon-user i{
-    
-   font-size: 25px;
-   padding: 10px;
+.icon-user i {
+  font-size: 25px;
+  padding: 10px;
 }
-.icon-cart i{
-    
-   font-size: 25px;
-   padding: 10px;
+.icon-cart i {
+  font-size: 25px;
+  padding: 10px;
 }
-.icon-header a{
-    color: black;
-    display: inline-block;
+.icon-header a {
+  color: black;
+  display: inline-block;
 }
-.footer ul{
-    list-style-type:none;
+.footer ul {
+  list-style-type: none;
 }
-.footer li{
-    padding: 10px;
-    font-size: 15px;
+.footer li {
+  padding: 10px;
+  font-size: 15px;
 }
-.footer .text-footer{
-    font-size: 25px;
-    font-weight: 700;
+.footer .text-footer {
+  font-size: 25px;
+  font-weight: 700;
 }
-.socials-list{
-    font-size: 20px;
+.socials-list {
+  font-size: 20px;
 }
-.socials-list a{
-    padding: 6px;
-    color: black;
+.socials-list a {
+  padding: 6px;
+  color: black;
 }
 .box-shoe-home {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; /* Đảm bảo các ô được căn cách đều nhau */
-    height: 500px;
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Đảm bảo các ô được căn cách đều nhau */
+  height: 500px;
+  width: 100%;
 }
 
 .box-product {
+  text-align: center;
+  width: 300px;
+  height: 400px;
+  margin-bottom: 20px; /* Khoảng cách dưới của mỗi ô */
+}
+.title-product {
+  height: 100px;
+  width: 100%;
+  border-top: 1px solid;
+}
+.box-product img {
+  height: 300px;
+  width: 300px;
+}
+.box-product .price {
+  color: red;
+  font-size: 25px;
+}
+.title-product p {
+  font-size: 40px;
+  text-align: center;
+  line-height: 100px;
+}
+.box-shoe-home a {
+  text-decoration: none;
+  color: black;
+}
+.filter {
+  height: 100px;
+  width: 100%;
+}
+.filter .row p {
+  font-size: 40px;
+  text-align: left;
+  line-height: 100px;
+}
+.mt-35 {
+  margin-top: 35px;
+}
+.account {
+  margin: 15px auto;
+  width: 90%;
+  min-height: 600px;
+  position: relative;
+}
+.account::before {
+  border-right: 1px solid #ddd;
+  height: 100%;
+  position: absolute;
+  content: " ";
+  right: 50%;
+  top: 0;
+}
+span#or-text {
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  transform: translate(50%);
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  font-style: italic;
+  background-color: #fff;
+  z-index: 1;
+  display: block;
+}
+.login {
+  float: left;
+  width: 40%;
+}
+.account label {
+  margin-bottom: 10px;
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+}
+.account input[type="text"], .account input[type="password"], .account input[type="phone"], .account input[type="email"] {
+    padding: 9px;
+    background-color: #fff;
+    color: #444;
+    outline: 0;
+    border: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-weight: 400;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    width: 96%;
+    margin-bottom: 20px;
+}
+.account h3{
     text-align: center;
-    width:300px; 
-    height: 400px;
-    margin-bottom: 20px; /* Khoảng cách dưới của mỗi ô */
+    padding-bottom: 30px;
 }
-.title-product{
-    height: 100px;
-    width: 100%;
-    border-top: 1px solid;
+.register{
+    float: right;
+    width: 40%;
 }
-.box-product img{
-    height: 300px;
-    width: 300px;
-}
-.box-product .price{
-    color: red;
-    font-size: 25px;
-}
-.title-product p{
-    font-size: 40px;
+.account input[type="submit"] {
+    padding: 9px;
+    background-color: #333;
+    color: #fff;
+    outline: 0;
+    border: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-weight: 400;
+    width: 250px;
     text-align: center;
-    line-height: 100px;
-}
-.box-shoe-home a{
-    text-decoration: none;
-    color: black;
-}
-.filter{
-    height: 100px;
-    width: 100%;
-}
-.filter .row p{
-    font-size: 40px;
-    text-align: left;
-    line-height: 100px;
-}
-.mt-35{
-    margin-top: 35px;
+    cursor: pointer;
 }
