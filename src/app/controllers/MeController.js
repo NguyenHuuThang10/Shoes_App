@@ -81,7 +81,7 @@ class MeController {
     }
 
     // [DELETE] /me/:id/delete/shoes
-    delete(req, res, next) {
+    deleteShoes(req, res, next) {
         Shoe.delete({ _id: req.params.id })
             .then(() =>
                 res.redirect('back')
@@ -90,7 +90,7 @@ class MeController {
     }
 
     // [DELETE] /me/:id/destroy/shoes
-    destroy(req, res, next) {
+    destroyShoes(req, res, next) {
         Shoe.deleteOne({ _id: req.params.id })
             .then(() =>
                 res.redirect('back')
@@ -99,7 +99,7 @@ class MeController {
     }
 
     // [PATCH] /me/:id/restore/shoes
-    restore (req, res, next) {
+    restoreShoes (req, res, next) {
         Shoe.restore({ _id: req.params.id })
             .then(() =>
                 res.redirect('back')
@@ -139,7 +139,7 @@ class MeController {
         }
 
         // [DELETE] /me/:id/delete/users
-        delete(req, res, next) {
+        deleteUsers(req, res, next) {
             User.delete({ _id: req.params.id })
                 .then(() =>
                     res.redirect('back')
@@ -148,7 +148,7 @@ class MeController {
         }
 
         // [DELETE] /me/:id/destroy/users
-        destroy(req, res, next) {
+        destroyUsers(req, res, next) {
             User.deleteOne({ _id: req.params.id })
                 .then(() =>
                     res.redirect('back')
@@ -157,7 +157,7 @@ class MeController {
         }
 
         // [PATCH] /me/:id/restore/users
-        restore (req, res, next) {
+        restoreUsers (req, res, next) {
             User.restore({ _id: req.params.id })
                 .then(() =>
                     res.redirect('back')

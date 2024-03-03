@@ -1,8 +1,8 @@
 <div class="content-wrapper" style="min-height: 650px;">
     <div class="container-fluid">
         <div class="content-header">
-            <h1>Quản lý sản phẩm:</h1>
-            <a class="btn btn-info mt-2" href="/me/stored/users">Danh sách nguười dùng</a>   
+            <h1>Thùng rác người dùng:</h1>
+            <a class="btn btn-info mt-2" href="/me/stored/users">Danh sách người dùng</a>   
         </div>
         <table class="table table-stored">
             <thead>
@@ -88,7 +88,7 @@
         })
 
         btnDeleteUser.onclick = function () {
-            deleteUserForm.action = '/me/' + userId + '/destroy/shoes?_method=DELETE'
+            deleteUserForm.action = '/me/' + userId + '/destroy/users?_method=DELETE'
             deleteUserForm.submit()
         }
 
@@ -96,7 +96,7 @@
             e.preventDefault()
             var userId = $(this).data('id')
 
-            restoreUserForm.action = '/me/' + userId + '/restore/shoes?_method=PATCH'
+            restoreUserForm.action = '/me/' + userId + '/restore/users?_method=PATCH'
             restoreUserForm.submit()
         })
 

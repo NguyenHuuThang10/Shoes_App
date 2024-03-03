@@ -1,16 +1,16 @@
 <div class="content-wrapper" style="min-height: 650px;">
     <div class="container-fluid">
         <div class="content-header">
-            <h1>Quản lý sản phẩm:</h1>
+            <h1>Thùng rác sản phẩm:</h1>
             <a class="btn btn-info mt-2" href="/me/stored/shoes">Danh sách sản phẩm</a>   
         </div>
-        <table class="table table-stored-shoes">
+        <table class="table table-stored">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Tên</th>
                     <th scope="col">Kiểu giày</th>
-                    <th scope="col">Kiểu dáng</th>
+                    <th scope="col">Giá</th>
                     <th scope="col">Thời gian tạo</th>
                     <th scope="col">Thời gian sửa</th>
                     <th></th>
@@ -22,7 +22,7 @@
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.type}}</td>
-                    <td>{{this.typeDetail}}</td>
+                    <td>{{this.price}}</td>
                     <td style="width: 20%;">{{this.createdAt}}</td>
                     <td style="width: 20%;">{{this.updatedAt}}</td>
                     <td>

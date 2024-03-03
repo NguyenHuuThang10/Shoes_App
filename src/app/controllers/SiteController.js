@@ -1,11 +1,12 @@
 const User = require('../models/User')
+const Shoe = require('../models/Shoe')
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 class SiteController {
-    index (req, res, next) {
-        res.render('home')
-    }
+    // index (req, res, next) {
+    //     res.render('home')
+    // }
     
     // [POST] /register
     register (req, res, next) {
@@ -80,7 +81,7 @@ class SiteController {
                 var token = jwt.sign({ _id: data._id}, 'nht')
                 var checkCookie = res.cookie('token', token, { httpOnly: true });
                 if(checkCookie) {
-                    res.redirect('/private')
+                    res.redirect('/')
                 }
             })
             .catch(err => {
@@ -90,18 +91,56 @@ class SiteController {
             .catch(next)
     }
 
-    // [GET] /private
-    private (req, res, next) {
+    
+    checkLogin (req, res, next) {
         try {
             var token = req.cookies.token
-            var rs = jwt.verify(token, 'nht')
-            if(rs){
-                res.json('Welcom')
+            if(token){
+                var userId = jwt.verify(token, 'nht')
+                User.findOne({ _id: userId})
+                    .then((data) => {
+                        if(data){
+                            req.data = data
+                            next()
+                        }else{
+                            res.json("Not permission")
+                        }
+                    })
+                    .catch(err => {
+                        console.log("ERR: " + err)
+                    })
+                    .catch(next)
+            }else{
+                Shoe.find({})
+                    .then((shoes) => {
+                        res.render('home', {
+                            shoes: mutipleMongooseToObject(shoes)
+                        })
+                    })
+                    .catch(next)
             }
         } catch (error) {
+            console.log("ERR:  " + error)
             res.redirect('/sign-in')
         }
     }
+
+    checkRole (req, res, next) {
+        if(req.data.isAdmin){
+            res.json('welcome Admin')
+        }else{
+            res.json('Weelcome Client')
+        }
+    }
+
+    // [GET] /home
+    // client (req, res, next) {
+    //     res.json('Weelcome Client')
+    // }
+
+    // admin (req,res, next) {
+    //     res.json('welcome Admin')
+    // }
 
 }
 

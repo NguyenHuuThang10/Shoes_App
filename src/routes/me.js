@@ -25,9 +25,9 @@ router.get("/stored/shoes", meController.storedShoes);
 router.get("/trash/shoes", meController.trashShoes);
 router.get("/:id/edit/shoes", meController.editShoes);
 router.put("/:id/update/shoes", upload.single('image'), meController.updateShoes);
-router.delete("/:id/delete/shoes", meController.delete);
-router.delete("/:id/destroy/shoes", meController.destroy);
-router.patch("/:id/restore/shoes", meController.restore);
+router.delete("/:id/delete/shoes", meController.deleteShoes);
+router.delete("/:id/destroy/shoes", meController.destroyShoes);
+router.patch("/:id/restore/shoes", meController.restoreShoes);
 
 
 router.get("/stored/users", meController.storedUsers);
@@ -36,6 +36,9 @@ router.get("/create/users", meController.createUsers);
 router.post("/create/users", meController.storeUsers);
 router.get("/:id/edit/users", meController.editUsers);
 router.put("/:id/edit/users", meController.updateUsers);
+router.delete("/:id/delete/users", meController.deleteUsers);
+router.delete("/:id/destroy/users", meController.destroyUsers);
+router.patch("/:id/restore/users", meController.restoreUsers);
 
 
 router.get("/home", meController.index);

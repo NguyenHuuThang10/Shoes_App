@@ -7,6 +7,7 @@ const Shoe = new Schema({
     name: {type: String, require: true},
     description: {type: String},
     type: {type: String},
+    price: {type:Number},
     typeDetail: {type: String},
     size: {type: Number},
     material: {type: String},

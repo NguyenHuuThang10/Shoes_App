@@ -1,0 +1,19 @@
+<div class="row mt-4">
+    <div class="col-lg-3">
+        <form action="/shoes/add-to-cart" method="post">
+            <input type="hidden" name="shoeId" value="{{shoe._id}}">
+            <input type="hidden" name="amount" value="1">
+            <button type="submit">Mua ngay</button>
+        </form>
+        <ul>
+            <li>{{shoe.price}}</li>
+        </ul>
+    </div>
+
+    <div class="col-lg-9">
+        <h2>{{shoe.name}}</h2>
+        <img class="card-img-top" src="/uploads/{{shoe.image}}" alt="Card image shoe">
+        
+        <p>{{shoe.description}}</p>
+    </div>
+</div>

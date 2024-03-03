@@ -1,1 +1,21 @@
-<h2>home page 1</h2>
+<div>
+    <div class="row">
+        {{#each shoes}}
+
+        <div class="col col-lg-4 mt-4">
+            <div class="card">
+                <a href="shoes/{{this.slug}}">
+                    <img class="card-img-top" src="/uploads/{{this.image}}" alt="Card image course">
+                </a>
+                <div class="card-body">
+                    <a href="shoes/{{this.slug}}">
+                        <h5 class="card-title">{{this.name}}</h5>
+                    </a>
+                    <p class="card-text">{{this.price}}</p>
+                </div>
+            </div>
+        </div>
+
+        {{/each}}
+    </div>
+</div>
