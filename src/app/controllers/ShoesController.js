@@ -24,11 +24,15 @@ class ShoesController {
       var token = req.cookies.token;
       if (token) {
         const userId = jwt.verify(token, "nht");
-        const order = await Order.findOne({ user: userId, isPaid: false }).populate("orderItems.shoe")
+        const order = await Order.findOne({ user: userId, isPaid: false }).populate("orderItems.shoe").populate({
+          path: 'user',
+          model: 'User',
+      });
         if(!order) {
-          res.json("Gio hang trong")
+          res.render('shoes/cart', { cartEmpty: "Giỏ hàng trống!"})
         }else{
           res.render('shoes/cart', {order: mongooseToObject(order)})
+          // res.json(order)
         }
       } else {
         res.redirect("/sign-in");
@@ -145,7 +149,18 @@ class ShoesController {
         console.error(error);
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
-}
+  }
+
+  // [PUT] /shoes/update-cart/:id
+  updateShippingCart (req, res, next) {
+    var orderId = req.params.id;
+    
+    Order.updateOne({ _id: orderId}, {shippingAddress: req.body})
+      .then((data) => {
+        res.redirect('/')
+      })
+      .catch(next)
+  }
 }
 
 module.exports = new ShoesController();

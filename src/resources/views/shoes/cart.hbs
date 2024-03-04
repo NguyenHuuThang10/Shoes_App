@@ -13,11 +13,32 @@
     <p>Tổng tiền hàng: {{order.itemsPrice}}</p>
     <p>Tiền ship: {{order.shippingPrice}}</p>
     <p>Tổng tiền: {{order.totalPrice}}</p>
+
+    
 {{else}}
-    <p>Gio hang trong</p>
+    <p>{{cartEmpty}}</p>
 {{/if}} 
 
-<h1>{{order.createdAt}}</h1>
+<form method="post" action="/shoes/update-cart/{{order._id}}?_method=PUT">
+  <div class="form-group">
+    <input type="text" class="form-control" id="name" name="fullName" value="{{order.user.name}}"  placeholder="Họ tên">
+  </div>
+
+  <div class="form-group">
+    <input type="text" class="form-control" id="phone" name="phone"  value="{{order.user.phone}}"  placeholder="Số điện thoại">
+  </div>
+
+  <div class="form-group">
+    <input type="text" class="form-control" id="address" name="address" value=""  placeholder="Địa chỉ">
+  </div>
+
+  <div class="form-group">
+    <input type="text" class="form-control" id="city" name="city" value=""  placeholder="Thành phố">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Đặt hàng</button>
+</form>
+
 
 
 

@@ -3,6 +3,7 @@ const router = express.Router()
 
 const shoesController = require('../app/controllers/ShoesController')
 
+router.put('/update-cart/:id', shoesController.updateShippingCart)
 router.put('/quantity/:id', shoesController.updateQuantity)
 router.get('/cart', shoesController.cart)
 router.post('/add-to-cart', shoesController.addToCart)
