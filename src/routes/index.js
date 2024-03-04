@@ -1,14 +1,10 @@
 const siteRouter = require('./site')
 const meRouter = require('./me')
-const shoeDetailRouter = require('./shoeDetail')
-const shoeGirlRouter = require('./shoeGirl')
-const userFormRouter = require('./userForm')
+const shoeRouter = require('./shoe')
 function route (app) {
 
     app.use('/me', meRouter)
-    app.use('/shoe', shoeDetailRouter)
-    app.use('/shoe',shoeGirlRouter)
-    app.use('/login',userFormRouter)
+    app.use('/shoe', shoeRouter)
     app.use('/', siteRouter)
 
 }

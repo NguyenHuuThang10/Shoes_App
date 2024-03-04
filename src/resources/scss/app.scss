@@ -1,7 +1,6 @@
 .ml-2 {
   margin-left: 2px;
 }
-
 .icon-user i {
   font-size: 25px;
   padding: 10px;
@@ -32,44 +31,24 @@
   padding: 6px;
   color: black;
 }
-.box-shoe-home {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between; /* Đảm bảo các ô được căn cách đều nhau */
-  height: 500px;
-  width: 100%;
-}
 
-.box-product {
-  text-align: center;
-  width: 300px;
-  height: 400px;
-  margin-bottom: 20px; /* Khoảng cách dưới của mỗi ô */
-}
+
 .title-product {
   height: 100px;
   width: 100%;
   border-top: 1px solid;
 }
-.box-product img {
-  height: 300px;
-  width: 300px;
-}
-.box-product .price {
-  color: red;
-  font-size: 25px;
-}
 .title-product p {
-  font-size: 40px;
+  font-size: 30px;
   text-align: center;
   line-height: 100px;
 }
-.box-shoe-home a {
+.box-shoe a {
   text-decoration: none;
   color: black;
 }
 .filter {
-  height: 100px;
+  height: 60px;
   width: 100%;
 }
 .filter .row p {
@@ -79,6 +58,10 @@
 }
 .mt-35 {
   margin-top: 35px;
+}
+.caption{
+  text-align: center;
+  margin-top: 5px;
 }
 .account {
   margin: 15px auto;
@@ -154,4 +137,21 @@ span#or-text {
     width: 250px;
     text-align: center;
     cursor: pointer;
+}
+.cart-list .table-product{
+  width: 400px;
+}
+.quantity input{
+  width: 40px;
+}
+.quantity button{
+  border: hidden;
+  background-color: #fff;
+  border: 1px solid #cccccc7a;
+}
+.cart-total ul{
+  list-style-type: none;
+}
+.total{
+  color: red;
 }
