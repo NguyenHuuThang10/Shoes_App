@@ -40,6 +40,7 @@ app.engine(
         // Chuyển đổi header của client thành header của admin
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);
       },
+      
     },
   })
 );

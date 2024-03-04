@@ -1,0 +1,23 @@
+{{#if order}}
+    {{#each order.orderItems}}
+        <form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT">
+            <h3>Tên: {{this.name}}</h3>
+            <p>Size: {{this.shoe.size}}</p>
+            <p>Đơn giá: {{this.price}}</p>
+            <input type="text" class="tiny-size" value="{{this.amount}}" name="quantity" data-item-id="{{this._id}}">
+            <button type="submit" class="btn-increase" name="action" value="increase">Tăng</button>
+            <button type="submit" class="btn-decrease" name="action" value="decrease">Giảm</button>
+            <img src="/upload/{{this.image}}" alt="">
+        </form>
+    {{/each}}
+    <p>Tổng tiền hàng: {{order.itemsPrice}}</p>
+    <p>Tiền ship: {{order.shippingPrice}}</p>
+    <p>Tổng tiền: {{order.totalPrice}}</p>
+{{else}}
+    <p>Gio hang trong</p>
+{{/if}} 
+
+<h1>{{order.createdAt}}</h1>
+
+
+

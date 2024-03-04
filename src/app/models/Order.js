@@ -12,7 +12,7 @@ const Order = new Schema({
             price: { type: Number, required: true },
             shoe: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'shoes',
+                ref: 'Shoe',
                 required: true,
             },
         },
@@ -27,7 +27,7 @@ const Order = new Schema({
     itemsPrice: { type: Number },
     shippingPrice: { type: Number, default: 30000 },
     totalPrice: { type: Number },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },

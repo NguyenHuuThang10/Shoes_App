@@ -1,11 +1,11 @@
 const User = require("../models/User");
 const Shoe = require("../models/Shoe");
 const Order = require("../models/Order");
-
 const {
   mongooseToObject,
   mutipleMongooseToObject,
 } = require("../../util/mongoose");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 class ShoesController {
@@ -16,6 +16,26 @@ class ShoesController {
         shoe: mongooseToObject(shoe),
       });
     });
+  }
+
+  // [get] /shoes/cart
+  async cart(req, res, next) {
+    try {
+      var token = req.cookies.token;
+      if (token) {
+        const userId = jwt.verify(token, "nht");
+        const order = await Order.findOne({ user: userId, isPaid: false }).populate("orderItems.shoe")
+        if(!order) {
+          res.json("Gio hang trong")
+        }else{
+          res.render('shoes/cart', {order: mongooseToObject(order)})
+        }
+      } else {
+        res.redirect("/sign-in");
+      }
+    } catch (error) {
+      console.log("ERR CART: " + error);
+    }
   }
 
   // [post] /shoes/add-to-cart
@@ -40,12 +60,16 @@ class ShoesController {
                     shoe: shoe._id,
                   },
                 ],
-                user: userId._id
+                user: userId._id,
               });
-              
-              newOrder.itemsPrice = newOrder.orderItems.reduce((total, item) => total + item.price * item.amount,0);
-              
-              newOrder.totalPrice = newOrder.itemsPrice + newOrder.shippingPrice
+
+              newOrder.itemsPrice = newOrder.orderItems.reduce(
+                (total, item) => total + item.price * item.amount,
+                0
+              );
+
+              newOrder.totalPrice =
+                newOrder.itemsPrice + newOrder.shippingPrice;
 
               newOrder.save().then(() => {
                 res.redirect("back");
@@ -73,9 +97,9 @@ class ShoesController {
             (total, item) => total + item.price * item.amount,
             0
           );
-          order.totalPrice = order.itemsPrice + order.shippingPrice
+          order.totalPrice = order.itemsPrice + order.shippingPrice;
           await order.save();
-          return res.redirect('back');
+          return res.redirect("back");
         }
       } else {
         res.redirect("/sign-in");
@@ -84,6 +108,44 @@ class ShoesController {
       console.log("ERR Order: " + error);
     }
   }
+
+  // [put] /shoes/quantity/:id
+  async updateQuantity(req, res, next) {
+    try {
+        const itemId = req.params.id;
+        const action = req.body.action; // Lấy hành động từ nút tăng giảm
+
+        let newQuantity;
+        const order = await Order.findOne({ "orderItems._id": itemId });
+        // res.json(order)
+        const item = order.orderItems.find(item => item._id.toString() === itemId);
+
+        if (action === 'increase') {
+            newQuantity = item.amount + 1;
+        } else if (action === 'decrease') {
+            newQuantity = item.amount - 1;
+            if (newQuantity < 1) {
+                newQuantity = 1; // Đảm bảo số lượng không âm
+            }
+        } else {
+            return res.status(400).json({ success: false, message: "Invalid action" });
+        }
+
+        // Cập nhật số lượng mới vào cơ sở dữ liệu
+        item.amount = newQuantity;
+        order.itemsPrice = order.orderItems.reduce(
+          (total, item) => total + item.price * item.amount,
+          0
+        );
+        order.totalPrice = order.itemsPrice + order.shippingPrice;
+        await order.save();
+
+        res.redirect('back')
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+}
 }
 
 module.exports = new ShoesController();
