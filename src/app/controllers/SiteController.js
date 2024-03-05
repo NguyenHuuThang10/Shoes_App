@@ -4,10 +4,14 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 class SiteController {
-    // index (req, res, next) {
-    //     res.render('home')
-    // }
-    
+    checkLoginClient (req, res, next) {
+        var checkLogin = res.locals.currentUser
+        if(!checkLogin){
+            next()
+        }else{
+            res.redirect('/')
+        }
+    }
     // [POST] /register
     register (req, res, next) {
         const { name, email, phone, password, confirm_password } = req.body
@@ -78,7 +82,7 @@ class SiteController {
                 }
             })
             .then((data) => {
-                var token = jwt.sign({ _id: data._id}, 'nht')
+                var token = jwt.sign({ _id: data._id, isAdmin: data.isAdmin}, 'nht')
                 var checkCookie = res.cookie('token', token, { httpOnly: true });
                 if(checkCookie) {
                     res.redirect('/')
@@ -96,28 +100,20 @@ class SiteController {
         try {
             var token = req.cookies.token
             if(token){
-                var userId = jwt.verify(token, 'nht')
-                User.findOne({ _id: userId})
-                    .then((data) => {
-                        if(data){
-                            req.data = data
-                            next()
-                        }else{
-                            res.json("Not permission")
-                        }
+                var decodeToken = jwt.verify(token, 'nht')
+                User.findOne({ _id: decodeToken._id})
+                .then((data) => {
+                        data = mongooseToObject(data)
+                        res.locals.currentUser = data
+                        next()
                     })
                     .catch(err => {
                         console.log("ERR: " + err)
+                        next(err)
                     })
                     .catch(next)
-            }else{
-                Shoe.find({})
-                    .then((shoes) => {
-                        res.render('home', {
-                            shoes: mutipleMongooseToObject(shoes)
-                        })
-                    })
-                    .catch(next)
+            }else {
+                next()
             }
         } catch (error) {
             console.log("ERR:  " + error)
@@ -125,22 +121,16 @@ class SiteController {
         }
     }
 
-    checkRole (req, res, next) {
-        if(req.data.isAdmin){
-            res.json('welcome Admin')
-        }else{
-            res.json('Weelcome Client')
-        }
+    index (req, res, next) {
+        Shoe.find({})
+            .then((shoes) => {
+                res.render('home', {
+                    shoes: mutipleMongooseToObject(shoes)
+                })
+            })
+            .catch(next)
     }
 
-    // [GET] /home
-    // client (req, res, next) {
-    //     res.json('Weelcome Client')
-    // }
-
-    // admin (req,res, next) {
-    //     res.json('welcome Admin')
-    // }
 
 }
 

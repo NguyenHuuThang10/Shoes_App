@@ -4,6 +4,17 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const bcrypt = require('bcrypt');
 
 class MeController {
+    checkLoginAdmin (req, res, next) {
+        var checkLogin = res.locals.currentUser
+        if(checkLogin && checkLogin.isAdmin){
+            next()
+        }else{
+            res.redirect('/')
+        }
+    }
+
+
+
     // [GET] /me/home
     index (req, res, next) {
         res.render('me/home')
