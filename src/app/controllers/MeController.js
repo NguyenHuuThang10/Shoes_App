@@ -26,14 +26,14 @@ class MeController {
     }
 
     // [POST] /me/store/shoes
-    storeShoes (req, res, next) {
-        req.body.image = req.file.filename
-        const shoe = new Shoe(req.body)
-        shoe.save()
-            .then(() => {
-                res.redirect('/me/stored/shoes')
-            })
-            .catch(next)
+    async storeShoes (req, res, next) {
+        try {
+            req.body.image = req.file.filename
+            await Shoe.createShoe(req.body)
+            res.redirect('/me/stored/shoes')
+        } catch (error) {
+            next(error)
+        }
     }
 
     // [GET] /me/stored/shoes
@@ -47,14 +47,6 @@ class MeController {
                     shoes: mutipleMongooseToObject(shoes)
                 })
             })
-
-        // Shoe.find({})
-        //     .then(shoes => {
-        //         res.render('me/storedShoes', {
-        //             shoes: mutipleMongooseToObject(shoes)
-        //         })
-        //     })
-        //     .catch(next)
     }
 
     // [GET] /me/trash/shoes
@@ -80,48 +72,65 @@ class MeController {
     }
 
     // [PUT] /me/:id/update/shoes
-    updateShoes (req, res, next) {
-        if(req.file){
-            req.body.image = req.file.filename
+    async updateShoes (req, res, next) {
+        try {
+            if (req.file) {
+                req.body.image = req.file.filename;
+            }
+            await Shoe.updateShoe(req.params.id, req.body);
+            res.redirect('/me/stored/shoes');
+        } catch (error) {
+            next(error);
         }
-        Shoe.updateOne({ _id: req.params.id}, req.body)
-            .then(() => {
-                res.redirect('/me/stored/shoes')    
-            })
-            .catch(next)
     }
 
     // [DELETE] /me/:id/delete/shoes
-    deleteShoes(req, res, next) {
-        Shoe.delete({ _id: req.params.id })
-            .then(() =>
-                res.redirect('back')
-            )
-            .catch(next)
+    async deleteShoes(req, res, next) {
+        try {
+            await Shoe.deleteShoe(req.params.id);
+            res.redirect('back');
+        } catch (error) {
+            next(error);
+        }
     }
 
     // [DELETE] /me/:id/destroy/shoes
-    destroyShoes(req, res, next) {
-        Shoe.deleteOne({ _id: req.params.id })
-            .then(() =>
-                res.redirect('back')
-            )
-            .catch(next)
+    async destroyShoes(req, res, next) {
+        try {
+            await Shoe.destroyShoe(req.params.id);
+            res.redirect('back');
+        } catch (error) {
+            next(error);
+        }
     }
 
     // [PATCH] /me/:id/restore/shoes
-    restoreShoes (req, res, next) {
-        Shoe.restore({ _id: req.params.id })
-            .then(() =>
-                res.redirect('back')
-            )
-            .catch(next)
+    async restoreShoes (req, res, next) {
+        try {
+            await Shoe.restoreShoe(req.params.id);
+            res.redirect('back');
+        } catch (error) {
+            next(error);
+        }
     }
 
 
     // [GET] /me/create/users
     createUsers (req, res, next) {
         res.render('me/createUsers')
+    }
+
+     // [POST] /me/store/users
+     async storeUsers (req, res, next) {
+        try {
+            const newUser = await User.createUser(req.body);
+            res.redirect('/me/stored/users');
+        } catch (error) {
+            res.render('me/createUsers', {
+                old: req.body,
+                err: error.message
+            });
+        }
     }
 
 
@@ -150,88 +159,36 @@ class MeController {
         }
 
         // [DELETE] /me/:id/delete/users
-        deleteUsers(req, res, next) {
-            User.delete({ _id: req.params.id })
-                .then(() =>
-                    res.redirect('back')
-                )
-                .catch(next)
+        async deleteUsers(req, res, next) {
+            try {
+                await User.deleteUser(req.params.id);
+                res.redirect('back');
+            } catch (error) {
+                next(error);
+            }
         }
 
         // [DELETE] /me/:id/destroy/users
-        destroyUsers(req, res, next) {
-            User.deleteOne({ _id: req.params.id })
-                .then(() =>
-                    res.redirect('back')
-                )
-                .catch(next)
+        async destroyUsers(req, res, next) {
+            try {
+                await User.destroyUser(req.params.id);
+                res.redirect('back');
+            } catch (error) {
+                next(error);
+            }
         }
 
         // [PATCH] /me/:id/restore/users
-        restoreUsers (req, res, next) {
-            User.restore({ _id: req.params.id })
-                .then(() =>
-                    res.redirect('back')
-                )
-                .catch(next)
-        }
-
-        storeUsers (req, res, next) {
-            const { name, email, phone, password, confirm_password, isAdmin } = req.body
-            const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-            const regPhone = /^0\d{9}$/
-            const isCheckEmail = regEmail.test(email)
-            const isCheckPhone = regPhone.test(phone)
-
-            if (!name || !email || !phone || !password || !confirm_password) {
-                return res.render('me/createUsers', {
-                    old: req.body,
-                    err: 'Vui lòng nhập đầy đủ thông tin!'
-                })
-            }else if (!isCheckEmail){
-                return res.render('me/createUsers', {
-                    old: req.body,
-                    err: 'Email không đúng định dạng!'
-                })
-            }else if (!isCheckPhone){
-                return res.render('me/createUsers', {
-                    old: req.body,
-                    err: 'Số điện thoại không đúng định dạng!'
-                })
-            } else if (password !== confirm_password) {
-                return res.render('me/createUsers', {
-                    old: req.body,
-                    err: 'Nhập lại mật khẩu không trùng khớp!'
-                })
+        async restoreUsers (req, res, next) {
+            try {
+                await Shoe.restoreShoe(req.params.id);
+                res.redirect('back');
+            } catch (error) {
+                next(error);
             }
-
-            User.findOne({ email: req.body.email })
-                .then(data => {
-                    if(data){
-                        res.render('me/createUsers', {
-                            old: req.body,
-                            err: 'Email đã tồn tại trong hệ thống!'
-                        })
-                    }else{
-                        if(req.body.isAdmin === "Admin"){
-                            req.body.isAdmin = true
-                        }else{
-                            req.body.isAdmin = false
-                        }
-                        req.body.password = bcrypt.hashSync(password, 10)
-                        const user = new User(req.body)
-                        user.save()
-                            .then((data) => {
-                                res.redirect('/me/stored/users')
-                            })
-                    }
-                })
-                .catch(err => {
-                    console.log("ERR: " + err)
-                    res.status(500).json("Tạo tài khoản thất bại!")
-                })
-                .catch(next)
         }
+
+       
 
         // [GET] /me/:id/edit/users
         editUsers (req, res, next) {
@@ -245,64 +202,16 @@ class MeController {
         }
 
         // [PUT] /me/:id/edit/user
-        updateUsers (req, res, next) {
-            const { name, email, phone, password, confirm_password, isAdmin } = req.body
-            const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-            const regPhone = /^0\d{9}$/
-            const isCheckEmail = regEmail.test(email)
-            const isCheckPhone = regPhone.test(phone)
-
-            if (!name || !email || !phone || !password || !confirm_password) {
-                return res.render('me/editUsers', {
+        async updateUsers (req, res, next) {
+            try {
+                const newUser = await User.upadteUser(req.body, req.params.id);
+                res.redirect('/me/stored/users');
+            } catch (error) {
+                res.render('me/editUsers', {
                     old: req.body,
-                    err: 'Vui lòng nhập đầy đủ thông tin!'
-                })
-            }else if (!isCheckEmail){
-                return res.render('me/editUsers', {
-                    old: req.body,
-                    err: 'Email không đúng định dạng!'
-                })
-            }else if (!isCheckPhone){
-                return res.render('me/editUsers', {
-                    old: req.body,
-                    err: 'Số điện thoại không đúng định dạng!'
-                })
-            } else if (password !== confirm_password) {
-                return res.render('me/editUsers', {
-                    old: req.body,
-                    err: 'Nhập lại mật khẩu không trùng khớp!'
-                })
+                    err: error.message
+                });
             }
-
-            User.findOne({ email: req.body.email, _id: { $ne: req.params.id } })
-                .then(data => {
-                    if(data){
-                        res.render('me/editUsers', {
-                            old: req.body,
-                            err: 'Email đã tồn tại trong hệ thống!'
-                        })
-                    }else{
-
-                        if(isAdmin === "Admin"){
-                            req.body.isAdmin = true
-                        }else{
-                            req.body.isAdmin = false
-                        }
-
-                        req.body.password = bcrypt.hashSync(password, 10)
-                        
-                        
-                        User.updateOne({ _id: req.params.id}, req.body)
-                            .then(() => {
-                                res.redirect('/me/stored/users')    
-                            })
-                    }
-                })
-                .catch(err => {
-                    console.log("ERR: " + err)
-                    res.status(500).json("Cập nhật tài khoản thất bại!")
-                })
-                .catch(next)
         }
 
 }

@@ -4,6 +4,7 @@ const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoo
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 class SiteController {
+
     checkLoginClient (req, res, next) {
         var checkLogin = res.locals.currentUser
         if(!checkLogin){
@@ -12,6 +13,17 @@ class SiteController {
             res.redirect('/')
         }
     }
+
+    index (req, res, next) {
+        Shoe.find({})
+            .then((shoes) => {
+                res.render('home', {
+                    shoes: mutipleMongooseToObject(shoes)
+                })
+            })
+            .catch(next)
+    }
+
     // [POST] /register
     register (req, res, next) {
         const { name, email, phone, password, confirm_password } = req.body
@@ -121,14 +133,14 @@ class SiteController {
         }
     }
 
-    index (req, res, next) {
-        Shoe.find({})
-            .then((shoes) => {
-                res.render('home', {
-                    shoes: mutipleMongooseToObject(shoes)
-                })
-            })
-            .catch(next)
+    // [POST] /log-out
+    async logOut (req, res, next) {
+        try {
+            await res.clearCookie('token')
+            res.redirect('/')
+        } catch (error) {
+            console.log("ERR: ", error)
+        }
     }
 
 

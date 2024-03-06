@@ -9,6 +9,7 @@ const {
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 class ShoesController {
+  
   // [GET] /shoes/show
   show(req, res, next) {
     Shoe.findOne({ slug: req.params.slug }).then((shoe) => {
@@ -45,7 +46,7 @@ class ShoesController {
   // [post] /shoes/add-to-cart
   async addToCart(req, res, next) {
     try {
-      const { shoeId, amount } = req.body;
+      const { shoeId, amount, size } = req.body;
       const amoutNum = new Number(amount);
       var token = req.cookies.token;
       if (token) {
@@ -58,6 +59,7 @@ class ShoesController {
                 orderItems: [
                   {
                     name: shoe.name,
+                    size: size,
                     amount: amount,
                     image: shoe.image,
                     price: shoe.price,
@@ -91,6 +93,7 @@ class ShoesController {
             const shoe = await Shoe.findOne({ _id: shoeId });
             order.orderItems.push({
               name: shoe.name,
+              size: size,
               amount: amount,
               image: shoe.image,
               price: shoe.price,
