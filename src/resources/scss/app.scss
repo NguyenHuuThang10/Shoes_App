@@ -1,6 +1,13 @@
 .ml-2 {
   margin-left: 2px;
 }
+.header-user ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
 .icon-user i {
   font-size: 25px;
   padding: 10px;
@@ -31,7 +38,11 @@
   padding: 6px;
   color: black;
 }
-
+.user-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
 
 .title-product {
   height: 100px;
@@ -59,7 +70,7 @@
 .mt-35 {
   margin-top: 35px;
 }
-.caption{
+.caption {
   text-align: center;
   margin-top: 5px;
 }
@@ -103,55 +114,149 @@ span#or-text {
   font-size: 18px;
   font-weight: 400;
 }
-.account input[type="text"], .account input[type="password"], .account input[type="phone"], .account input[type="email"] {
-    padding: 9px;
-    background-color: #fff;
-    color: #444;
-    outline: 0;
-    border: 0;
-    border-radius: 3px;
-    box-sizing: border-box;
-    font-weight: 400;
-    font-size: 1em;
-    border: 1px solid #ccc;
-    width: 96%;
-    margin-bottom: 20px;
+.account input[type="text"],
+.account input[type="password"],
+.account input[type="phone"],
+.account input[type="email"] {
+  padding: 9px;
+  background-color: #fff;
+  color: #444;
+  outline: 0;
+  border: 0;
+  border-radius: 3px;
+  box-sizing: border-box;
+  font-weight: 400;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  width: 96%;
+  margin-bottom: 20px;
 }
-.account h3{
-    text-align: center;
-    padding-bottom: 30px;
+.account h3 {
+  text-align: center;
+  padding-bottom: 30px;
 }
-.register{
-    float: right;
-    width: 40%;
+.register {
+  float: right;
+  width: 40%;
 }
 .account input[type="submit"] {
-    padding: 9px;
-    background-color: #333;
-    color: #fff;
-    outline: 0;
-    border: 0;
-    border-radius: 3px;
-    box-sizing: border-box;
-    font-weight: 400;
-    width: 250px;
-    text-align: center;
-    cursor: pointer;
+  padding: 9px;
+  background-color: #333;
+  color: #fff;
+  outline: 0;
+  border: 0;
+  border-radius: 3px;
+  box-sizing: border-box;
+  font-weight: 400;
+  width: 250px;
+  text-align: center;
+  cursor: pointer;
 }
-.cart-list .table-product{
+.cart-list .table-product {
   width: 400px;
 }
-.quantity input{
+.quantity input {
   width: 40px;
 }
-.quantity button{
+.quantity button {
   border: hidden;
   background-color: #fff;
   border: 1px solid #cccccc7a;
 }
-.cart-total ul{
+.cart-total ul {
   list-style-type: none;
 }
-.total{
+.total {
   color: red;
+}
+.cart-address p {
+  font-size: 20px;
+  color: red;
+}
+.cart-address input[type="text"],
+.cart-address input[type="phone"] {
+  width: 400px;
+  height: 50px;
+  border: hidden;
+  border: 1px solid #cccccc7a;
+  border-radius: 0.25rem;
+}
+
+.cart-address-tp .input-text {
+  width: 400px;
+  height: 50px;
+  border: hidden;
+  border: 1px solid #cccccc7a;
+  margin-top: 10px;
+  border-radius: 0.25rem;
+}
+.cart-address textarea {
+  resize: vertical;
+  margin-top: 10px;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.cart-address button {
+  width: 200px;
+  margin-top: 10px;
+  background-color: red;
+  color: #fff;
+  cursor: pointer;
+}
+.order-buy {
+  width: 200px;
+  margin-top: 10px;
+  background-color: red;
+  color: #fff;
+  cursor: pointer;
+}
+.order-add {
+  width: 200px;
+  margin-top: 10px;
+  background-color: #fff;
+  color: black;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+.size {
+  display: grid;
+  grid-template-columns: 113px 1fr;
+  gap: 15px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.size-option input{
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  color: #212529;
+  border: hidden;
+
+}
+.product-name{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.price{
+  color: red;
+}
+.detail-product{
+  background-color: darkgray;
+  height: 50px;
 }

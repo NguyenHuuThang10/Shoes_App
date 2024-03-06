@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
   <div class="container">
-    <a class="navbar-brand" href="#">Logo</a>
+    <a class="navbar-brand" href="/home">Logo</a>
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
@@ -39,8 +39,23 @@
       </form>
     </div>
     <div class="icon-header">
-      <a href="/register" class="icon-user"><i class="fa-regular fa-user"></i></a>
-      <a href="/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a>
+      {{!-- <a href="/register" class="icon-user"><i class="fa-regular fa-user"></i></a> icon user--}}
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item dropdown " style="cursor: pointer;">
+          <a class="nav-link " id="navbardrop" data-toggle="dropdown">
+            <img src="/img/avatar.jpg" alt="" class="user-avatar">
+            Hi, Trường
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Thông tin cá nhân</a>
+            <a class="dropdown-item" href="#">Đơn hàng của tôi</a>
+            <a class="dropdown-item" href="#">Đổi mật khẩu</a>
+            <a class="dropdown-item" href="#">Đăng xuất</a>
+          </div>
+        </li>
+        <li><a href="/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+      </ul>
+
     </div>
   </div>
 </nav>
