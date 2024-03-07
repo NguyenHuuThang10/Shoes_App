@@ -10,7 +10,7 @@ class SiteController {
         res.render('form/userForm')
     }
     cart (req, res, next) {
-        res.render('cart/cart')
+        res.render('shoes/cart')
     }
 }
 

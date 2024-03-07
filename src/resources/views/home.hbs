@@ -1,3 +1,27 @@
+<div class="slideshow">
+    <div id="">
+        <img id="image" src="/img/mwc.jpg" alt="Sample Image" width="100%" height="600px">
+    </div>
+</div>
+
+<script>
+    var image = document.getElementById('image');
+    var images = [
+        '/img/mwc.jpg',
+        '/img/NUCG- G018.jpg'
+    ];
+    var currentIndex = 0;
+
+    function changeImage() {
+        image.src = images[currentIndex];
+        currentIndex = (currentIndex + 1) % images.length;
+    }
+
+    setInterval(changeImage, 3000);
+</script>
+
+
+
 <div class=" box-shoe p-3">
     <div class="title-product">
         <a href="">
@@ -49,6 +73,41 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="showfull">
+        <p><a href=""><u>XEM TẤT CẢ</u></a></p>
+    </div>
+</div>
+
+<div class=" box-shoe p-3">
+    <div class="title-product">
+        <a href="">
+            <p>Giày Nam</p>
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-md-3 mt-5 ">
+            <div class="img">
+                <img class="img-fluid" src="./img/NUCG- G018.jpg" alt="" width="100%">
+                <div class="caption">
+                    <a href="">
+                        <p>Giày cao gót MWC NUCG- G018</p>
+                    </a>
+                    <h3>235.000 đ</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-5 ">
+            <div class="img">
+                <img class="img-fluid" src="./img/NUCG- G018.jpg" alt="" width="100%">
+                <div class="caption">
+                    <a href="">
+                        <p>Giày cao gót MWC NUCG- G018</p>
+                    </a>
+                    <h3>235.000 đ</h3>
+                </div>
+            </div>
+        </div>
         <div class="col-md-3 mt-5 ">
             <div class="img">
                 <img class="img-fluid" src="./img/NUCG- G018.jpg" alt="" width="100%">
@@ -72,5 +131,7 @@
             </div>
         </div>
     </div>
+    <div class="showfull">
+        <p><a href=""><u>XEM TẤT CẢ</u></a></p>
+    </div>
 </div>
-

@@ -1,92 +1,143 @@
-<div class=" box-shoe p-3">
+<div class=" box-shoe mt-100 ">
     <div class="filter">
         <div class="row">
             <div class="col">
                 <p>Giày nữ</p>
             </div>
-            <div class="col mt-35">
+            <div class="col form-arrange" >
                 <form id="filterForm">
                     <label for="category">Sắp xếp:</label>
                     <select id="category">
-                        <option value="">Giá Từ Cao Xuống Thấp</option>
-                        <option value="Electronics">Giá Từ Thấp Lên Cao</option>
-                        <option value="Clothing">Ngày</option>
-                        <option value="Books">Tên</option>
+                        <option value="All">All</option>
+                        <option value="Down">Giá Từ Cao Xuống Thấp</option>
+                        <option value="Up">Giá Từ Thấp Lên Cao</option>
+                        <option value="AZ">Sắp Xếp Từ A -> Z</option>
+                        <option value="ZA">Sắp Xếp Từ Z -> A</option>
                     </select>
-                    <label for="maxPrice">Giá:</label>
-                    <input type="number" id="maxPrice" min="0">
-                    <button type="button" onclick="filterProducts()">Filter</button>
+                </form>
+                <div class="row ">
+                <form class="form-search">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Tìm Kiếm" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
+            </div>
+            
         </div>
     </div>
-
-    <div class="row">
+    <div class="row" id="shoeContainer">
         <div class="col-md-3 mt-5 ">
             <div class="img">
-                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%">
+                <img class="img-fluid" src="/img/NUCG- G019.jpg" alt="" width="100%" height="">
                 <div class="caption">
                     <a href="">
-                        <p>Giày cao gót MWC NUCG- G018</p>
+                        <p id="Giày cao gót MWC NUCG- G018">Giày cao gót MWC NUCG- G018</p>
                     </a>
-                    <h3>235.000 đ</h3>
+                    <h3 id="225">225.000 đ</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mt-5 ">
             <div class="img">
-                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%">
+                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%" height="">
                 <div class="caption">
                     <a href="">
-                        <p>Giày cao gót MWC NUCG- G018</p>
+                        <p id="Giày cao gót MWC NUCG- G019">Giày cao gót MWC NUCG- G019</p>
                     </a>
-                    <h3>235.000 đ</h3>
+                    <h3 id="235">235.000 đ</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mt-5 ">
             <div class="img">
-                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%">
+                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%" height="">
                 <div class="caption">
                     <a href="">
-                        <p>Giày cao gót MWC NUCG- G018</p>
+                        <p id="Giày cao gót MWC NUCG- G019"> Giày cao gót MWC NUCG- G018</p>
                     </a>
-                    <h3>235.000 đ</h3>
+                    <h3 id="255">255.000 đ</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mt-5 ">
             <div class="img">
-                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%">
+                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%" height="">
                 <div class="caption">
                     <a href="">
-                        <p>Giày cao gót MWC NUCG- G018</p>
+                        <p id="Giày cao gót MWC NUCG- G019">Giày cao gót MWC NUCG- G018</p>
                     </a>
-                    <h3>235.000 đ</h3>
+                    <h3 id="235">235.000 đ</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mt-5 ">
             <div class="img">
-                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%">
+                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%" height="">
                 <div class="caption">
                     <a href="">
-                        <p>Giày cao gót MWC NUCG- G018</p>
+                        <p id="Giày cao gót MWC NUCG- G019">Giày cao gót MWC NUCG- G018</p>
                     </a>
-                    <h3>235.000 đ</h3>
+                    <h3 id="235">235.000 đ</h3>
                 </div>
             </div>
         </div>
         <div class="col-md-3 mt-5 ">
             <div class="img">
-                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%">
+                <img class="img-fluid" src="/img/NUCG- G018.jpg" alt="" width="100%" height="">
                 <div class="caption">
                     <a href="">
-                        <p>Giày cao gót MWC NUCG- G018</p>
+                        <p id="Giày cao gót MWC NUCG- G020">Giày cao gót MWC NUCG- G018</p>
                     </a>
-                    <h3>235.000 đ</h3>
+                    <h3 id="235">235.000 đ</h3>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const selectElement = document.getElementById('category');
+    const shoeContainer = document.getElementById('shoeContainer');
+
+    function sortByPrice(order) {
+        const shoes = Array.from(shoeContainer.children);
+
+        shoes.sort((a, b) => {
+            const priceA = parseInt(a.querySelector('h3').getAttribute('id'));
+            const priceB = parseInt(b.querySelector('h3').getAttribute('id'));
+
+            if (order === 'Down' || order === 'Up') {
+                return order === 'Down' ? priceB - priceA : priceA - priceB;
+            } else if (order === 'AZ' || order === 'ZA') {
+                const nameA = a.querySelector('p').textContent.toLowerCase();
+                const nameB = b.querySelector('p').textContent.toLowerCase();
+
+                if (order === 'AZ') {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            }
+        });
+
+        // Clear existing shoe elements
+        while (shoeContainer.firstChild) {
+            shoeContainer.removeChild(shoeContainer.firstChild);
+        }
+
+        // Append sorted shoe elements
+        shoes.forEach(shoe => {
+            shoeContainer.appendChild(shoe);
+        });
+    }
+
+    selectElement.addEventListener('change', function () {
+        const selectedOption = this.value;
+        if (selectedOption === 'Down' || selectedOption === 'Up' || selectedOption === 'AZ' || selectedOption === 'ZA') {
+            sortByPrice(selectedOption);
+        }
+    });
+});
+
+</script>
