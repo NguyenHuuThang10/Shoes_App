@@ -2,6 +2,7 @@ const Shoe = require('../models/Shoe')
 const User = require('../models/User')
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose')
 const bcrypt = require('bcrypt');
+const PAGE_SIZE = 2
 
 class MeController {
     checkLoginAdmin (req, res, next) {
@@ -37,16 +38,48 @@ class MeController {
     }
 
     // [GET] /me/stored/shoes
-    storedShoes (req, res, next) {
-        let shoeQuery = Shoe.find({})
+    async storedShoes (req, res, next) {
+        try {
+            let shoeQuery = Shoe.find({})
+            var page = parseInt(req.query.page) || 1
+            var allShoe = await Shoe.find({}).countDocuments()
+            var maxPage = Math.ceil(allShoe / PAGE_SIZE);
 
-        Promise.all([shoeQuery, Shoe.countDocumentsWithDeleted({ deleted: true})])
-            .then(([shoes, deletedCount]) => {
-                res.render('me/storedShoes', {
-                    deletedCount,
-                    shoes: mutipleMongooseToObject(shoes)
+            if(page > maxPage){
+                page = 1
+            }
+
+            var begin = page - 2
+            if(begin < 1){
+                begin = 1
+            }
+
+            var end = page + 2
+            if(end > maxPage){
+                end = maxPage
+            }
+            
+            var offset = (page - 1) * PAGE_SIZE
+
+            Promise.all([shoeQuery, Shoe.countDocumentsWithDeleted({ deleted: true})])
+                .then(([shoes, deletedCount]) => {
+
+                    shoes = shoes.slice(offset, offset + PAGE_SIZE)
+                    
+                    res.render('me/storedShoes', {
+                        begin,
+                        end,
+                        page,
+                        maxPage,
+                        deletedCount,
+                        shoes: mutipleMongooseToObject(shoes)
+                    })
                 })
-            })
+
+
+        } catch (error) {
+            console.log("ERR: " + error)
+        }
     }
 
     // [GET] /me/trash/shoes
@@ -135,16 +168,48 @@ class MeController {
 
 
     // [GET] /me/stored/users
-    storedUsers (req, res, next) {
-        let userQuery = User.find({})
+    async storedUsers (req, res, next) {
+        try {
+            let userQuery = User.find({})
+            var page = parseInt(req.query.page) || 1
+            var allUser = await User.find({}).countDocuments()
+            var maxPage = Math.ceil(allUser / PAGE_SIZE);
 
-        Promise.all([userQuery, User.countDocumentsWithDeleted({ deleted: true})])
-            .then(([users, deletedCount]) => {
-                res.render('me/storedUsers', {
-                    deletedCount,
-                    users: mutipleMongooseToObject(users)
+            if(page > maxPage){
+                page = 1
+            }
+
+            var begin = page - 2
+            if(begin < 1){
+                begin = 1
+            }
+
+            var end = page + 2
+            if(end > maxPage){
+                end = maxPage
+            }
+            
+            var offset = (page - 1) * PAGE_SIZE
+
+            Promise.all([userQuery, User.countDocumentsWithDeleted({ deleted: true})])
+                .then(([users, deletedCount]) => {
+
+                    users = users.slice(offset, offset + PAGE_SIZE)
+                    
+                    res.render('me/storedUsers', {
+                        begin,
+                        end,
+                        page,
+                        maxPage,
+                        deletedCount,
+                        users: mutipleMongooseToObject(users)
+                    })
                 })
-            })
+
+
+        } catch (error) {
+            console.log("ERR: " + error)
+        }
     }
 
         // [GET] /me/trash/users
@@ -181,7 +246,7 @@ class MeController {
         // [PATCH] /me/:id/restore/users
         async restoreUsers (req, res, next) {
             try {
-                await Shoe.restoreShoe(req.params.id);
+                await User.restoreUser(req.params.id);
                 res.redirect('back');
             } catch (error) {
                 next(error);

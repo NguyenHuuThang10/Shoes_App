@@ -133,7 +133,7 @@ class SiteController {
         }
     }
 
-    // [POST] /log-out
+    // [GET] /log-out
     async logOut (req, res, next) {
         try {
             await res.clearCookie('token')

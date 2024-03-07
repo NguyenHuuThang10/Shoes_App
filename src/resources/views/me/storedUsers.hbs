@@ -33,8 +33,8 @@
                     {{/if}}
                     <td>
                         <a href="/me/{{this._id}}/edit/users    " class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></a>
-                        
-                        <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
+                    
+                        <a href="#" class="btn btn-link delete-user-button" data-id="{{this._id}}" data-toggle="modal"
                         data-target="#delete_user_model"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
@@ -45,6 +45,22 @@
                 {{/each}}
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {{#backPage page}}
+                    {{this}}
+                {{/backPage}}
+
+                {{#eachPage page maxPage}}
+                    {{this}}
+                {{/eachPage}}
+                
+                {{#nextPage page maxPage}}
+                    {{this}}
+                {{/nextPage}}
+            </ul>
+        </nav>
     </div>
 </div>
 
@@ -78,6 +94,9 @@
         var btnDeleteUser = document.getElementById('btn-delete-user')
         var userId
         var deleteUserForm = document.forms['delete-user-form']
+
+        var currentUserID = "{{currentUser._id}}";
+        var deleteButtons = document.querySelectorAll('.delete-user-button');
         
         // When dialog confirm clicked
         $('#delete_user_model').on('show.bs.modal', function (event) {
@@ -90,6 +109,12 @@
             deleteUserForm.action = '/me/' + userId + '/delete/users?_method=DELETE'
             deleteUserForm.submit()
         }
+
+        deleteButtons.forEach(function(button) {
+            if (button.dataset.id === currentUserID) {
+                button.style.display = 'none';
+            }
+        });
 
     })
 

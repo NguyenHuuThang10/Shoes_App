@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 const db = require("./config/db");
 const methodOverride = require('method-override')
-var cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 
 // READ COOKIE
 app.use(cookieParser())
@@ -39,6 +39,41 @@ app.engine(
       ifEquals: function (arg1, arg2, options) {
         // Chuyển đổi header của client thành header của admin
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+      },
+      eachPage: function (page, maxPage, options) {
+        let result = '';
+        for (let i = 1; i <= maxPage; i++) {
+          // Chỉ định class "active" cho trang hiện tại
+          const activeClass = i === page ? 'active' : '';
+          result += `<li class="page-item ${activeClass}"><a class="page-link" href="?page=${i}">${i}</a></li>`;
+        }
+        return result;
+      },
+      backPage: function (page, options) {
+        if (page > 1 ) {
+          result = `<li class="page-item">
+                      <a class="page-link" href="?page=${page - 1}" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">Previous</span>
+                      </a>
+                  </li>`
+        }else {
+          result = ''
+        }
+        return result
+      },
+      nextPage: function (page, maxPage, options) {
+        if (page < maxPage ) {
+          result = `<li class="page-item">
+                      <a class="page-link" href="?page=${page + 1}" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">Next</span>
+                      </a>
+                  </li>`
+        }else {
+          result = ''
+        }
+        return result
       },
       
     },
