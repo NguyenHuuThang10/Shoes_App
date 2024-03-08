@@ -8,7 +8,7 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Tên</th>
+                    <th scope="col" style="width: 20%;">Tên</th>
                     <th scope="col">Kiểu giày</th>
                     <th scope="col">Giá</th>
                     <th scope="col">Thời gian tạo</th>
@@ -39,6 +39,22 @@
                 {{/each}}
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {{#backPage page}}
+                    {{this}}
+                {{/backPage}}
+
+                {{#eachPage page maxPage}}
+                    {{this}}
+                {{/eachPage}}
+                
+                {{#nextPage page maxPage}}
+                    {{this}}
+                {{/nextPage}}
+            </ul>
+        </nav>
     </div>
 </div>
 

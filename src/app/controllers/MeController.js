@@ -1,5 +1,6 @@
 const Shoe = require('../models/Shoe')
 const User = require('../models/User')
+const Order = require('../models/Order')
 const { mongooseToObject, mutipleMongooseToObject } = require('../../util/mongoose')
 const bcrypt = require('bcrypt');
 const PAGE_SIZE = 2
@@ -48,16 +49,6 @@ class MeController {
             if(page > maxPage){
                 page = 1
             }
-
-            var begin = page - 2
-            if(begin < 1){
-                begin = 1
-            }
-
-            var end = page + 2
-            if(end > maxPage){
-                end = maxPage
-            }
             
             var offset = (page - 1) * PAGE_SIZE
 
@@ -67,8 +58,6 @@ class MeController {
                     shoes = shoes.slice(offset, offset + PAGE_SIZE)
                     
                     res.render('me/storedShoes', {
-                        begin,
-                        end,
                         page,
                         maxPage,
                         deletedCount,
@@ -83,14 +72,33 @@ class MeController {
     }
 
     // [GET] /me/trash/shoes
-    trashShoes (req, res, next) {
-        Shoe.findWithDeleted({ deleted: true })
-            .then((shoes) => {
-                res.render("me/trashShoes", {
-                    shoes: mutipleMongooseToObject(shoes),
-                });
-            })
-            .catch(next);
+    async trashShoes (req, res, next) {
+        try {
+            var page = parseInt(req.query.page) || 1
+            var allShoe = await Shoe.findWithDeleted({ deleted: true }).countDocuments()
+            var maxPage = Math.ceil(allShoe / PAGE_SIZE);
+
+            if(page > maxPage){
+                page = 1
+            }
+    
+            var offset = (page - 1) * PAGE_SIZE
+
+            Shoe.findWithDeleted({ deleted: true })
+                .skip(offset)
+                .limit(PAGE_SIZE)
+                .then((shoes) => {
+                    res.render("me/trashShoes", {
+                        page,
+                        maxPage,
+                        shoes: mutipleMongooseToObject(shoes),
+                    });
+                })
+                .catch(next);
+
+        } catch (error) {
+            console.log("ERR: " + error)
+        }
     }
 
     // [GET] /me/:id/edit/shoes
@@ -178,16 +186,6 @@ class MeController {
             if(page > maxPage){
                 page = 1
             }
-
-            var begin = page - 2
-            if(begin < 1){
-                begin = 1
-            }
-
-            var end = page + 2
-            if(end > maxPage){
-                end = maxPage
-            }
             
             var offset = (page - 1) * PAGE_SIZE
 
@@ -197,8 +195,6 @@ class MeController {
                     users = users.slice(offset, offset + PAGE_SIZE)
                     
                     res.render('me/storedUsers', {
-                        begin,
-                        end,
                         page,
                         maxPage,
                         deletedCount,
@@ -213,14 +209,33 @@ class MeController {
     }
 
         // [GET] /me/trash/users
-        trashUsers (req, res, next) {
-            User.findWithDeleted({ deleted: true })
-                .then((users) => {
-                    res.render("me/trashUsers", {
-                        users: mutipleMongooseToObject(users),
-                    });
-                })
-                .catch(next);
+        async trashUsers (req, res, next) {
+            try {
+                var page = parseInt(req.query.page) || 1
+                var allUser = await User.findWithDeleted({ deleted: true }).countDocuments()
+                var maxPage = Math.ceil(allUser / PAGE_SIZE);
+    
+                if(page > maxPage){
+                    page = 1
+                }
+        
+                var offset = (page - 1) * PAGE_SIZE
+    
+                User.findWithDeleted({ deleted: true })
+                    .skip(offset)
+                    .limit(PAGE_SIZE)
+                    .then((users) => {
+                        res.render("me/trashUsers", {
+                            page,
+                            maxPage,
+                            users: mutipleMongooseToObject(users),
+                        });
+                    })
+                    .catch(next);
+    
+            } catch (error) {
+                console.log("ERR: " + error)
+            }
         }
 
         // [DELETE] /me/:id/delete/users
@@ -278,6 +293,50 @@ class MeController {
                 });
             }
         }
+
+        async storedOrders (req, res, next) {
+            try {
+                // var token = req.cookies.token;
+                // if (token) {
+                //     var userId = jwt.verify(token, "nht");
+
+                    var page = parseInt(req.query.page) || 1
+                    var allOrder = await Order.find({}).countDocuments()
+                    var maxPage = Math.ceil(allOrder / PAGE_SIZE);
+        
+                    if(page > maxPage){
+                        page = 1
+                    }
+                    
+                    var offset = (page - 1) * PAGE_SIZE
+        
+                    Order.find({})
+                        .populate({
+                            path: "user",
+                            model: "User",
+                        })
+                        .skip(offset)
+                        .limit(PAGE_SIZE)
+                        .then((orders) => {
+                            res.render("me/storedOrder", {
+                                page,
+                                maxPage,
+                                orders: mutipleMongooseToObject(orders),
+                            });
+                        })
+                        .catch(next);
+
+                // } else {
+                //     res.redirect("/sign-in");
+                // }
+
+    
+    
+            } catch (error) {
+                console.log("ERR: " + error)
+            }
+        }
+
 
 }
 

@@ -1,4 +1,4 @@
-{{#if order}}
+{{#if order.orderItems}}
     {{#each order.orderItems}}
         <form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT">
             <h3>Tên: {{this.name}}</h3>
@@ -7,8 +7,9 @@
             <input type="text" class="tiny-size" value="{{this.amount}}" name="quantity" data-item-id="{{this._id}}">
             <button type="submit" class="btn-increase" name="action" value="increase">Tăng</button>
             <button type="submit" class="btn-decrease" name="action" value="decrease">Giảm</button>
-            <img src="/upload/{{this.image}}" alt="">
+            <img src="/uploads/{{this.image}}" style="width: 100px;" alt="">
         </form>
+        <a href="#" class="btn-delete-order" data-id="{{this._id}}">Xóa</a>
     {{/each}}
     <p>Tổng tiền hàng: {{order.itemsPrice}}</p>
     <p>Tiền ship: {{order.shippingPrice}}</p>
@@ -39,6 +40,22 @@
   <button type="submit" class="btn btn-primary">Đặt hàng</button>
 </form>
 
+<form name="delete-order-form" method="POST"></form>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var btnDeleteOrders = document.querySelectorAll('.btn-delete-order');
+      var deleteOrderForm = document.forms['delete-order-form'];
 
+      btnDeleteOrders.forEach(function(btnDeleteOrder) {
+          var orderItemId = $(btnDeleteOrder).data('id');
+
+          btnDeleteOrder.onclick = function () {
+              deleteOrderForm.action = '/shoes/delete-cart/'+ orderItemId +'?_method=DELETE';
+              deleteOrderForm.submit();
+          };
+      });
+    })
+
+</script>
 

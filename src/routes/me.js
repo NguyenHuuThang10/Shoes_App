@@ -19,10 +19,10 @@ const upload = multer({ storage: storage });
 
 
 
-router.get("/create/shoes", meController.checkLoginAdmin, meController.createShoes);
-router.post("/store/shoes", meController.checkLoginAdmin, upload.single('image'), meController.storeShoes);
 router.get("/stored/shoes", meController.checkLoginAdmin, meController.storedShoes);
 router.get("/trash/shoes", meController.checkLoginAdmin, meController.trashShoes);
+router.get("/create/shoes", meController.checkLoginAdmin, meController.createShoes);
+router.post("/store/shoes", meController.checkLoginAdmin, upload.single('image'), meController.storeShoes);
 router.get("/:id/edit/shoes", meController.checkLoginAdmin, meController.editShoes);
 router.put("/:id/update/shoes", meController.checkLoginAdmin, upload.single('image'), meController.updateShoes);
 router.delete("/:id/delete/shoes", meController.checkLoginAdmin, meController.deleteShoes);
@@ -39,6 +39,9 @@ router.put("/:id/edit/users", meController.checkLoginAdmin, meController.updateU
 router.delete("/:id/delete/users", meController.checkLoginAdmin, meController.deleteUsers);
 router.delete("/:id/destroy/users", meController.checkLoginAdmin, meController.destroyUsers);
 router.patch("/:id/restore/users", meController.checkLoginAdmin, meController.restoreUsers);
+
+
+router.get("/stored/orders", meController.checkLoginAdmin, meController.storedOrders);
 
 
 router.get("/home", meController.checkLoginAdmin, meController.index);

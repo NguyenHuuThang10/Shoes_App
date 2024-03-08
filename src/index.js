@@ -42,7 +42,18 @@ app.engine(
       },
       eachPage: function (page, maxPage, options) {
         let result = '';
-        for (let i = 1; i <= maxPage; i++) {
+
+        var begin = page - 2
+        if(begin < 1){
+            begin = 1
+        }
+
+        var end = page + 2
+        if(end > maxPage){
+            end = maxPage
+        }
+        
+        for (let i = begin; i <= end; i++) {
           // Chỉ định class "active" cho trang hiện tại
           const activeClass = i === page ? 'active' : '';
           result += `<li class="page-item ${activeClass}"><a class="page-link" href="?page=${i}">${i}</a></li>`;

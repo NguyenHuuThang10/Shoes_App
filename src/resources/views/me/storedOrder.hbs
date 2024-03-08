@@ -1,0 +1,59 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid ">
+        <div class="content-header">
+            <h1 class="mb-2">Quản lý đơn hàng:</h1>
+        </div>
+        <table class="table table-stored">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" style="width: 20%;">Tên khách hàng</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Paided</th>
+                    <th scope="col">Shipped</th>
+                    <th scope="col">PT thanh toán</th>
+                    <th scope="col">Tổng giá</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.user.name}}</td>
+                    <td>{{this.user.phone}}</td>
+                    <td>{{this.shippingAddress.city}}</td>
+                    <td>{{this.isPaid}}</td>
+                    <td>{{this.isDelivered}}</td>
+                    <td>{{this.paymentMethod}}</td>
+                    <td>{{this.totalPrice}}</td>
+                    <td>
+                        <a class="btn btn-info" href="#"> Xem chi tiết </a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr class="text-center">
+                    <td colspan="7">Không có đơn hàng nào nào.</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {{#backPage page}}
+                    {{this}}
+                {{/backPage}}
+
+                {{#eachPage page maxPage}}
+                    {{this}}
+                {{/eachPage}}
+                
+                {{#nextPage page maxPage}}
+                    {{this}}
+                {{/nextPage}}
+            </ul>
+        </nav>
+    </div>
+</div>

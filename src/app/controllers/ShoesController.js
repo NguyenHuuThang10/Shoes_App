@@ -9,7 +9,6 @@ const {
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 class ShoesController {
-  
   // [GET] /shoes/show
   show(req, res, next) {
     Shoe.findOne({ slug: req.params.slug }).then((shoe) => {
@@ -25,16 +24,17 @@ class ShoesController {
       var token = req.cookies.token;
       if (token) {
         const userId = jwt.verify(token, "nht");
-        const order = await Order.findOne({ user: userId, isPaid: false }).populate("orderItems.shoe").populate({
-          path: 'user',
-          model: 'User',
-      });
-        if(!order) {
-          res.render('shoes/cart', { cartEmpty: "Giỏ hàng trống!"})
-        }else{
-          res.render('shoes/cart', {order: mongooseToObject(order)})
-          // res.json(order)
-        }
+        const order = await Order.findOne({ user: userId, isPaid: false })
+          .populate("orderItems.shoe")
+          .populate({
+            path: "user",
+            model: "User",
+          });
+
+        res.render("shoes/cart", {
+          order: mongooseToObject(order),
+          cartEmpty: "Giỏ hàng trống!",
+        });
       } else {
         res.redirect("/sign-in");
       }
@@ -119,50 +119,94 @@ class ShoesController {
   // [put] /shoes/quantity/:id
   async updateQuantity(req, res, next) {
     try {
-        const itemId = req.params.id;
-        const action = req.body.action; // Lấy hành động từ nút tăng giảm
+      const itemId = req.params.id;
+      const action = req.body.action; // Lấy hành động từ nút tăng giảm
 
-        let newQuantity;
-        const order = await Order.findOne({ "orderItems._id": itemId });
-        // res.json(order)
-        const item = order.orderItems.find(item => item._id.toString() === itemId);
+      let newQuantity;
+      const order = await Order.findOne({ "orderItems._id": itemId });
+      // res.json(order)
+      const item = order.orderItems.find(
+        (item) => item._id.toString() === itemId
+      );
 
-        if (action === 'increase') {
-            newQuantity = item.amount + 1;
-        } else if (action === 'decrease') {
-            newQuantity = item.amount - 1;
-            if (newQuantity < 1) {
-                newQuantity = 1; // Đảm bảo số lượng không âm
-            }
-        } else {
-            return res.status(400).json({ success: false, message: "Invalid action" });
+      if (action === "increase") {
+        newQuantity = item.amount + 1;
+      } else if (action === "decrease") {
+        newQuantity = item.amount - 1;
+        if (newQuantity < 1) {
+          newQuantity = 1; // Đảm bảo số lượng không âm
         }
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid action" });
+      }
 
-        // Cập nhật số lượng mới vào cơ sở dữ liệu
-        item.amount = newQuantity;
-        order.itemsPrice = order.orderItems.reduce(
-          (total, item) => total + item.price * item.amount,
-          0
-        );
-        order.totalPrice = order.itemsPrice + order.shippingPrice;
-        await order.save();
+      // Cập nhật số lượng mới vào cơ sở dữ liệu
+      item.amount = newQuantity;
+      order.itemsPrice = order.orderItems.reduce(
+        (total, item) => total + item.price * item.amount,
+        0
+      );
+      order.totalPrice = order.itemsPrice + order.shippingPrice;
+      await order.save();
 
-        res.redirect('back')
+      res.redirect("back");
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ success: false, message: "Internal server error" });
+      console.error(error);
+      return res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
     }
   }
 
   // [PUT] /shoes/update-cart/:id
-  updateShippingCart (req, res, next) {
+  updateShippingCart(req, res, next) {
     var orderId = req.params.id;
-    
-    Order.updateOne({ _id: orderId}, {shippingAddress: req.body})
+
+    Order.updateOne({ _id: orderId }, { shippingAddress: req.body })
       .then((data) => {
-        res.redirect('/')
+        res.redirect("/");
       })
-      .catch(next)
+      .catch(next);
+  }
+
+
+  // [DELETE] /shoes/delete-cart/:id
+  async deleteToCart(req, res, next) {
+    try {
+      // Lấy id của orderItem từ yêu cầu
+      const orderItemId = req.params.id;
+
+      // Tìm và xóa orderItem trong cơ sở dữ liệu
+      const order = await Order.findOneAndUpdate(
+        { "orderItems._id": orderItemId },
+        { $pull: { orderItems: { _id: orderItemId } } },
+        { new: true }
+      );
+
+      if (!order) {
+        return res
+          .status(404)
+          .json({ message: "Không tìm thấy order hoặc orderItem" });
+      }
+
+      order.itemsPrice = order.orderItems.reduce(
+        (total, item) => total + item.price * item.amount,
+        0
+      );
+      order.totalPrice = order.itemsPrice + order.shippingPrice;
+      await order.save();
+
+      // Trả về phản hồi thành công nếu orderItem được xóa thành công
+      return res.redirect("back");
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      console.error("Lỗi khi xóa orderItem:", error);
+      return res
+        .status(500)
+        .json({ message: "Đã xảy ra lỗi khi xóa orderItem" });
+    }
   }
 }
 
