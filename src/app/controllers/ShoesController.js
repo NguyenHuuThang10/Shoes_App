@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const Shoe = require("../models/Shoe");
 const Order = require("../models/Order");
+const paypal = require("paypal-rest-sdk");
+
 const {
   mongooseToObject,
   mutipleMongooseToObject,
@@ -24,7 +26,11 @@ class ShoesController {
       var token = req.cookies.token;
       if (token) {
         const userId = jwt.verify(token, "nht");
-        const order = await Order.findOne({ user: userId, isPaid: false })
+        const order = await Order.findOne({
+          user: userId,
+          isPaid: false,
+          paymentMethod: null,
+        })
           .populate("orderItems.shoe")
           .populate({
             path: "user",
@@ -51,7 +57,11 @@ class ShoesController {
       var token = req.cookies.token;
       if (token) {
         var userId = jwt.verify(token, "nht");
-        const order = await Order.findOne({ user: userId._id, isPaid: false });
+        const order = await Order.findOne({
+          user: userId._id,
+          isPaid: false,
+          paymentMethod: null,
+        });
         if (!order) {
           Shoe.findOne({ _id: shoeId })
             .then((shoe) => {
@@ -160,17 +170,139 @@ class ShoesController {
     }
   }
 
-  // [PUT] /shoes/update-cart/:id
-  updateShippingCart(req, res, next) {
-    var orderId = req.params.id;
+  // [POST] /shoes/update-cart/:id
+  async updateShippingCart(req, res, next) {
+    try {
+      var { fullName, phone, address, city, paymentMethod } = req.body;
+      var orderId = req.params.id;
 
-    Order.updateOne({ _id: orderId }, { shippingAddress: req.body })
-      .then((data) => {
-        res.redirect("/");
-      })
-      .catch(next);
+      if (paymentMethod == "Thanh toán bằng tiền mặc") {
+        Order.updateOne(
+          { _id: orderId },
+          { shippingAddress: { fullName, phone, address, city }, paymentMethod }
+        )
+          .then((data) => {
+            res.redirect("/shoes/my-order");
+          })
+          .catch(next);
+      } else {
+        var orderUpdate = await Order.updateOne(
+          { _id: orderId },
+          { shippingAddress: { fullName, phone, address, city }, paymentMethod }
+        );
+        if (orderUpdate) {
+          var order = await Order.findOne({ _id: orderId });
+
+          var items = order.orderItems.map((item) => {
+            return {
+              name: item.name,
+              sku: item._id,
+              price: item.price,
+              currency: "USD",
+              quantity: item.amount,
+            };
+          });
+
+          const itemsTotal = order.orderItems.reduce((total, item) => {
+            return total + item.price * item.amount;
+          }, 0);
+
+          const totalAmount = itemsTotal + order.shippingPrice;
+
+          var create_payment_json = {
+            intent: "sale",
+            payer: {
+              payment_method: "paypal",
+            },
+            redirect_urls: {
+              return_url: `http://localhost:3000/shoes/my-order?totalAmount=${totalAmount}&orderId=${orderId}`,
+              cancel_url: "http://localhost:3000/cancel",
+            },
+            transactions: [
+              {
+                item_list: {
+                  items: items,
+                },
+                amount: {
+                  currency: "USD",
+                  total: totalAmount,
+                  details: {
+                    subtotal: itemsTotal,
+                    shipping: order.shippingPrice,
+                  },
+                },
+                description: "This is the payment description.",
+              },
+            ],
+          };
+
+          paypal.payment.create(create_payment_json, function (error, payment) {
+            if (error) {
+              console.log("ERR: " + error);
+              throw error;
+            } else {
+              for (let i = 0; i < payment.links.length; i++) {
+                if (payment.links[i].rel === "approval_url") {
+                  res.redirect(payment.links[i].href);
+                }
+              }
+            }
+          });
+        }
+      }
+    } catch (error) {
+      console.log("ERR: " + error)
+
+    }
   }
 
+  // [GET] /shoes/my-order
+  paySuccess(req, res, next) {
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
+    const totalAmount = req.query.totalAmount;
+    const orderId = req.query.orderId
+
+    const execute_payment_json = {
+      payer_id: payerId,
+      transactions: [
+        {
+          amount: {
+            currency: "USD",
+            total: totalAmount,
+          },
+        },
+      ],
+    };
+
+    Order.findOne({ _id: orderId,  paymentMethod: "Thanh toán bằng tiền mặc"})
+      .then(data => {
+        return res.render("shoes/myOrder");
+      })
+      .catch(err =>{
+        console.log("ERR: "+err)
+      })
+      .catch(next)
+
+    paypal.payment.execute(
+      paymentId,
+      execute_payment_json,
+      function (error, payment) {
+        if (error) {
+          res.render("cancle");
+        } else {
+          Order.updateOne(
+            { _id: orderId },
+            { paymentMethod: "Thanh toán bằng Paypal", isPaid: true, paidAt: Date.now()}
+          )
+            .then((data) => {
+              res.render("shoes/myOrder");
+            })
+            .catch(next);
+        }
+      }
+    );
+  }
 
   // [DELETE] /shoes/delete-cart/:id
   async deleteToCart(req, res, next) {
@@ -189,6 +321,12 @@ class ShoesController {
         return res
           .status(404)
           .json({ message: "Không tìm thấy order hoặc orderItem" });
+      }
+
+      if (order.orderItems.length === 0) {
+        // Nếu không còn dữ liệu trong orderItems, xóa luôn order
+        await Order.deleteOne({ _id: order._id });
+        return res.redirect("back");
       }
 
       order.itemsPrice = order.orderItems.reduce(

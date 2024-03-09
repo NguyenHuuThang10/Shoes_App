@@ -8,10 +8,18 @@ const port = 3000;
 const db = require("./config/db");
 const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
+const paypal = require('paypal-rest-sdk');
 
 // READ COOKIE
 app.use(cookieParser())
 
+
+// PAYPAL
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'AZe9yaajblSaLUL3BlLBgAxnTjp6aWIptRt3VoD4-ca0y5OzTS_wm5xQGgHBwRBYFAkTWVEvM1RuoPNk',
+  'client_secret': 'EEqNHSQvmcwAeameZlFtEJ75w9Xumo8nL0ImnN8ktWqN3bMdDXXm2W9xK9mrHCR2HyHVpjmwoK3O9sZo'
+});
 
 
 // Chuyển POST -> PUT, DELETE
