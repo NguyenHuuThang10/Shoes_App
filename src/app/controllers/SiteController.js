@@ -12,6 +12,11 @@ class SiteController {
     cart (req, res, next) {
         res.render('shoes/cart')
     }
+    profile (req, res, next) {
+        res.render('form/profile')
+    } chancepass (req, res, next) {
+        res.render('form/password')
+    }
 }
 
 module.exports = new SiteController

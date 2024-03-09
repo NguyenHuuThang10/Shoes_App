@@ -18,7 +18,6 @@
                 <div class="row ">
                 <form class="form-search">
                     <input class="form-control mr-sm-2" type="search" placeholder="Tìm Kiếm" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
             </div>
@@ -140,4 +139,59 @@
     });
 });
 
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchForm = document.querySelector('.form-search');
+    const shoeItems = document.querySelectorAll('.img');
+    const shoeContainer = document.getElementById('shoeContainer');
+
+    let originalOrder = Array.from(shoeItems);
+
+    function filterShoes(keyword) {
+        const lowerKeyword = keyword.toLowerCase();
+        shoeContainer.innerHTML = '';
+
+        originalOrder.forEach(shoe => {
+            const shoeName = shoe.querySelector('p').textContent.toLowerCase();
+            const shoeImgSrc = shoe.querySelector('img').getAttribute('src'); // Lấy đường dẫn của ảnh
+            if (shoeName.includes(lowerKeyword)) {
+                // Tạo lại cấu trúc html của sản phẩm bằng cách tạo các thẻ div, img, p và h3
+                const div = document.createElement('div');
+                div.classList.add('col-md-3', 'mt-5');
+                const img = document.createElement('img');
+                img.classList.add('img-fluid');
+                img.setAttribute('src', shoeImgSrc); // Sét lại đường dẫn cho ảnh
+                img.setAttribute('alt', '');
+                img.setAttribute('width', '100%');
+                const caption = document.createElement('div');
+                caption.classList.add('caption');
+                const a = document.createElement('a');
+                a.setAttribute('href', '');
+                const p = document.createElement('p');
+                p.textContent = shoe.querySelector('p').textContent; // Sử dụng lại tên sản phẩm gốc
+                const h3 = document.createElement('h3');
+                h3.textContent = shoe.querySelector('h3').textContent;
+                div.appendChild(img);
+                caption.appendChild(a);
+                a.appendChild(p);
+                caption.appendChild(h3);
+                div.appendChild(caption);
+                shoeContainer.appendChild(div);
+            }
+        });
+    }
+
+    searchForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const searchTerm = this.querySelector('input').value.trim();
+        filterShoes(searchTerm);
+    });
+
+    searchForm.addEventListener('input', function () {
+        const searchTerm = this.querySelector('input').value.trim();
+        filterShoes(searchTerm);
+    });
+});
 </script>
