@@ -215,7 +215,7 @@ class ShoesController {
               payment_method: "paypal",
             },
             redirect_urls: {
-              return_url: `http://localhost:3000/shoes/my-order?totalAmount=${totalAmount}&orderId=${orderId}`,
+              return_url: `http://localhost:3000/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
               cancel_url: "http://localhost:3000/cancel",
             },
             transactions: [
@@ -256,7 +256,7 @@ class ShoesController {
     }
   }
 
-  // [GET] /shoes/my-order
+  // [GET] /shoes/pay-success
   paySuccess(req, res, next) {
     const payerId = req.query.PayerID;
     const paymentId = req.query.paymentId;
@@ -277,7 +277,7 @@ class ShoesController {
 
     Order.findOne({ _id: orderId,  paymentMethod: "Thanh toán bằng tiền mặc"})
       .then(data => {
-        return res.render("shoes/myOrder");
+        return res.redirect("/shoes/my-order");
       })
       .catch(err =>{
         console.log("ERR: "+err)
@@ -296,13 +296,34 @@ class ShoesController {
             { paymentMethod: "Thanh toán bằng Paypal", isPaid: true, paidAt: Date.now()}
           )
             .then((data) => {
-              res.render("shoes/myOrder");
+              res.redirect("/shoes/my-order");
             })
             .catch(next);
         }
       }
     );
   }
+
+  // [get] /shoes/my-order
+  myOrder (req, res, next) {
+    var userId = res.locals.currentUser._id
+    if(userId){
+      Order.find({ user: userId})
+        .populate("orderItems.shoe")
+        .populate({
+          path: "user",
+          model: "User",
+        })
+        .then(data => {
+          res.json(data)
+        })
+        .catch(err => {
+          console.log("ERR MY-ODER: " + err)
+        })
+        .catch(next)
+    }
+  }
+
 
   // [DELETE] /shoes/delete-cart/:id
   async deleteToCart(req, res, next) {

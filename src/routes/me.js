@@ -42,6 +42,7 @@ router.patch("/:id/restore/users", meController.checkLoginAdmin, meController.re
 
 
 router.get("/stored/orders", meController.checkLoginAdmin, meController.storedOrders);
+router.get("/stored/order-detail/:id", meController.checkLoginAdmin, meController.orderDetail);
 
 
 router.get("/home", meController.checkLoginAdmin, meController.index);

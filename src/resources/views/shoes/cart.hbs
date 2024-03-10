@@ -22,20 +22,20 @@
 
 <form method="post" action="/shoes/update-cart/{{order._id}}">
   <div class="form-group">
-    <input type="text" class="form-control" id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
+    <input type="text" class="form-control" required id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
   </div>
 
   <div class="form-group">
-    <input type="text" class="form-control" id="phone" name="phone" value="{{currentUser.phone}}"
+    <input type="text" class="form-control" required id="phone" name="phone" value="{{currentUser.phone}}"
       placeholder="Số điện thoại">
   </div>
 
   <div class="form-group">
-    <input type="text" class="form-control" id="address" name="address" value="" placeholder="Địa chỉ">
+    <input type="text" class="form-control" required id="address" name="address" value="" placeholder="Địa chỉ">
   </div>
 
   <div class="form-group">
-    <input type="text" class="form-control" id="city" name="city" value="" placeholder="Thành phố">
+    <input type="text" class="form-control" required id="city" name="city" value="" placeholder="Thành phố">
   </div>
 
   <div class="form-check">
@@ -52,7 +52,12 @@
     </label>
   </div>
 
-  <button type="submit" class="btn btn-primary">Mua hàng</button>
+  {{#if order.orderItems}}
+    <button type="submit" class="btn btn-primary">Mua hàng</button>
+    <a href="/" class="btn btn-success">Quay lại</a>
+  {{else}}
+    <a href="/" class="btn btn-success">Quay lại</a>
+  {{/if}}
 </form>
 
 <form name="delete-order-form" method="POST"></form>

@@ -9,6 +9,7 @@ const User = new Schema({
     email: {type: String},
     password: {type: String},
     phone: {type: String},
+    resetToken: {type: String},
     isAdmin: {type: Boolean, default: false},
 }, {
     conllection: 'users',
