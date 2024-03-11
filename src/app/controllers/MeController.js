@@ -6,9 +6,10 @@ const {
   mutipleMongooseToObject,
 } = require("../../util/mongoose");
 const bcrypt = require("bcrypt");
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 5;
 
 class MeController {
+  
   checkLoginAdmin(req, res, next) {
     var checkLogin = res.locals.currentUser;
     if (checkLogin && checkLogin.isAdmin) {

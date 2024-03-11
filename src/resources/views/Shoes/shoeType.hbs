@@ -1,0 +1,156 @@
+<div class=" box-shoe mt-100 ">
+    <div class="filter">
+        <div class="row">
+            <div class="col">
+                <p>{{shoeType}}</p>
+            </div>
+            <div class="col form-arrange">
+                <form id="filterForm">
+                    <label for="category">Sắp xếp:</label>
+                    <select id="category">
+                        <option value="All">All</option>
+                        <option value="Down">Giá Từ Cao Xuống Thấp</option>
+                        <option value="Up">Giá Từ Thấp Lên Cao</option>
+                        <option value="AZ">Sắp Xếp Từ A -> Z</option>
+                        <option value="ZA">Sắp Xếp Từ Z -> A</option>
+                    </select>
+                </form>
+                <div class="row ">
+                    <form class="form-search">
+                        <input class="form-control mr-sm-2 p-3" type="search" placeholder="Tìm Kiếm"
+                            aria-label="Search">
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row" id="shoeContainer">
+        {{#each shoes}}
+        <div class="col-md-3 mt-5 ">
+            <div class="img">
+                <a href="/shoes/{{this.slug}}">
+                    <img class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%" height="">
+                </a>
+                <div class="caption">
+                    <a href="/shoes/{{this.slug}}">
+                        <p>{{this.name}}</p>
+                    </a>
+                    <h3 id="{{this.price}}">{{this.price}}.000 đ</h3>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectElement = document.getElementById('category');
+        const shoeContainer = document.getElementById('shoeContainer');
+
+        function sortByPrice(order) {
+            const shoes = Array.from(shoeContainer.children);
+
+            shoes.sort((a, b) => {
+                const priceA = parseInt(a.querySelector('h3').getAttribute('id'));
+                const priceB = parseInt(b.querySelector('h3').getAttribute('id'));
+
+                if (order === 'Down' || order === 'Up') {
+                    return order === 'Down' ? priceB - priceA : priceA - priceB;
+                } else if (order === 'AZ' || order === 'ZA') {
+                    const nameA = a.querySelector('p').textContent.toLowerCase();
+                    const nameB = b.querySelector('p').textContent.toLowerCase();
+
+                    if (order === 'AZ') {
+                        return nameA.localeCompare(nameB);
+                    } else {
+                        return nameB.localeCompare(nameA);
+                    }
+                }
+            });
+
+            // Clear existing shoe elements
+            while (shoeContainer.firstChild) {
+                shoeContainer.removeChild(shoeContainer.firstChild);
+            }
+
+            // Append sorted shoe elements
+            shoes.forEach(shoe => {
+                shoeContainer.appendChild(shoe);
+            });
+        }
+
+        selectElement.addEventListener('change', function () {
+            const selectedOption = this.value;
+            if (selectedOption === 'Down' || selectedOption === 'Up' || selectedOption === 'AZ' || selectedOption === 'ZA') {
+                sortByPrice(selectedOption);
+            }
+        });
+    });
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchForm = document.querySelector('.form-search');
+        const shoeItems = document.querySelectorAll('.img');
+        const shoeContainer = document.getElementById('shoeContainer');
+        var messageElement = document.getElementById('message');
+
+        let originalOrder = Array.from(shoeItems);
+
+        function filterShoes(keyword) {
+            const lowerKeyword = keyword.toLowerCase();
+            shoeContainer.innerHTML = '';
+
+            let foundShoes = false;
+
+            originalOrder.forEach(shoe => {
+                const shoeName = shoe.querySelector('p').textContent.toLowerCase();
+                const shoeImgSrc = shoe.querySelector('img').getAttribute('src'); // Lấy đường dẫn của ảnh
+                if (shoeName.includes(lowerKeyword)) {
+                    foundShoes = true;
+                    // Tạo lại cấu trúc html của sản phẩm bằng cách tạo các thẻ div, img, p và h3
+                    const div = document.createElement('div');
+                    div.classList.add('col-md-3', 'mt-5');
+                    const img = document.createElement('img');
+                    img.classList.add('img-fluid');
+                    img.setAttribute('src', shoeImgSrc); // Sét lại đường dẫn cho ảnh
+                    img.setAttribute('alt', '');
+                    img.setAttribute('width', '100%');
+                    const caption = document.createElement('div');
+                    caption.classList.add('caption');
+                    const a = document.createElement('a');
+                    a.setAttribute('href', '');
+                    const p = document.createElement('p');
+                    p.textContent = shoe.querySelector('p').textContent; // Sử dụng lại tên sản phẩm gốc
+                    const h3 = document.createElement('h3');
+                    h3.textContent = shoe.querySelector('h3').textContent;
+                    div.appendChild(img);
+                    caption.appendChild(a);
+                    a.appendChild(p);
+                    caption.appendChild(h3);
+                    div.appendChild(caption);
+                    shoeContainer.appendChild(div);
+                }
+            });
+
+            if (!foundShoes) {
+                // Nếu không tìm thấy sản phẩm nào, in ra thông báo "Không tìm thấy sản phẩm phù hợp"
+                shoeContainer.innerHTML = '<p class="mt-4" id="message">Không tìm thấy sản phẩm phù hợp</p>';
+            }
+        }
+
+        searchForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const searchTerm = this.querySelector('input').value.trim();
+            filterShoes(searchTerm);
+        });
+
+        searchForm.addEventListener('input', function () {
+            const searchTerm = this.querySelector('input').value.trim();
+            filterShoes(searchTerm);
+        });
+    });
+</script>

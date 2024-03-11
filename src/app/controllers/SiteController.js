@@ -8,9 +8,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailer = require("../../util/mailer");
 const { renderSync } = require("sass");
+const Order = require("../models/Order");
 
 class SiteController {
-  checkLoginClient(req, res, next) {
+  checkClient(req, res, next) {
     var checkLogin = res.locals.currentUser;
     if (!checkLogin) {
       next();
@@ -19,14 +20,33 @@ class SiteController {
     }
   }
 
-  index(req, res, next) {
-    Shoe.find({})
-      .then((shoes) => {
+  checkLoginClient(req, res, next) {
+    var checkLogin = res.locals.currentUser;
+    if (checkLogin) {
+      next();
+    } else {
+      res.redirect("/");
+    }
+  }
+
+  async index(req, res, next) {
+    try {
+      var shoeHight = await Shoe.find({ typeDetail: "Giày cao gót"}).limit(4)
+      var shoeHightType = await Shoe.findOne({ typeDetail: "Giày cao gót"})
+
+      var sandal = await Shoe.find({ typeDetail: "Dép nam"}).limit(4)
+      var sandalType = await Shoe.findOne({ typeDetail: "Dép nam"})
+      if( shoeHight ){
         res.render("home", {
-          shoes: mutipleMongooseToObject(shoes),
+          shoeHight: mutipleMongooseToObject(shoeHight),
+          sandal: mutipleMongooseToObject(sandal),
+          shoeHightType: shoeHightType.slugType,
+          sandalType: sandalType.slugType,
         });
-      })
-      .catch(next);
+      }
+    } catch (error) {
+      console.log("ERR: " + error)
+    }
   }
 
   // [POST] /register
@@ -69,7 +89,7 @@ class SiteController {
 
   // [GET] /sign-in
   signIn(req, res, next) {
-    res.render("signIn");
+    res.render("form/userForm");
   }
 
   // [POST] /sign-in
@@ -217,6 +237,22 @@ class SiteController {
         .catch(next)
   }
 
+    cart (req, res, next) {
+        res.render('shoes/cart')
+    }
+    
+    async profile (req, res, next) {
+        var userId = res.locals.currentUser._id
+        var shippingAddress = await Order.findOne({ user: userId })
+        res.render('form/profile', {
+          user: res.locals.currentUser,
+          shippingAddress: mongooseToObject(shippingAddress.shippingAddress)
+        })
+    } 
+    
+    chancepass (req, res, next) {
+        res.render('form/password')
+    }
 
 }
 

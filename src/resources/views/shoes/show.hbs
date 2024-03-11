@@ -1,4 +1,4 @@
-<div class="row mt-4">
+{{!-- <div class="row mt-4">
     <div class="col-lg-3">
         <form action="/shoes/add-to-cart" method="post">
             <input type="hidden" name="shoeId" value="{{shoe._id}}">
@@ -23,5 +23,71 @@
         <img class="card-img-top" src="/uploads/{{shoe.image}}" alt="Card image shoe">
 
         <p>{{shoe.description}}</p>
+    </div>
+</div> --}}
+
+<div class="container-fluid ">
+    <div class="row mt-100">
+        <div class="col">
+            <img src="/uploads/{{shoe.image}}" alt="" width="100%">
+        </div>
+        <div class="col ">
+            <form action="/shoes/add-to-cart" method="post">
+                <input type="hidden" name="shoeId" value="{{shoe._id}}">
+                <input type="hidden" name="amount" value="1">
+
+                <h3 class="product-name">{{shoe.name}}</h3>
+                <h3 class="price">{{shoe.price}}.000 đ</h3>
+                <div class="size mt-5">
+                    <label for="">Kích thước</label>
+                    <div class="size-option">
+                        <!-- Thay đổi các nút button thành các nút radio để người dùng có thể chọn size -->
+                        <input type="radio" class="btn btn-danger" name="size" id="size36" value="36">
+                        <label for="size36">36</label>
+                        <input type="radio" class="btn btn-danger" name="size" id="size37" value="37">
+                        <label for="size37">37</label>
+                        <input type="radio" class="btn btn-danger" name="size" id="size38" value="38">
+                        <label for="size38">38</label>
+                        <input type="radio" class="btn btn-danger" name="size" id="size39" value="39">
+                        <label for="size39">39</label>
+                        <input type="radio" class="btn btn-danger" name="size" id="size40" value="40">
+                        <label for="size40">40</label>
+                        <input type="radio" class="btn btn-danger" name="size" id="size41" value="41">
+                        <label for="size41">41</label>
+                        <input type="radio" class="btn btn-danger" name="size" id="size42" value="42">
+                        <label for="size42">42</label>
+                    </div>
+                    {{!-- <div class="size-option">
+                        <input type="button" class="btn btn-danger" name="size" id="" value="36">
+                        <input type="button" class="btn btn-danger" name="size" id="" value="37">
+                        <input type="button" class="btn btn-danger" name="size" id="" value="38">
+                        <input type="button" class="btn btn-danger" name="size" id="" value="39">
+                        <input type="button" class="btn btn-danger" name="size" id="" value="40">
+                        <input type="button" class="btn btn-danger" name="size" id="" value="41">
+                        <input type="button" class="btn btn-danger" name="size" id="" value="42">
+                    </div> --}}
+                </div>
+                <div class="order">
+                    <button type="submit" class="btn order-buy">Mua Ngay</button>
+                </div>
+            </form>
+            <div class="detail mt-5 ">
+                <div class="detail-product col-12 border">
+                    <h4>Chi tiết sản phẩm</h4>
+                </div>
+                <div class="col-12 border p-3">
+                    <h6>MÃ SẢN PHẨM : {{shoe.name}}</h6>
+                    <p>{{shoe.description}}</p>
+                    <h6>Chi tiết sản phẩm</h6>
+                    <ul>
+                        <li>Chiều cao : {{shoe.height}}</li>
+                        <li>Chất liệu : {{shoe.material}}</li>
+                        <li>Đế : {{shoe.soleMaterial}}</li>
+                        <li>Kiểu dáng : {{shoe.typeDetail}}</li>
+                        <li>Xuất sứ : {{shoe.origin}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

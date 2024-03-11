@@ -1,21 +1,140 @@
-<div>
-    <div class="row">
-        {{#each shoes}}
+<div class="slideshow mt-62">
+    <div id="">
+        <img id="image" src="/img/mwc.jpg" alt="Sample Image" width="100%" height="600px">
+    </div>
+</div>
 
-        <div class="col col-lg-4 mt-4">
-            <div class="card">
+<script>
+    var image = document.getElementById('image');
+    var images = [
+        '/img/mwc.jpg',
+        '/img/NUCG- G018.jpg'
+    ];
+    var currentIndex = 0;
+
+    function changeImage() {
+        image.src = images[currentIndex];
+        currentIndex = (currentIndex + 1) % images.length;
+    }
+
+    setInterval(changeImage, 3000);
+</script>
+
+
+
+<div class=" box-shoe p-3">
+    <div class="title-product">
+        <a href="/shoes/shoe-type/{{shoeHightType}}">
+            <p>Giày Cao Gót Nữ</p>
+        </a>
+    </div>
+    <div class="row">
+        {{#each shoeHight}}
+        <div class="col-md-3 mt-5 ">
+            <div class="img">
                 <a href="shoes/{{this.slug}}">
-                    <img class="card-img-top" src="/uploads/{{this.image}}" alt="Card image course">
+                    <img class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
                 </a>
-                <div class="card-body">
+                <div class="caption">
                     <a href="shoes/{{this.slug}}">
-                        <h5 class="card-title">{{this.name}}</h5>
+                        <p>{{this.name}}</p>
                     </a>
-                    <p class="card-text">{{this.price}}</p>
+                    <h3>{{this.price}}.000 đ</h3>
                 </div>
             </div>
         </div>
 
         {{/each}}
+
     </div>
+    <div class="showfull">
+        <p><a href="/shoes/shoe-type/{{shoeHightType}}"><u>XEM TẤT CẢ</u></a></p>
+    </div>
+</div>
+
+<div class=" box-shoe p-3">
+    <div class="title-product">
+        <a href="/shoes/shoe-type/{{sandalType}}">
+            <p>Dép Nam</p>
+        </a>
+    </div>
+    <div class="row">
+        {{#each sandal}}
+        <div class="col-md-3 mt-5 ">
+            <div class="img">
+                <a href="shoes/{{this.slug}}">
+                    <img class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                </a>
+                <div class="caption">
+                    <a href="shoes/{{this.slug}}">
+                        <p>{{this.name}}</p>
+                    </a>
+                    <h3>{{this.price}}.000 đ</h3>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="showfull">
+        <p><a href="/shoes/shoe-type/{{sandalType}}"><u>XEM TẤT CẢ</u></a></p>
+    </div>
+</div>
+
+<div class=" box-shoe p-3">
+    <div class="title-product">
+        <a href="">
+            <p>Dép Nam</p>
+        </a>
+    </div>
+    <div class="row">
+        {{#each sandal}}
+        <div class="col-md-3 mt-5 ">
+            <div class="img">
+                <a href="shoes/{{this.slug}}">
+                    <img class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                </a>
+                <div class="caption">
+                    <a href="shoes/{{this.slug}}">
+                        <p>{{this.name}}</p>
+                    </a>
+                    <h3>{{this.price}}.000 đ</h3>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="showfull">
+        <p><a href=""><u>XEM TẤT CẢ</u></a></p>
+    </div>
+</div>
+
+<div class=" box-shoe p-3">
+    <div class="title-product">
+        <a href="">
+            <p>Dép Nam</p>
+        </a>
+    </div>
+    <div class="row">
+        {{#each sandal}}
+        <div class="col-md-3 mt-5 ">
+            <div class="img">
+                <a href="shoes/{{this.slug}}">
+                    <img class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                </a>
+                <div class="caption">
+                    <a href="shoes/{{this.slug}}">
+                        <p>{{this.name}}</p>
+                    </a>
+                    <h3>{{this.price}}.000 đ</h3>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="showfull">
+        <p><a href=""><u>XEM TẤT CẢ</u></a></p>
+    </div>
+</div>
+{{!-- >>>>>>> frontend --}}
+</div>
 </div>

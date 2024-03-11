@@ -1,0 +1,48 @@
+<div class="container mt-100">
+    <div class="account">
+        <span id="or-text">Or</span>
+        <div class="login">
+            <form method="post" action="/sign-in">
+                <h3>Đăng nhập</h3>
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+
+                <label for="password">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+            </form>
+        </div>
+        <div class="register" id="compareForm">
+            <form action="">
+                <h3>Đăng nhập</h3>
+                <label for="">Tên đăng nhập</label>
+                <input type="text" name="" id="">
+                <label for="">Số Điện Thoại</label>
+                <input type="phone" name="" id="">
+                <label for="">Mật Khẩu</label>
+                <input type="password" name="" id="password1">
+                <label for="">Nhắc Lại Mật Khẩu</label>
+                <input type="password" name="" id="password2">
+                <input type="submit" name="" id="" value="Đăng kí">
+            </form>
+            <p id="message"></p>
+
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('compareForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var password1 = document.getElementById('password1').value;
+        var password2 = document.getElementById('password2').value;
+        var messageElement = document.getElementById('message');
+
+        if (password1 === password2) {
+            messageElement.innerText = "Mật khẩu khớp!";
+            messageElement.style.color = "green"; // Đổi màu thông báo thành màu xanh
+        } else {
+            messageElement.innerText = "Mật khẩu không khớp!";
+            messageElement.style.color = "red"; // Đổi màu thông báo thành màu đỏ
+        }
+    });
+</script>

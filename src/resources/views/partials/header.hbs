@@ -1,3 +1,4 @@
+{{!-- <<<<<<< HEAD
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">Navbar</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -36,5 +37,65 @@
       <a href="#">Đăng ký</a>
       <a href="/sign-in">Đăng nhập</a>
     {{/if}}
+======= --}}
+<nav class="navbar navbar-expand-sm  navbar-light header-client">
+  <div class="container">
+    <a class="navbar-brand" href="/"><img class="logo-header" src="/img/logo.png" alt=""></a>
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0 " id="nav">
+      <li>
+        <a class="nav-header nav-link" href="/shoe/shoe-girl" >
+          Giày Nữ
+        </a>
+        <ul class="subnav">
+          <li><a href="/shoes/shoe-type/giay-cao-got">Giày Cao Gót</a></li>
+          <li><a href="/shoes/shoe-type/giay-bup-be">Giày Búp Bê</a></li>
+          <li><a href="/shoes/shoe-type/dep-nu">Dép Nữ</a></li>
+          <li><a href="/shoes/shoe-type/boot">Boot</a></li>
+        </ul>
+      </li>
+       <li>
+        <a class="nav-header nav-link " href="/shoe/shoe-girl" >
+          Giày Nam
+        </a>
+        <ul class="subnav">
+          <li><a href="/shoes/shoe-type/giay-the-thao">Giày Thể Thao</a></li>
+          <li><a href="/shoes/shoe-type/sandal">Sandal</a></li>
+          <li><a href="/shoes/shoe-type/dep-nam">Dép</a></li>
+          <li><a href="/shoes/shoe-type/giay-tay">Giày Tây & SLip On</a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-header nav-link" href="#">Giày Cặp</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-header nav-link" href="#">Sản Phẩm Bán Chạy</a>
+      </li>
+    </ul>
+    <div class="icon-header">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item dropdown " style="cursor: pointer;">
+          {{#if currentUser}}
+            <a class="nav-link " id="navbardrop" data-toggle="dropdown">
+              <img src="/img/avatar.jpg" alt="" class="user-avatar">
+              Hi, {{currentUser.name}}
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
+              {{#if currentUser.isAdmin}}
+                <a class="dropdown-item" href="/me/home">Quản lý thông tin</a>
+              {{/if}}
+              <a class="dropdown-item" href="/shoes/my-order">Đơn hàng của tôi</a>
+              <a class="dropdown-item" href="#">Đổi mật khẩu</a>
+              <a class="dropdown-item" href="/log-out">Đăng xuất</a>
+            </div>
+          {{else}}
+            <a href="/sign-in" class="icon-user"><i class="fa-regular fa-user"></i></a> 
+          {{/if}}
+        </li>
+        <li><a href="/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+      </ul>
+
+    </div>
+{{!-- >>>>>>> frontend --}}
   </div>
 </nav>

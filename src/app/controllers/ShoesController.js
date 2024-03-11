@@ -11,6 +11,16 @@ const {
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 class ShoesController {
+
+  checkLoginClient(req, res, next) {
+    var checkLogin = res.locals.currentUser;
+    if (!checkLogin) {
+      next();
+    } else {
+      res.redirect("/");
+    }
+  }
+
   // [GET] /shoes/show
   show(req, res, next) {
     Shoe.findOne({ slug: req.params.slug }).then((shoe) => {
@@ -18,6 +28,28 @@ class ShoesController {
         shoe: mongooseToObject(shoe),
       });
     });
+  }
+
+  // [GET] /shoes/shoes-type/:type
+  async shoeType (req, res, next) {
+    try {
+        var type = req.params.type
+        var shoeType = await Shoe.findOne({ slugType: type})
+        Shoe.find({ slugType: type })
+          .then(shoes => {
+            res.render('shoes/shoeType', {
+              shoes: mutipleMongooseToObject(shoes),
+              shoeType: shoeType.typeDetail
+            })
+    
+          })
+          .catch(err => {
+            console.log("ERR: " + err)
+          })
+          .catch(next)
+    } catch (error) {
+      console.log("ERR: " + error)
+    }
   }
 
   // [get] /shoes/cart
@@ -367,6 +399,8 @@ class ShoesController {
         .json({ message: "Đã xảy ra lỗi khi xóa orderItem" });
     }
   }
+
+  
 }
 
 module.exports = new ShoesController();
