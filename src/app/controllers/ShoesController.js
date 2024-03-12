@@ -14,7 +14,7 @@ class ShoesController {
 
   checkLoginClient(req, res, next) {
     var checkLogin = res.locals.currentUser;
-    if (!checkLogin) {
+    if (checkLogin) {
       next();
     } else {
       res.redirect("/");

@@ -44,6 +44,7 @@ app.engine(
     extname: ".hbs",
     helpers: {
       sum: (a, b) => a + b,
+      multi: (a, b) => a * b,
       ifEquals: function (arg1, arg2, options) {
         // Chuyển đổi header của client thành header của admin
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);

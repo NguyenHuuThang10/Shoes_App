@@ -1,80 +1,238 @@
-{{#if order.orderItems}}
-{{#each order.orderItems}}
-<form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT">
-  <h3>Tên: {{this.name}}</h3>
-  <p>Size: {{this.shoe.size}}</p>
-  <p>Đơn giá: {{this.price}}</p>
-  <input type="text" class="tiny-size" value="{{this.amount}}" name="quantity" data-item-id="{{this._id}}">
-  <button type="submit" class="btn-increase" name="action" value="increase">Tăng</button>
-  <button type="submit" class="btn-decrease" name="action" value="decrease">Giảm</button>
-  <img src="/uploads/{{this.image}}" style="width: 100px;" alt="">
-</form>
-<a href="#" class="btn-delete-order" data-id="{{this._id}}">Xóa</a>
-{{/each}}
-<p>Tổng tiền hàng: {{order.itemsPrice}}</p>
-<p>Tiền ship: {{order.shippingPrice}}</p>
-<p>Tổng tiền: {{order.totalPrice}}</p>
+<div class="mt-62">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thành viên</li>
+        </ol>
+    </nav>
+</div>
+<div class="container">
+
+    <div class="cart-list">
+
+        <table class="table mt-5">
+            <thead class="thead-light">
+                <tr>
+                    <th class="table-product">Sản Phẩm</th>
+                    <th>Đơn Giá</th>
+                    <th>Số Lượng</th>
+                    <th>Kích thước</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {{#if order.orderItems}}
+                {{#each order.orderItems}}
+                <tr>
+                    <td>
+                        <div class="row">
+                            <div class="col-3">
+                                <img src="/uploads/{{this.image}}" alt="" width="100%">
+                            </div>
+                            <div class="col-9">
+                                <b>{{this.name}}</b> <br>
+                            </div>
+                        </div>
+
+                    </td>
+                    <td>{{this.price}}.000 đ</td>
+                    <td>
+                        <form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT" class="quantity">
+                            <button type="submit" class="btn-decrease" name="action" value="decrease"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <input type="text" class="tiny-size" value="{{this.amount}}" name="quantity"
+                                data-item-id="{{this._id}}">
+                            <button type="submit" class="btn-increase" name="action" value="increase"><i
+                                    class="fa-solid fa-plus"></i></button>
+
+                        </form>
+                    </td>
+                    <td>{{this.size}}</td>
+                    <td><a href="#" class="btn-delete-order" data-id="{{this._id}}">Xóa</a></td>
+                </tr>
+                {{/each}}
+
+                {{else}}
+                <tr class="text-center">
+                    <td colspan="7">
+                        <p>{{cartEmpty}}</p>.
+                    </td>
+                </tr>
+                {{/if}}
 
 
-{{else}}
-<p>{{cartEmpty}}</p>
-{{/if}}
+            </tbody>
+        </table>
+    </div>
+    <div class="row border-top cart-total mt-5">
+        <div class="col "></div>
+        <div class="col">
+            <div class="row">
+                <div class="col mt-2">
+                    <ul>
+                        <li>Tổng Tiền Hàng</li>
+                        <li>Phí Vận Chuyển</li>
+                    </ul>
+                </div>
+                <div class="col text-right">
+                    <ul>
+                        <li>{{#if order.orderItems}} {{order.itemsPrice}}.000 đ {{else}} 0 đ {{/if}}</li>
+                        <li>{{#if order.orderItems}} {{order.shippingPrice}}.000 đ {{else}} 0 đ {{/if}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row border-top total">
+                <div class="col mt-2">
+                    <ul>
+                        <li>Tổng Tiền</li>
+                    </ul>
+                </div>
+                <div class="col text-right">
+                    <ul>
+                        <li>{{#if order.orderItems}} {{order.totalPrice}}.000 đ {{else}} 0 đ {{/if}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-address">
+        <p>Thông tin đăt hàng</p>
+        <form method="post" action="/shoes/update-cart/{{order._id}}">
+            <input type="text" required id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
+            <input type="text" required id="phone" name="phone" value="{{currentUser.phone}}"
+                placeholder="Số điện thoại">
+            <div class="cart-address-tp">
+                <select class="input-text" name="calc_shipping_provinces" required="">
+                    <option value="">Tỉnh / Thành phố</option>
+                </select>
+                <input class="billing_address_1" name="district" type="hidden" value="">
+                <select class="input-text" name="calc_shipping_district" required="">
+                    <option value="">Quận / Huyện</option>
+                </select>
+                <input class="billing_address_2" name="city" type="hidden" value="">
+            </div>
+            <textarea name="address" id="" class="form-control"
+                placeholder="Nhập số nhà, ấp/tên đường, xã/phường"></textarea>
 
-<form method="post" action="/shoes/update-cart/{{order._id}}">
-  <div class="form-group">
-    <input type="text" class="form-control" required id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
-  </div>
+            <div class="box-pay">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod1"
+                        value="Thanh toán bằng tiền mặc" checked>
+                    <label class="form-check-label" for="paymentMethod1">
+                        Thanh toán bằng tiền mặc khi nhận hàng
+                    </label>
+                </div>
 
-  <div class="form-group">
-    <input type="text" class="form-control" required id="phone" name="phone" value="{{currentUser.phone}}"
-      placeholder="Số điện thoại">
-  </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2"
+                        value="Thanh toán bằng Paypal">
+                    <label class="form-check-label" for="paymentMethod2">
+                        Thanh toán bằng Paypal
+                    </label>
+                </div>
+            </div>
 
-  <div class="form-group">
-    <input type="text" class="form-control" required id="address" name="address" value="" placeholder="Địa chỉ">
-  </div>
 
-  <div class="form-group">
-    <input type="text" class="form-control" required id="city" name="city" value="" placeholder="Thành phố">
-  </div>
-
-  <div class="form-check">
-    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod1" value="Thanh toán bằng tiền mặc" checked>
-    <label class="form-check-label" for="paymentMethod1">
-      Thanh toán bằng tiền mặc khi nhận hàng
-    </label>
-  </div>
-
-  <div class="form-check">
-    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2" value="Thanh toán bằng Paypal">
-    <label class="form-check-label" for="paymentMethod2">
-      Thanh toán bằng Paypal
-    </label>
-  </div>
-
-  {{#if order.orderItems}}
-    <button type="submit" class="btn btn-primary">Mua hàng</button>
-    <a href="/" class="btn btn-success">Quay lại</a>
-  {{else}}
-    <a href="/" class="btn btn-success">Quay lại</a>
-  {{/if}}
-</form>
+            {{#if order.orderItems}}
+            <button type="submit" class="btn cart-button">Mua hàng</button>
+            <a href="/" class="btn cart-button">Quay lại</a>
+            {{else}}
+            <a href="/" class="btn btn-success cart-button">Quay lại</a>
+            {{/if}}
+        </form>
+    </div>
+</div>
 
 <form name="delete-order-form" method="POST"></form>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var btnDeleteOrders = document.querySelectorAll('.btn-delete-order');
-    var deleteOrderForm = document.forms['delete-order-form'];
+    document.addEventListener('DOMContentLoaded', function () {
+        var btnDeleteOrders = document.querySelectorAll('.btn-delete-order');
+        var deleteOrderForm = document.forms['delete-order-form'];
 
-    btnDeleteOrders.forEach(function (btnDeleteOrder) {
-      var orderItemId = $(btnDeleteOrder).data('id');
+        btnDeleteOrders.forEach(function (btnDeleteOrder) {
+            var orderItemId = $(btnDeleteOrder).data('id');
 
-      btnDeleteOrder.onclick = function () {
-        deleteOrderForm.action = '/shoes/delete-cart/' + orderItemId + '?_method=DELETE';
-        deleteOrderForm.submit();
-      };
-    });
-  })
+            btnDeleteOrder.onclick = function () {
+                deleteOrderForm.action = '/shoes/delete-cart/' + orderItemId + '?_method=DELETE';
+                deleteOrderForm.submit();
+            };
+        });
+    })
 
+</script>
+
+
+<script async='async' defer='defer' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script src='https://cdn.jsdelivr.net/gh/vietblogdao/js/districts.min.js'></script>
+<script>//<![CDATA[
+    window.addEventListener('load', function () {
+        if (address_2 = localStorage.getItem('address_2_saved')) {
+            $('select[name="calc_shipping_district"] option').each(function () {
+                if ($(this).text() == address_2) { $(this).attr('selected', '') }
+            })
+            $('input.billing_address_2').attr('value', address_2)
+        }
+        if (district = localStorage.getItem('district')) {
+            $('select[name="calc_shipping_district"]').html(district)
+            $('select[name="calc_shipping_district"]').on('change', function () {
+                var target = $(this).children('option:selected')
+                target.attr('selected', '')
+                $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
+                address_2 = target.text()
+                $('input.billing_address_2').attr('value', address_2)
+                district = $('select[name="calc_shipping_district"]').html()
+                localStorage.setItem('district', district)
+                localStorage.setItem('address_2_saved', address_2)
+            })
+        }
+        $('select[name="calc_shipping_provinces"]').each(function () {
+            var $this = $(this),
+                stc = ''
+            c.forEach(function (i, e) {
+                e += +1
+                stc += '<option value=' + e + '>' + i + '</option>'
+                $this.html('<option value="">Tỉnh / Thành phố</option>' + stc)
+                if (address_1 = localStorage.getItem('address_1_saved')) {
+                    $('select[name="calc_shipping_provinces"] option').each(function () {
+                        if ($(this).text() == address_1) {
+                            $(this).attr('selected', '')
+                            $('input.billing_address_1').attr('value', address_1)
+                        }
+                    })
+                }
+                $this.on('change', function (i) {
+                    i = $this.children('option:selected').index() - 1
+                    var str = '',
+                        r = $this.val()
+                    if (r != '') {
+                        arr[i].forEach(function (el) {
+                            str += '<option value="' + el + '">' + el + '</option>'
+                            $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>' + str)
+                        })
+                        var address_1 = $this.children('option:selected').text()
+                        var district = $('select[name="calc_shipping_district"]').html()
+                        localStorage.setItem('address_1_saved', address_1)
+                        localStorage.setItem('district', district)
+                        $('select[name="calc_shipping_district"]').on('change', function () {
+                            var target = $(this).children('option:selected')
+                            target.attr('selected', '')
+                            $('select[name="calc_shipping_district"] option').not(target).removeAttr('selected')
+                            var address_2 = target.text()
+                            $('input.billing_address_2').attr('value', address_2)
+                            district = $('select[name="calc_shipping_district"]').html()
+                            localStorage.setItem('district', district)
+                            localStorage.setItem('address_2_saved', address_2)
+                        })
+                    } else {
+                        $('select[name="calc_shipping_district"]').html('<option value="">Quận / Huyện</option>')
+                        district = $('select[name="calc_shipping_district"]').html()
+                        localStorage.setItem('district', district)
+                        localStorage.removeItem('address_1_saved', address_1)
+                    }
+                })
+            })
+        })
+    })
 </script>

@@ -22,6 +22,7 @@ const Order = new Schema({
         fullName: { type: String },
         address: { type: String },
         city: { type: String },
+        // district: { type: String },
         phone: { type: String },
     },
     paymentMethod: { type: String },

@@ -244,10 +244,16 @@ class SiteController {
     async profile (req, res, next) {
         var userId = res.locals.currentUser._id
         var shippingAddress = await Order.findOne({ user: userId })
-        res.render('form/profile', {
-          user: res.locals.currentUser,
-          shippingAddress: mongooseToObject(shippingAddress.shippingAddress)
-        })
+        if(shippingAddress){
+          res.render('form/profile', {
+            user: res.locals.currentUser,
+            shippingAddress: mongooseToObject(shippingAddress.shippingAddress)
+          })
+        }else{
+          res.render('form/profile', {
+            user: res.locals.currentUser,
+          })
+        }
     } 
     
     chancepass (req, res, next) {

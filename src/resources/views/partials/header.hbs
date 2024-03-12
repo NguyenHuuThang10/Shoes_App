@@ -1,66 +1,26 @@
-{{!-- <<<<<<< HEAD
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/shoes/cart">Cart</a>
-      </li>
-    </ul>
-
-    {{#if currentUser}}
-      <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        <img src="/img/avatar.jpg" alt="" class="user-avatar">
-        Hi, {{currentUser.name}}
-      </a>
-      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="#">Thông tin cá nhân</a>
-        <div class="dropdown-divider"></div>
-        {{#if currentUser.isAdmin}}
-        <a class="dropdown-item" href="/me/home">Quản lý thông tin</a>
-        {{/if}}
-        <a class="dropdown-item" href="/shoes/my-order">Đơn hàng của tôi</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Đổi mật khẩu</a>
-        <a class="dropdown-item" href="/log-out" type="submit">Đăng xuất</a>
-      </div>
-    {{else}}
-      <a href="#">Đăng ký</a>
-      <a href="/sign-in">Đăng nhập</a>
-    {{/if}}
-======= --}}
 <nav class="navbar navbar-expand-sm  navbar-light header-client">
   <div class="container">
     <a class="navbar-brand" href="/"><img class="logo-header" src="/img/logo.png" alt=""></a>
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0 " id="nav">
       <li>
-        <a class="nav-header nav-link" href="/shoe/shoe-girl" >
+        <a class="nav-header nav-link" href="/shoes/shoe-type/giay-cao-got" >
           Giày Nữ
         </a>
         <ul class="subnav">
           <li><a href="/shoes/shoe-type/giay-cao-got">Giày Cao Gót</a></li>
           <li><a href="/shoes/shoe-type/giay-bup-be">Giày Búp Bê</a></li>
           <li><a href="/shoes/shoe-type/dep-nu">Dép Nữ</a></li>
-          <li><a href="/shoes/shoe-type/boot">Boot</a></li>
+          <li><a href="/shoes/shoe-type/boot-nu">Boot Nữ</a></li>
         </ul>
       </li>
        <li>
-        <a class="nav-header nav-link " href="/shoe/shoe-girl" >
+        <a class="nav-header nav-link " href="/shoes/shoe-type/giay-tay" >
           Giày Nam
         </a>
         <ul class="subnav">
           <li><a href="/shoes/shoe-type/giay-the-thao">Giày Thể Thao</a></li>
-          <li><a href="/shoes/shoe-type/sandal">Sandal</a></li>
-          <li><a href="/shoes/shoe-type/dep-nam">Dép</a></li>
+          <li><a href="/shoes/shoe-type/boot-nam">Boot nam</a></li>
+          <li><a href="/shoes/shoe-type/dep-nam">Dép Nam</a></li>
           <li><a href="/shoes/shoe-type/giay-tay">Giày Tây & SLip On</a></li>
         </ul>
       </li>
@@ -92,7 +52,7 @@
             <a href="/sign-in" class="icon-user"><i class="fa-regular fa-user"></i></a> 
           {{/if}}
         </li>
-        <li><a href="/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+        <li><a href="/shoes/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
       </ul>
 
     </div>

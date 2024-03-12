@@ -313,7 +313,7 @@ span#or-text {
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-.cart-address button {
+.cart-address .cart-button {
   width: 200px;
   margin-top: 10px;
   background-color: red;
@@ -373,4 +373,10 @@ span#or-text {
 }
 .box-profile{
   box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.box-pay {
+  padding: 26px 10px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
 }
