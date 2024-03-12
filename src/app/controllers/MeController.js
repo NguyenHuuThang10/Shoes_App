@@ -34,7 +34,7 @@ class MeController {
     try {
       req.body.image = req.file.filename;
       await Shoe.createShoe(req.body);
-      res.redirect("/me/stored/shoes");
+      res.redirect("back"); ///me/stored/shoes
     } catch (error) {
       next(error);
     }
