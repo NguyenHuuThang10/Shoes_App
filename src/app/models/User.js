@@ -10,6 +10,7 @@ const User = new Schema({
     password: {type: String},
     phone: {type: String},
     resetToken: {type: String},
+    activeToken: {type: String},
     isAdmin: {type: Boolean, default: false},
 }, {
     conllection: 'users',

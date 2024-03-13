@@ -58,63 +58,130 @@ class SiteController {
     const isCheckPhone = regPhone.test(phone);
 
     if (!name || !email || !phone || !password || !confirm_password) {
-      return res.status(400).json("Vui lòng nhập đầy đủ thông tin!");
+      return res.render("form/userForm", {
+        errSignUp: "Vui lòng nhập đầy đủ thông tin!",
+        old: req.body
+      })
     } else if (!isCheckEmail) {
-      return res.status(400).json("Email không đúng định dạng!");
+      return res.render("form/userForm", {
+        errSignUp: "Email không đúng định dạng!",
+        old: req.body
+      })
     } else if (!isCheckPhone) {
-      return res.status(400).json("Số điện thoại không đúng định dạng!");
+      return res.render("form/userForm", {
+        errSignUp: "Số điện thoại không đúng định dạng!",
+        old: req.body
+      })
     } else if (password !== confirm_password) {
-      return res.status(400).json("Nhập lại mật khẩu không trùng khớp!");
+      return res.render("form/userForm", {
+        errSignUp: "Nhập lại mật khẩu không trùng khớp!",
+        old: req.body
+      })
     }
 
     User.findOne({ email: req.body.email })
       .then((data) => {
         if (data) {
-          return res.json("Email đã tồn tại trong hệ thống!");
+          return res.render("form/userForm", {
+            errSignUp: "Email đã tồn tại trong hệ thống!",
+            old: req.body
+          })
         } else {
+          var token = bcrypt.hashSync(email, 5);
+          req.body.activeToken = token;
           req.body.password = bcrypt.hashSync(password, 10);
           const user = new User(req.body);
-          return user.save();
+          user.save()
+            .then(() =>{
+                var sendMail = mailer.sendMail(
+                  email,
+                  "Active User",
+                  `<a href="${process.env.APP_URL}/active?token=${token}"> Active </a>`
+                );
+                if (sendMail) {
+                  return res.render("form/userForm", {
+                    sucessSignUp: "Tạo tài khoản thành công, vui lòng kiểm tra email để kích hoạt tài khoản!",
+                  })
+                } else {
+                  return res.render("form/userForm", {
+                    errSignUp: "Gửi mail thất bại!",
+                  })
+                }
+            })
+            .catch(next)
+          
         }
-      })
-      .then((data) => {
-        res.json("Tạo tài khoản thành công!");
       })
       .catch((err) => {
         console.log("ERR: " + err);
-        res.status(500).json("Tạo tài khoản thất bại!");
+        return res.render("form/userForm", {
+          errSignUp: "Tạo tài khoản thất bại!",
+          old: req.body
+        })
       })
       .catch(next);
   }
 
-  // [GET] /sign-in
+    // [Get] /active
+    async active (req, res, next) {
+      try {
+        var token = req.query.token
+        var checkToken = await User.findOneAndUpdate(
+                                    { activeToken: token },
+                                    {  activeToken: null },
+                                    { new: true }
+                                );
+        if(checkToken){
+            res.redirect('/login')
+      }
+      } catch (error) {
+        console.log("ERR: " + error)
+      }
+      
+    }
+
+  // [GET] /login
   signIn(req, res, next) {
     res.render("form/userForm");
   }
 
-  // [POST] /sign-in
+  // [POST] /login
   login(req, res, next) {
     const { email, password } = req.body;
     const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     const isCheckEmail = regEmail.test(email);
 
     if (!email || !password) {
-      return res.status(400).json("Vui lòng nhập đầy đủ thông tin!");
+      return res.render("form/userForm", {
+        errLogin: "Vui lòng nhập đầy đủ thông tin!",
+        oldLogin: req.body
+      })
     } else if (!isCheckEmail) {
-      return res.status(400).json("Email không đúng định dạng!");
+      return res.render("form/userForm", {
+        errLogin: "Email không đúng định dạng!",
+        oldLogin: req.body
+      });
+      
+
     }
 
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email, activeToken: null })
       .then((data) => {
         if (data) {
           const comparePassword = bcrypt.compareSync(password, data.password);
           if (!comparePassword) {
-            return res.json("Mật khẩu không chính xác!");
+            res.render("form/userForm", {
+              errLogin: "Mật khẩu không chính xác!",
+              oldLogin: req.body
+            });
           } else {
             return data;
           }
         } else {
-          return res.json("Email không tồn tại trong hệ thống!");
+          res.render("form/userForm", {
+            errLogin: "Email không tồn tại trong hệ thống hoặc chưa được kích hoạt!",
+            oldLogin: req.body
+          });
         }
       })
       .then((data) => {
@@ -126,7 +193,11 @@ class SiteController {
       })
       .catch((err) => {
         console.log("ERR: " + err);
-        res.status(500).json("Đang nhập thất bại!");
+        res.render("form/userForm", {
+          errLogin: "Đăng nhập thất bại!",
+          old: req.body
+          
+        });
       })
       .catch(next);
   }
@@ -152,7 +223,7 @@ class SiteController {
       }
     } catch (error) {
       console.log("ERR:  " + error);
-      res.redirect("/sign-in");
+      res.redirect("/login");
     }
   }
 

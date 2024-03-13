@@ -1,48 +1,49 @@
-<div class="container mt-100">
+<div class="mt-100 container">
     <div class="account">
         <span id="or-text">Or</span>
         <div class="login">
-            <form method="post" action="/sign-in">
+            <form method="post" action="/login">
                 <h3>Đăng nhập</h3>
+                {{#if errLogin}}
+                    <div class="alert alert-danger" role="alert">
+                        {{errLogin}}
+                    </div>
+                {{/if}}
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{oldLogin.email}}">
 
                 <label for="password">Mật khẩu</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                <input type="submit" name="btn" id="" value="Đăng nhập">
             </form>
         </div>
         <div class="register" id="compareForm">
-            <form action="">
-                <h3>Đăng nhập</h3>
-                <label for="">Tên đăng nhập</label>
-                <input type="text" name="" id="">
+            <form action="/sign-up" method="post">
+                <h3>Đăng ký</h3>
+                {{#if errSignUp}}
+                    <div class="alert alert-danger" role="alert">
+                        {{errSignUp}}
+                    </div>
+                {{/if}}
+
+                {{#if sucessSignUp}}
+                    <div class="alert alert-success" role="alert">
+                        {{sucessSignUp}}
+                    </div>
+                {{/if}}
+                <label for="">Họ Tên</label>
+                <input type="text" name="name" id="" value="{{old.name}}">
+                <label for="">Email</label>
+                <input type="email" name="email" id="" value="{{old.email}}">
                 <label for="">Số Điện Thoại</label>
-                <input type="phone" name="" id="">
+                <input type="phone" name="phone" id="" value="{{old.phone}}">
                 <label for="">Mật Khẩu</label>
-                <input type="password" name="" id="password1">
+                <input type="password" name="password" id="password1">
                 <label for="">Nhắc Lại Mật Khẩu</label>
-                <input type="password" name="" id="password2">
+                <input type="password" name="confirm_password" id="password2">
                 <input type="submit" name="" id="" value="Đăng kí">
             </form>
-            <p id="message"></p>
 
         </div>
     </div>
 </div>
-<script>
-    document.getElementById('compareForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        var password1 = document.getElementById('password1').value;
-        var password2 = document.getElementById('password2').value;
-        var messageElement = document.getElementById('message');
-
-        if (password1 === password2) {
-            messageElement.innerText = "Mật khẩu khớp!";
-            messageElement.style.color = "green"; // Đổi màu thông báo thành màu xanh
-        } else {
-            messageElement.innerText = "Mật khẩu không khớp!";
-            messageElement.style.color = "red"; // Đổi màu thông báo thành màu đỏ
-        }
-    });
-</script>
