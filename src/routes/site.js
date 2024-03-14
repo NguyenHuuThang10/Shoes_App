@@ -16,7 +16,8 @@ router.post('/login', siteController.checkClient, siteController.login)
 router.get('/log-out', siteController.logOut)
 
 router.get('/profile', siteController.checkLoginClient ,siteController.profile)
-router.get('/password', siteController.checkLoginClient ,siteController.chancepass)
+router.get('/password', siteController.checkLoginClient ,siteController.password)
+router.put('/password', siteController.checkLoginClient ,siteController.changePass)
 
 
 router.get('/', siteController.index)

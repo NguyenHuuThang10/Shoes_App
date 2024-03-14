@@ -239,7 +239,7 @@ class SiteController {
 
   // [GET] /forgot
   forgotPassword(req, res, next) {
-    res.render("/forgotPassword");
+    res.render("form/forgotPassword");
   }
 
   // [POST] /forgot
@@ -247,6 +247,12 @@ class SiteController {
     try {
       var email = req.body.email;
       var checkEmail = await User.findOne({ email });
+
+      if (!email) {
+        res.render("form/forgotPassword", {
+          msgErr: "Vui lòng nhập đầy đủ thông tin!"
+        });
+      }
 
       if (checkEmail) {
         var token = bcrypt.hashSync(email, 5);
@@ -259,12 +265,18 @@ class SiteController {
           `<a href="${process.env.APP_URL}/reset?email=${checkEmail.email}&token=${token}"> Reset </a>`
         );
         if (sendMail) {
-          res.json("Gui mail thanh cong");
+          res.render("form/forgotPassword", {
+            msg: "Vui lòng kiểm tra email để đặt lại mật khẩu!"
+          });
         } else {
-          res.json("Gui mail that bai");
+          res.render("form/forgotPassword", {
+            msgErr: "Gửi mail thất bại!"
+          });
         }
       } else {
-        res.json("Email khong ton tai trong he thong");
+        res.render("form/forgotPassword", {
+          msgErr: "Email không tồn tại trong hệ thống!"
+        });
       }
     } catch (error) {
       console.log("ERR: " + error);
@@ -273,34 +285,52 @@ class SiteController {
 
   // [Get] /reset
   async renderReset (req, res, next) {
-    var token = req.query.token
-    var email = req.query.email
-    var checkToken = await User.findOneAndUpdate(
-                                { resetToken: token },
-                                {  resetToken: null },
-                                { new: true }
-                            );
-    if(checkToken){
-        res.json('Render ra file reset')
-    }else{
-        res.json('Loi')
+    try {
+      var token = req.query.token
+      var email = req.query.email
+      var checkToken = await User.findOneAndUpdate(
+                                  { resetToken: token },
+                                  {  resetToken: null },
+                                  { new: true }
+                              );
+      if(checkToken){
+          res.render('form/resetPassword', { email })
+      }else{
+        res.redirect('/login')
+      }
+    } catch (error) {
+      console.log("ERR: " + error)
     }
   }
 
   // [PUT] /reset
   resetPassword (req, res, next) {
     const { email, password, confirm_password } = req.body;
-
+    
     if (!password || !confirm_password) {
-      return res.status(400).json("Vui lòng nhập đầy đủ thông tin!");
+      return res.render("form/resetPassword", {
+        msgErr: "Vui long nhập đầy đủ thông tin!",
+        email
+      });
     } else if (password !== confirm_password) {
-      return res.status(400).json("Nhập lại mật khẩu không trùng khớp!");
+      return res.render("form/resetPassword", {
+        msgErr: "Nhập lại mật khẩu không trùng khớp!",
+        email
+      });
     }
-    var passwordHash = bcrypt.hashSync(password, 10);
 
+    var passwordHash = bcrypt.hashSync(password, 10);
+    
     User.updateOne({ email }, { password: passwordHash })
         .then(data => {
-            res.json('Doi mat khau thanh cong')
+          if(data){
+            res.redirect('/login')
+          }else{
+             res.render("form/resetPassword", {
+              msgErr: "Cấp lại mật khẩu không thành công!",
+              email
+            });
+          }
         })
         .catch(err => {
             console.log("ERR: " + err)
@@ -327,8 +357,66 @@ class SiteController {
         }
     } 
     
-    chancepass (req, res, next) {
-        res.render('form/password')
+    // [get] /password
+    password (req, res, next) {
+
+      var userId = res.locals.currentUser._id
+        
+        res.render('form/password', {
+          user: res.locals.currentUser,
+        })
+    }
+
+    // [post] /password
+    async changePass (req, res, next) {
+      try {
+        var { passOld, passNew, confirm_password } = req.body
+        var userId = res.locals.currentUser._id
+
+        if(!passNew || !passOld || !confirm_password){
+          return res.render('form/password', {
+            msgErr: "Vui lòng nhập đầy đủ thông tin!",
+            user: res.locals.currentUser,
+          })
+        }
+        var comparePassword = bcrypt.compareSync(passOld, res.locals.currentUser.password);
+
+        if(comparePassword) {
+          if (passNew !== confirm_password){
+            return res.render('form/password', {
+              msgErr: "Nhập lại mật khẩu không trùng khớp!",
+              user: res.locals.currentUser,
+            })
+          }else{
+            var passNewHash = bcrypt.hashSync(passNew, 10);
+            var update = await User.findOneAndUpdate(
+              { _id: userId },
+              {  password: passNewHash },
+              { new: true }
+            )
+
+            if(update){
+              return res.render('form/password', {
+                msg: "Đổi mật khẩu thành công!",
+                user: res.locals.currentUser,
+              })
+            }else{
+              res.json('LOi')
+            }
+
+          }
+        }else{
+          return res.render('form/password', {
+            msgErr: "Mật khẩu cũ không đúng!",
+            user: res.locals.currentUser,
+          })
+        }
+        
+      } catch (error) {
+        console.log("ERR: " + error)
+      }
+
+
     }
 
 }
