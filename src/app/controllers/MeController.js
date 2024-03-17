@@ -6,7 +6,7 @@ const {
   mutipleMongooseToObject,
 } = require("../../util/mongoose");
 const bcrypt = require("bcrypt");
-const PAGE_SIZE = 4;
+const PAGE_SIZE = 6;
 
 class MeController {
   

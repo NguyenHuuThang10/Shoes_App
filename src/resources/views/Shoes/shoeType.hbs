@@ -42,6 +42,22 @@
         </div>
         {{/each}}
     </div>
+
+    <nav aria-label="Page navigation example" class="mt-5">
+        <ul class="pagination">
+            {{#backPage page}}
+                {{this}}
+            {{/backPage}}
+
+            {{#eachPage page maxPage}}
+                {{this}}
+            {{/eachPage}}
+            
+            {{#nextPage page maxPage}}
+                {{this}}
+            {{/nextPage}}
+        </ul>
+    </nav>
 </div>
 
 <script>

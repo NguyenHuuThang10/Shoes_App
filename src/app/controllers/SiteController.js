@@ -36,12 +36,22 @@ class SiteController {
 
       var sandal = await Shoe.find({ typeDetail: "Dép nam"}).limit(4)
       var sandalType = await Shoe.findOne({ typeDetail: "Dép nam"})
+
+      var baby = await Shoe.find({ typeDetail: "Giày búp bê"}).limit(4)
+      var babyType = await Shoe.findOne({ typeDetail: "Giày búp bê"})
+
+      var boot = await Shoe.find({ typeDetail: "Boot nam"}).limit(4)
+      var bootType = await Shoe.findOne({ typeDetail: "Boot nam"})
       if( shoeHight ){
         res.render("home", {
           shoeHight: mutipleMongooseToObject(shoeHight),
           sandal: mutipleMongooseToObject(sandal),
+          baby: mutipleMongooseToObject(baby),
+          boot: mutipleMongooseToObject(boot),
           shoeHightType: shoeHightType.slugType,
           sandalType: sandalType.slugType,
+          babyType: babyType.slugType,
+          bootType: bootType.slugType,
         });
       }
     } catch (error) {

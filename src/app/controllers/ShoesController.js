@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Shoe = require("../models/Shoe");
 const Order = require("../models/Order");
 const paypal = require("paypal-rest-sdk");
+const PAGE_SIZE = 12;
 
 const {
   mongooseToObject,
@@ -35,9 +36,24 @@ class ShoesController {
     try {
         var type = req.params.type
         var shoeType = await Shoe.findOne({ slugType: type})
+
+        var page = parseInt(req.query.page) || 1;
+        var allShoe = await Shoe.find({ slugType: type}).countDocuments();
+        var maxPage = Math.ceil(allShoe / PAGE_SIZE);
+
+        if (page > maxPage) {
+          page = 1;
+        }
+
+        var offset = (page - 1) * PAGE_SIZE;
+
         Shoe.find({ slugType: type })
+          .skip(offset)
+          .limit(PAGE_SIZE)
           .then(shoes => {
             res.render('shoes/shoeType', {
+              page,
+              maxPage,
               shoes: mutipleMongooseToObject(shoes),
               shoeType: shoeType.typeDetail
             })
@@ -74,7 +90,7 @@ class ShoesController {
           cartEmpty: "Giỏ hàng trống!",
         });
       } else {
-        res.redirect("/sign-in");
+        res.redirect("/login");
       }
     } catch (error) {
       console.log("ERR CART: " + error);
@@ -151,7 +167,7 @@ class ShoesController {
           return res.redirect("back");
         }
       } else {
-        res.redirect("/sign-in");
+        res.redirect("/login");
       }
     } catch (error) {
       console.log("ERR Order: " + error);
@@ -347,7 +363,10 @@ class ShoesController {
           model: "User",
         })
         .then(data => {
-          res.json(data)
+          // res.json(data)
+          res.render('shoes/myOrder', {
+            orders: mutipleMongooseToObject(data)
+          })
         })
         .catch(err => {
           console.log("ERR MY-ODER: " + err)
