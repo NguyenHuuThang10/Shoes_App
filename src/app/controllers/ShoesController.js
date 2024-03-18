@@ -356,15 +356,15 @@ class ShoesController {
   myOrder (req, res, next) {
     var userId = res.locals.currentUser._id
     if(userId){
-      Order.find({ user: userId})
+      Order.find({ user: userId, paymentMethod: { $ne: null } })
         .populate("orderItems.shoe")
         .populate({
           path: "user",
           model: "User",
         })
         .then(data => {
-          // res.json(data)
           res.render('shoes/myOrder', {
+            user: res.locals.currentUser,
             orders: mutipleMongooseToObject(data)
           })
         })
@@ -375,10 +375,42 @@ class ShoesController {
     }
   }
   
-  // [GET] /shoes/my-order-details
-  myOrderDetails (req, res, next) {
-    res.render('shoes/myOrderDetails')
+  // [GET] /shoes/my-order-detail
+  myOrderDetail (req, res, next) {
+    var orderId = req.params.id
+    Order.findOne({ _id: orderId })
+      .populate("orderItems.shoe")
+      .populate({
+        path: "user",
+        model: "User",
+      })
+      .then((data) => {
+        if(data){
+          res.render('shoes/myOrderDetail', {
+            user: res.locals.currentUser,
+            order: mongooseToObject(data)
+          })
+
+        }else{
+          res.redirect('back')
+        }
+      })
+      .catch(err => {
+        console.log("ERR: " + err)
+      })
+      .catch(next)
   }
+
+    // [DELETE] /shoes/my-order/:id/delete
+    async deleteOrder(req, res, next) {
+      try {
+        await Order.deleteOne({ _id: req.params.id});
+        res.redirect("back");
+      } catch (error) {
+        console.log("ERR: " + error)
+        next(error);
+      }
+    }
 
 
   // [DELETE] /shoes/delete-cart/:id

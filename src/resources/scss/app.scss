@@ -396,3 +396,32 @@ span#or-text {
   border: 1px solid #ccc;
   padding: 20px 11px;
 }
+
+.size-option {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.size-option input[type="radio"] {
+  display: none;
+}
+
+.size-option label {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  background-color: #fff;
+  line-height: 28px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 17px;
+  border: 1px solid white;
+}
+
+.size-option input[type="radio"]:checked + label {
+  border: 2px solid red; 
+}
+.size-option label:hover{
+  border-color: red;
+}

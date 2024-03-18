@@ -8,8 +8,9 @@ router.post('/update-cart/:id', shoesController.checkLoginClient, shoesControlle
 router.put('/quantity/:id', shoesController.checkLoginClient, shoesController.updateQuantity)
 router.get('/cart', shoesController.cart)
 router.get('/pay-success', shoesController.checkLoginClient, shoesController.paySuccess)
-router.get('/my-order', shoesController.myOrder)
-router.get('/my-order-details', shoesController.myOrderDetails)
+router.get('/my-order', shoesController.checkLoginClient, shoesController.myOrder)
+router.get('/my-order-detail/:id', shoesController.checkLoginClient, shoesController.myOrderDetail)
+router.delete("/my-order/:id/delete", shoesController.checkLoginClient, shoesController.deleteOrder);
 router.post('/add-to-cart', shoesController.checkLoginClient, shoesController.addToCart)
 router.get('/:slug', shoesController.show)
 

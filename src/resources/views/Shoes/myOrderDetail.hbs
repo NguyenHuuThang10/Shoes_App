@@ -10,7 +10,7 @@
             <div class="media border p-3">
                 <img src="/img/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
                 <div class="media-body">
-                    <h4>John Doe</h4>
+                    <h4>{{user.name}}</h4>
                     <p>Chỉnh sửa thông tin</p>
                 </div>
             </div>
@@ -19,9 +19,6 @@
                 <li class="list-group-item"><a class="text-dark" href="/password">Đổi mật khẩu</a></li>
                 <li class="list-group-item"><a class="text-dark" href="/shoes/my-order">Đơn mua</a>
                     <span class="badge badge-primary badge-pill">5</span>
-                </li>
-                <li class="list-group-item"><a class="text-dark" href="#">Sản phẩm yêu thích</a>
-                    <span class="badge badge-primary badge-pill">12</span>
                 </li>
                 <li class="list-group-item"><a class="text-dark" href="#">Đăng xuất</a></li>
             </ul>
@@ -33,10 +30,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Thông tin người nhận</h5>
-                    <p class="card-text">Tên người nhận: John Doe</p>
-                    <p class="card-text">Số điện thoại: 0987654321</p>
-                    <p class="card-text">Địa chỉ nhận hàng: 12 Nguyễn Văn Bảo, phường 4, Gò Vấp, Thành phố Hồ Chí
-                        Minh</p>
+                    <p class="card-text">Tên người nhận: {{order.user.name}}</p>
+                    <p class="card-text">Số điện thoại: {{order.user.phone}}</p>
+                    <p class="card-text">Địa chỉ nhận hàng: {{order.shippingAddress.address}}, {{order.shippingAddress.city}}</p>
                 </div>
             </div>
 
@@ -45,36 +41,36 @@
                     <h5 class="card-title">Thông tin đơn hàng</h5>
                     <div class="row ml-1 float-left">
                         <div class="col-12">
-                            <p class="text-info">Mã đơn hàng: 3152024abc</p>
+                            <p class="text-info">Mã đơn hàng: {{order._id}}</p>
+                            {{#each order.orderItems}}
                             <div class="row">
                                 <div class="col-2 mt-3">
-                                    <img class="img-circle " src="/img/NUCG- G018.jpg" alt="" width="100%">
+                                    <img class="img-circle " src="/uploads/{{this.image}}" alt="" width="100%">
                                 </div>
                                 <div class="col-6 mt-3">
-                                    <b>Giày cao gót MWC NUCG-G025</b>
-                                    <br><small>Phân loại hàng - size: đen - 35 </small>
+                                    <b>{{this.name}}</b>
+                                    <br><small>Phân loại hàng - size: {{this.size}} </small>
                                 </div>
                                 <div class="col-2 mt-3">
                                     <i>Số lượng</i>
-                                    <br><small>x1</small>
+                                    <br><small>x{{this.amount}}</small>
                                 </div>
                                 <div class="col-2 mt-3">
                                     <i>Giá tiền:</i>
-                                    <br><small>250.000 VND</small>
+                                    <br><small>{{this.price}}.000 VND</small>
                                 </div>
                             </div>
+                            {{/each}}
                             <div class="row">
                                 <div class="col-10 mt-3">
                                     <p class="text-secondary">Tổng tiền hàng</p>
                                     <p class="text-secondary">Phí vận chuyển</p>
-                                    <p class="text-secondary">Giảm giá phí vận chuyển</p>
                                     <h6>Thành tiền</h6>
                                 </div>
                                 <div class="col-2 mt-3">
-                                    <p class="text-secondary">250.000 VND</p>
-                                    <p class="text-secondary">16.500 VND</p>
-                                    <p class="text-secondary">- 16.500 VND</p>
-                                    <h6>250.000 VND</h6>
+                                    <p class="text-secondary">{{order.itemsPrice}}.000 VND</p>
+                                    <p class="text-secondary">{{order.shippingPrice}}.000 VND</p>
+                                    <h6>{{order.totalPrice}}.000 VND</h6>
                                 </div>
                             </div>
                         </div>
@@ -85,8 +81,11 @@
             <div class="card mt-2">
                 <div class="card-body">
                     <h5 class="card-title">Phương thức thanh toán</h5>
-                    <p class="card-text">Thanh toán khi nhận hàng</p>
+                    <p class="card-text">{{order.paymentMethod}}</p>
                 </div>
+            </div>
+            <div class="card mt-2">
+                <a href="/shoes/my-order" class="btn btn-success">Quay lại</a>
             </div>
 
         </div>

@@ -10,7 +10,7 @@
             <div class="media border p-3">
                 <img src="/img/img_avatar3.png" alt="" class="mr-3 mt-3 rounded-circle" style="width:60px;">
                 <div class="media-body">
-                    <h4>{{data.user.name}}John Doe</h4>
+                    <h4>{{user.name}}</h4>
                     <p>Chỉnh sửa thông tin</p>
                 </div>
             </div>
@@ -20,9 +20,6 @@
                 <li class="list-group-item"><a class="text-dark" href="/shoes/my-order">Đơn mua</a>
                     <span class="badge badge-primary badge-pill">5</span>
                 </li>
-                <li class="list-group-item"><a class="text-dark" href="#">Sản phẩm yêu thích</a>
-                    <span class="badge badge-primary badge-pill">12</span>
-                </li>
                 <li class="list-group-item"><a class="text-dark" href="#">Đăng xuất</a></li>
             </ul>
         </div>
@@ -30,12 +27,13 @@
         <div class="col-md-9 shadow p-3 mb-5 bg-white rounded box-profile" style="border: solid #e6e6e6 1px;">
             <h2>Đơn hàng của tôi</h2>
             <hr>
+            {{#each orders}}
             <div class="card mt-2">
                 <div class="card-header">
                     <div class="col-12">
                         <div class="row">
                             <div class="col-7">
-                                <b>Mã đơn hàng - 3152024abc</b>
+                                <b>Mã đơn hàng - {{this._id}}</b>
                             </div>
                             <div class="col-5 text-right">
                                 <button type="button" class="btn btn btn-success btn-sm">Chờ lấy hàng</button>
@@ -45,108 +43,75 @@
                 </div>
                 <div class="card-body">
                     <div class="col-12">
-                        <div class="row">
-                            <div class="col-2">
-                                <img class="img-circle " src="/img/NUCG- G018.jpg" alt="" width="100%">
-                            </div>
-                            <div class="col-8 mt-3">
-                                <b>Giày cao gót MWC NUCG-G025</b>
-                                <br><small>Phân loại hàng - size: đen - 35 </small>
-                            </div>
-                            <div class="col-2 mt-3">
-                                <br><small>x1</small>
-                                <p class="text-danger"><u>đ</u>250.000</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-8">
-                                <p class="text-muted">1 sản phẩm</p>
-                            </div>
-                            <div class="col-2 text-right">
-                                <p>Tổng số tiền: </p>
-                            </div>
-                            <div class="col-2">
-                                <p class="text-danger"><u>đ</u>250.000</p>
-                            </div>
-                        </div>
-                        <div class="row text-right">
-                            <div class="col-12 text-right">
-                                <button type="button" class="btn btn-outline-info mr-2"><a class="text-dark" href="/shoes/my-order-details"
-                                        style="text-decoration: none">Xem chi tiết</a></button>
-                                <button type="button" class="btn btn-outline-info"><a class="text-dark" href="#"
-                                        style="text-decoration: none">Hủy đơn hàng</a></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mt-2">
-                <div class="card-header">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-7">
-                                <b>Mã đơn hàng - 3182024abc</b>
-                            </div>
-                            <div class="col-5 text-right">
-                                <button type="button" class="btn btn btn-success btn-sm">Chờ lấy hàng</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-2">
-                                <img class="img-circle " src="/img/NUCG- G018.jpg" alt="" width="100%">
-                            </div>
-                            <div class="col-8 mt-3">
-                                <b>Giày cao gót MWC NUCG-G025</b>
-                                <br><small>Phân loại hàng - size: đen - 37 </small>
-                            </div>
-                            <div class="col-2 mt-3">
-                                <br><small>x1</small>
-                                <p class="text-danger"><u>đ</u>250.000</p>
-                            </div>
-                        </div>
+                        {{#each this.orderItems}}
                         <div class="row mt-1">
                             <div class="col-2">
-                                <img class="img-circle " src="/img/NUCG- G018.jpg" alt="" width="100%">
+                                <img class="img-circle " src="/uploads/{{this.image}}" alt="" width="100%">
                             </div>
                             <div class="col-8 mt-3">
-                                <b>Giày cao gót MWC NUCG-G025</b>
-                                <br><small>Phân loại hàng - size: đen - 37 </small>
+                                <b>{{this.name}}</b>
+                                <br><small>Phân loại hàng - size: {{this.size}} </small>
                             </div>
                             <div class="col-2 mt-3">
-                                <br><small>x1</small>
-                                <p class="text-danger"><u>đ</u>250.000</p>
+                                <br><small>x{{this.amount}}</small>
+                                <p class="text-danger"><u>đ</u>{{this.price}}.000</p>
                             </div>
                         </div>
+                        {{/each}}
                         <hr>
                         <div class="row">
-                            <div class="col-8">
-                                <p class="text-muted">2 sản phẩm</p>
+                            <div class="col-7">
                             </div>
-                            <div class="col-2 text-right">
+                            <div class="col-3 text-right">
+                                <p>Tiền ship: </p>
+                            </div>
+                            <div class="col-2">
+                                <p class="text-danger"><u>đ</u>30.000</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7">
+                            </div>
+                            <div class="col-3 text-right">
                                 <p>Tổng số tiền: </p>
                             </div>
                             <div class="col-2">
-                                <p class="text-danger"><u>đ</u>500.000</p>
+                                <p class="text-danger"><u>đ</u>{{this.totalPrice}}.000</p>
                             </div>
                         </div>
                         <div class="row text-right">
                             <div class="col-12 text-right">
-                                <button type="button" class="btn btn-outline-info mr-2"><a class="text-dark" href="#"
+                                <button type="button" class="btn btn-outline-info mr-2"><a class="text-dark" href="/shoes/my-order-detail/{{this._id}}"
                                         style="text-decoration: none">Xem chi tiết</a></button>
-                                <button type="button" class="btn btn-outline-info"><a class="text-dark" href="#"
-                                        style="text-decoration: none">Hủy đơn hàng</a></button>
+                                <button type="button" class="btn btn-outline-info">
+                                    <a class="text-dark btn-delete-order" href="#" style="text-decoration: none" data-id="{{this._id}}">Hủy đơn hàng</a>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {{/each}}
         </div>
 
     </div>
 </div>
+
+<form name="delete-order-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var btnDeleteOrders = document.querySelectorAll('.btn-delete-order');
+        var deleteOrderForm = document.forms['delete-order-form'];
+
+        btnDeleteOrders.forEach(function (btnDeleteOrder) {
+            var orderItemId = $(btnDeleteOrder).data('id');
+
+            btnDeleteOrder.onclick = function () {
+                deleteOrderForm.action = '/shoes/my-order/' + orderItemId + '/delete?_method=DELETE';
+                deleteOrderForm.submit();
+            };
+        });
+    })
+
+</script>
