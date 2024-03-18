@@ -9,6 +9,7 @@ router.put('/quantity/:id', shoesController.checkLoginClient, shoesController.up
 router.get('/cart', shoesController.cart)
 router.get('/pay-success', shoesController.checkLoginClient, shoesController.paySuccess)
 router.get('/my-order', shoesController.myOrder)
+router.get('/my-order-details', shoesController.myOrderDetails)
 router.post('/add-to-cart', shoesController.checkLoginClient, shoesController.addToCart)
 router.get('/:slug', shoesController.show)
 

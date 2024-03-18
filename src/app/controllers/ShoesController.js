@@ -374,6 +374,11 @@ class ShoesController {
         .catch(next)
     }
   }
+  
+  // [GET] /shoes/my-order-details
+  myOrderDetails (req, res, next) {
+    res.render('shoes/myOrderDetails')
+  }
 
 
   // [DELETE] /shoes/delete-cart/:id
