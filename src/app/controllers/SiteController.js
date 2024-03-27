@@ -106,7 +106,9 @@ class SiteController {
                 var sendMail = mailer.sendMail(
                   email,
                   "Active User",
-                  `<a href="${process.env.APP_URL}/active?token=${token}"> Active </a>`
+                  `Hi, ${name}. Vui lòng bấm vào nút "Active" để kích hoạt tài khoản.  <a style="padding: 8px 16px;
+                  background-color: green;
+                  color: #fff; text-decoration: none;" href="${process.env.APP_URL}/active?token=${token}"> Active </a>`
                 );
                 if (sendMail) {
                   return res.render("form/userForm", {
@@ -272,7 +274,7 @@ class SiteController {
         var sendMail = mailer.sendMail(
           checkEmail.email,
           "RESET PASSWORD",
-          `<a href="${process.env.APP_URL}/reset?email=${checkEmail.email}&token=${token}"> Reset </a>`
+          `Hi, ${checkEmail.name}. Vui lòng bấm vào nút "Reset" để được đặt lại mật khẩu.  <a style="padding: 8px 16px; background-color: green; color: #fff; text-decoration: none;" href="${process.env.APP_URL}/reset?email=${checkEmail.email}&token=${token}"> Reset </a>`
         );
         if (sendMail) {
           res.render("form/forgotPassword", {
