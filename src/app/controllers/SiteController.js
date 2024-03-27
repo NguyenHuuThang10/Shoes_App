@@ -106,7 +106,7 @@ class SiteController {
                 var sendMail = mailer.sendMail(
                   email,
                   "Active User",
-                  `Hi, ${name}. Vui lòng bấm vào nút "Active" để kích hoạt tài khoản.  <a style="padding: 8px 16px;
+                  `Hi, ${name}. Vui lòng bấm vào nút "Active" để kích hoạt tài khoản.<br> <br> <br> <a style="padding: 16px 32px;
                   background-color: green;
                   color: #fff; text-decoration: none;" href="${process.env.APP_URL}/active?token=${token}"> Active </a>`
                 );
@@ -274,7 +274,7 @@ class SiteController {
         var sendMail = mailer.sendMail(
           checkEmail.email,
           "RESET PASSWORD",
-          `Hi, ${checkEmail.name}. Vui lòng bấm vào nút "Reset" để được đặt lại mật khẩu. <br> <a style="padding: 8px 16px; background-color: green; color: #fff; text-decoration: none;" href="${process.env.APP_URL}/reset?email=${checkEmail.email}&token=${token}"> Reset </a>`
+          `Hi, ${checkEmail.name}. Vui lòng bấm vào nút "Reset" để được đặt lại mật khẩu. <br> <br> <br> <a style="padding: 16px 32px; background-color: green; color: #fff; text-decoration: none;" href="${process.env.APP_URL}/reset?email=${checkEmail.email}&token=${token}"> Reset </a>`
         );
         if (sendMail) {
           res.render("form/forgotPassword", {
