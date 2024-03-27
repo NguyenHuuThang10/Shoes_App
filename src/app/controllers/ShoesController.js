@@ -263,8 +263,8 @@ class ShoesController {
               payment_method: "paypal",
             },
             redirect_urls: {
-              return_url: `http://localhost:3000/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
-              cancel_url: "http://localhost:3000/cancel",
+              return_url: `https://topshoes.onrender.com/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
+              cancel_url: "https://topshoes.onrender.com/cancel",
             },
             transactions: [
               {
