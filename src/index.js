@@ -9,6 +9,7 @@ const db = require("./config/db");
 const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
 const paypal = require('paypal-rest-sdk');
+const SortMiddleware = require('./app/middlewares/SortMiddleware')
 
 // READ COOKIE
 app.use(cookieParser())
@@ -37,6 +38,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(morgan("combined"));
+
+app.use(SortMiddleware)
 
 app.engine(
   "hbs",
@@ -95,6 +98,28 @@ app.engine(
         }
         return result
       },
+      sortable: (field, sort) => {
+        const sortType = field === sort.column ? sort.type : 'default'
+  
+        const icons = {
+          default: 'fa-solid fa-sort',
+          asc: 'fa-solid fa-arrow-down-short-wide',
+          desc: 'fa-solid fa-arrow-down-wide-short'
+        }
+  
+        const types = {
+          default: 'desc',
+          asc: 'desc',
+          desc: 'asc'
+        }
+  
+        const icon = icons[sortType]
+        const type = types[sortType]
+        return `<a href="?_sort&column=${field}&type=${type}">
+                  <span class="${icon}"></span>
+              </a>`
+  
+      }
       
     },
   })

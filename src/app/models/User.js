@@ -75,14 +75,12 @@ User.statics.upadteUser = async function(userData, userId) {
         const isCheckEmail = regEmail.test(email);
         const isCheckPhone = regPhone.test(phone);
 
-        if (!name || !email || !phone || !password || !confirm_password || !isAdmin) {
+        if (!name || !email || !phone || !isAdmin) {
             throw new Error('Vui lòng nhập đầy đủ thông tin!');
         } else if (!isCheckEmail) {
             throw new Error('Email không đúng định dạng!');
         } else if (!isCheckPhone) {
             throw new Error('Số điện thoại không đúng định dạng!');
-        } else if (password !== confirm_password) {
-            throw new Error('Nhập lại mật khẩu không trùng khớp!');
         }
         
 
@@ -91,14 +89,29 @@ User.statics.upadteUser = async function(userData, userId) {
             throw new Error('Email đã tồn tại trong hệ thống!');
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        var success = await this.updateOne({ _id: userId}, {
-            name,
-            email,
-            phone,
-            password: hashedPassword,
-            isAdmin: isAdmin === "Admin"
-        })
+        if(password || confirm_password){
+            if (password !== confirm_password) {
+                throw new Error('Nhập lại mật khẩu không trùng khớp!');
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            var success = await this.updateOne({ _id: userId}, {
+                name,
+                email,
+                phone,
+                password: hashedPassword,
+                isAdmin: isAdmin === "Admin"
+            })
+
+        }else{
+            var success = await this.updateOne({ _id: userId}, {
+                name,
+                email,
+                phone,
+                isAdmin: isAdmin === "Admin"
+            })
+        }
+
         if(!success){
             throw new Error('Cập nhật người dùng thất bại!');
         }

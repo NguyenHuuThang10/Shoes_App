@@ -34,7 +34,7 @@ class MeController {
     try {
       req.body.image = req.file.filename;
       await Shoe.createShoe(req.body);
-      res.redirect("me/stored/shoes"); ///me/stored/shoes
+      res.redirect("/me/stored/shoes"); ///me/stored/shoes
     } catch (error) {
       next(error);
     }
@@ -44,6 +44,14 @@ class MeController {
   async storedShoes(req, res, next) {
     try {
       let shoeQuery = Shoe.find({});
+
+      if (req.query.hasOwnProperty('_sort')){
+        shoeQuery = shoeQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
+
       var page = parseInt(req.query.page) || 1;
       var allShoe = await Shoe.find({}).countDocuments();
       var maxPage = Math.ceil(allShoe / PAGE_SIZE);
@@ -179,6 +187,13 @@ class MeController {
   async storedUsers(req, res, next) {
     try {
       let userQuery = User.find({});
+
+      if (req.query.hasOwnProperty('_sort')){
+        userQuery = userQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
       var page = parseInt(req.query.page) || 1;
       var allUser = await User.find({}).countDocuments();
       var maxPage = Math.ceil(allUser / PAGE_SIZE);
@@ -294,9 +309,6 @@ class MeController {
 
   async storedOrders(req, res, next) {
     try {
-      // var token = req.cookies.token;
-      // if (token) {
-      //     var userId = jwt.verify(token, "nht");
 
       var page = parseInt(req.query.page) || 1;
       var allOrder = await Order.find({}).countDocuments();
