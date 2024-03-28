@@ -14,8 +14,8 @@
                     <th scope="col" style="width: 20%;">Tên
                         {{{sortable 'name' _sort}}}
                     </th>
-                    <th scope="col">Kiểu giày
-                        {{{sortable 'type' _sort}}}
+                    <th scope="col">Kiểu dáng
+                        {{{sortable 'typeDetail' _sort}}}
                     </th>
                     <th scope="col">Giá
                         {{{sortable 'price' _sort}}}
@@ -34,7 +34,7 @@
                 <tr>
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
-                    <td>{{this.type}}</td>
+                    <td>{{this.typeDetail}}</td>
                     <td>{{this.price}}</td>
                     <td style="width: 20%;">{{this.createdAt}}</td>
                     <td style="width: 20%;">{{this.updatedAt}}</td>
