@@ -56,15 +56,15 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                {{#backPage page}}
+                {{#backPage page newUrl}}
                     {{this}}
                 {{/backPage}}
 
-                {{#eachPage page maxPage}}
+                {{#eachPage page maxPage newUrl}}
                     {{this}}
                 {{/eachPage}}
                 
-                {{#nextPage page maxPage}}
+                {{#nextPage page maxPage newUrl}}
                     {{this}}
                 {{/nextPage}}
             </ul>

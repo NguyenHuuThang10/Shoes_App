@@ -52,7 +52,7 @@ app.engine(
         // Chuyển đổi header của client thành header của admin
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);
       },
-      eachPage: function (page, maxPage, options) {
+      eachPage: function (page, maxPage, newUrl, options) {
         let result = '';
 
         var begin = page - 2
@@ -64,18 +64,34 @@ app.engine(
         if(end > maxPage){
             end = maxPage
         }
+
+        
         
         for (let i = begin; i <= end; i++) {
           // Chỉ định class "active" cho trang hiện tại
           const activeClass = i === page ? 'active' : '';
-          result += `<li class="page-item ${activeClass}"><a class="page-link" href="?page=${i}">${i}</a></li>`;
+
+          if(newUrl){
+            currentPage = newUrl + `&page=${i}`
+          }else{
+            currentPage = `?page=${i}`
+          }
+
+          result += `<li class="page-item ${activeClass}"><a class="page-link" href="${currentPage}">${i}</a></li>`;
         }
         return result;
       },
-      backPage: function (page, options) {
+      backPage: function (page, newUrl, options) {
         if (page > 1 ) {
+
+          if(newUrl){
+            currentPage = newUrl + `&page=${page - 1}`
+          }else{
+            currentPage = `?page=${page - 1}`
+          }
+
           result = `<li class="page-item">
-                      <a class="page-link" href="?page=${page - 1}" aria-label="Previous">
+                      <a class="page-link" href="${currentPage}" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
                           <span class="sr-only">Previous</span>
                       </a>
@@ -85,10 +101,17 @@ app.engine(
         }
         return result
       },
-      nextPage: function (page, maxPage, options) {
+      nextPage: function (page, maxPage, newUrl, options) {
         if (page < maxPage ) {
+
+          if(newUrl){
+            currentPage = newUrl + `&page=${page + 1}`
+          }else{
+            currentPage = `?page=${page + 1}`
+          }
+
           result = `<li class="page-item">
-                      <a class="page-link" href="?page=${page + 1}" aria-label="Next">
+                      <a class="page-link" href="${currentPage}" aria-label="Next">
                           <span aria-hidden="true">&raquo;</span>
                           <span class="sr-only">Next</span>
                       </a>

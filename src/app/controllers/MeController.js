@@ -1,6 +1,8 @@
 const Shoe = require("../models/Shoe");
 const User = require("../models/User");
 const Order = require("../models/Order");
+const url = require('url')
+const { URL, URLSearchParams } = require('url');
 const {
   mongooseToObject,
   mutipleMongooseToObject,
@@ -43,6 +45,25 @@ class MeController {
   // [GET] /me/stored/shoes
   async storedShoes(req, res, next) {
     try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?"+urlParams.toString();
+
+
+      // const parsedUrl = url.parse(currenUrl, true);
+      // const query = parsedUrl.search;
+
+      // const urlParams = new URLSearchParams(query);
+      // urlParams.delete('page');
+      // queryString = urlParams.toString()
+
+
+
       let shoeQuery = Shoe.find({});
 
       if (req.query.hasOwnProperty('_sort')){
@@ -72,6 +93,7 @@ class MeController {
           page,
           maxPage,
           deletedCount,
+          newUrl: newUrl,
           shoes: mutipleMongooseToObject(shoes),
         });
       });
@@ -186,6 +208,16 @@ class MeController {
   // [GET] /me/stored/users
   async storedUsers(req, res, next) {
     try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?"+urlParams.toString();
+
+
       let userQuery = User.find({});
 
       if (req.query.hasOwnProperty('_sort')){
@@ -214,6 +246,7 @@ class MeController {
           page,
           maxPage,
           deletedCount,
+          newUrl: newUrl,
           users: mutipleMongooseToObject(users),
         });
       });
