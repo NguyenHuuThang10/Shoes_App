@@ -11,7 +11,7 @@
                     <th scope="col" style="width: 20%;">Tên</th>
                     <th scope="col">email</th>
                     <th scope="col">Số điện thoại</th>
-                    <th scope="col">Thời gian tạo</th>
+                    <th scope="col"  style="width: 20%;">Thời gian xóa</th>
                     <th scope="col" class="text-center">Phân quyền</th>
                     <th></th>
                 </tr>
@@ -23,7 +23,7 @@
                     <td>{{this.name}}</td>
                     <td>{{this.email}}</td>
                     <td>{{this.phone}}</td>
-                    <td style="width: 20%;">{{this.createdAt}}</td>
+                    <td>{{this.deletedAt}}</td>
                     {{#if this.isAdmin}}
                         <td class="text-center"><button type="button" class="btn btn-warning">Admin</button></td>
                     {{else}}
@@ -46,15 +46,15 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                {{#backPage page}}
+                {{#backPage page newUrl}}
                     {{this}}
                 {{/backPage}}
 
-                {{#eachPage page maxPage}}
+                {{#eachPage page maxPage newUrl}}
                     {{this}}
                 {{/eachPage}}
                 
-                {{#nextPage page maxPage}}
+                {{#nextPage page maxPage newUrl}}
                     {{this}}
                 {{/nextPage}}
             </ul>

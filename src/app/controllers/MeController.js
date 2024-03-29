@@ -340,6 +340,7 @@ class MeController {
     }
   }
 
+  // [GET] me/stored/orders
   async storedOrders(req, res, next) {
     try {
 
@@ -353,29 +354,107 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      Order.find({})
-        .populate({
-          path: "user",
-          model: "User",
-        })
+      var orderQuery = Order.find({}).populate({path: "user", model: "User",})
+
+      Promise.all([
+        orderQuery,
+        Order.countDocumentsWithDeleted({ deleted: true }),
+      ]).then(([orders, deletedCount]) => {
+        orders = orders.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/storedOrder", {
+          page,
+          maxPage,
+          deletedCount,
+          orders: mutipleMongooseToObject(orders),
+        });
+      });
+
+      // Order.find({})
+      //   .populate({
+      //     path: "user",
+      //     model: "User",
+      //   })
+      //   .skip(offset)
+      //   .limit(PAGE_SIZE)
+      //   .then((orders) => {
+      //     res.render("me/storedOrder", {
+      //       page,
+      //       maxPage,
+      //       orders: mutipleMongooseToObject(orders),
+      //     });
+      //   })
+      //   .catch(next);
+
+    } catch (error) {
+      console.log("ERR: " + error);
+    }
+  }
+
+   // [DELETE] /me/:id/delete/order
+   async deleteOrder(req, res, next) {
+    try {
+      var orderId = req.params.id
+      await Order.delete({ _id: orderId})
+      res.redirect("back");
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [GET] /me/trash/orders
+  async trashOrders(req, res, next) {
+    try {
+      var page = parseInt(req.query.page) || 1;
+      var allOrder = await Order.findWithDeleted({
+        deleted: true,
+      }).countDocuments();
+      var maxPage = Math.ceil(allOrder / PAGE_SIZE);
+
+      if (page > maxPage) {
+        page = 1;
+      }
+
+      var offset = (page - 1) * PAGE_SIZE;
+
+      Order.findWithDeleted({ deleted: true })
+        .populate({path: "user", model: "User",})
         .skip(offset)
         .limit(PAGE_SIZE)
         .then((orders) => {
-          res.render("me/storedOrder", {
+          res.render("me/trashOrders", {
             page,
             maxPage,
             orders: mutipleMongooseToObject(orders),
           });
         })
         .catch(next);
-
-      // } else {
-      //     res.redirect("/sign-in");
-      // }
     } catch (error) {
       console.log("ERR: " + error);
     }
   }
+
+    // [PATCH] /me/:id/restore/order
+    async restoreOrder(req, res, next) {
+      try {
+        var orderId = req.params.id
+        await Order.restore({ _id: orderId })
+        res.redirect("back");
+      } catch (error) {
+        next(error);
+      }
+    }
+
+    // [DELETE] /me/:id/destroy/order
+    async destroyOrder(req, res, next) {
+      try {
+        var orderId = req.params.id
+        await Order.deleteOne({ _id: orderId });
+        res.redirect("back");
+      } catch (error) {
+        next(error);
+      }
+    }
 
   // [GET] /me/stored/order-detail/:id
   async orderDetail(req, res, next) {

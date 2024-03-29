@@ -40,7 +40,10 @@ router.delete("/:id/delete/users", meController.checkLoginAdmin, meController.de
 router.delete("/:id/destroy/users", meController.checkLoginAdmin, meController.destroyUsers);
 router.patch("/:id/restore/users", meController.checkLoginAdmin, meController.restoreUsers);
 
-
+router.delete("/:id/destroy/order", meController.checkLoginAdmin, meController.destroyOrder);
+router.patch("/:id/restore/order", meController.checkLoginAdmin, meController.restoreOrder);
+router.get("/trash/orders", meController.checkLoginAdmin, meController.trashOrders);
+router.delete("/:id/delete/order", meController.checkLoginAdmin, meController.deleteOrder);
 router.get("/stored/orders", meController.checkLoginAdmin, meController.storedOrders);
 router.get("/stored/order-detail/:id", meController.checkLoginAdmin, meController.orderDetail);
 

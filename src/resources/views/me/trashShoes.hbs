@@ -11,8 +11,8 @@
                     <th scope="col" style="width: 20%;">Tên</th>
                     <th scope="col">Kiểu giày</th>
                     <th scope="col">Giá</th>
-                    <th scope="col">Thời gian tạo</th>
-                    <th scope="col">Thời gian sửa</th>
+                    <th style="width: 22%;"  scope="col">Thời gian xóa</th>
+                    <th style="width: 22%;" scope="col">Thời gian sửa</th>
                     <th></th>
                 </tr>
             </thead>
@@ -23,8 +23,8 @@
                     <td>{{this.name}}</td>
                     <td>{{this.type}}</td>
                     <td>{{this.price}}</td>
-                    <td style="width: 20%;">{{this.createdAt}}</td>
-                    <td style="width: 20%;">{{this.updatedAt}}</td>
+                    <td>{{this.deletedAt}}</td>
+                    <td>{{this.updatedAt}}</td>
                     <td>
                         <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i class="fa-solid fa-arrow-rotate-left"></i></a>
                         
@@ -42,15 +42,15 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                {{#backPage page}}
+                {{#backPage page newUrl}}
                     {{this}}
                 {{/backPage}}
 
-                {{#eachPage page maxPage}}
+                {{#eachPage page maxPage newUrl}}
                     {{this}}
                 {{/eachPage}}
                 
-                {{#nextPage page maxPage}}
+                {{#nextPage page maxPage newUrl}}
                     {{this}}
                 {{/nextPage}}
             </ul>

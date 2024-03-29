@@ -136,7 +136,7 @@ class ShoesController {
                 newOrder.itemsPrice + newOrder.shippingPrice;
 
               newOrder.save().then(() => {
-                res.redirect("back");
+                res.redirect("/shoes/cart");
               });
             })
             .catch(next);
@@ -164,7 +164,7 @@ class ShoesController {
           );
           order.totalPrice = order.itemsPrice + order.shippingPrice;
           await order.save();
-          return res.redirect("back");
+          return res.redirect("/shoes/cart");
         }
       } else {
         res.redirect("/login");
@@ -224,7 +224,7 @@ class ShoesController {
       var { fullName, phone, address, city, paymentMethod } = req.body;
       var orderId = req.params.id;
 
-      if (paymentMethod == "Thanh toán bằng tiền mặc") {
+      if (paymentMethod == "Thanh toán bằng tiền mặt") {
         Order.updateOne(
           { _id: orderId },
           { shippingAddress: { fullName, phone, address, city }, paymentMethod }

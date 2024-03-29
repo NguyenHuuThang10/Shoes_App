@@ -1,12 +1,9 @@
 <div class="content-wrapper" style="min-height: 650px;">
-    <div class="container-fluid ">
+    <div class="container-fluid">
         <div class="content-header">
-            <h1 class="mb-2">Quản lý đơn hàng:</h1>
+            <h1>Thùng rác đơn hàng:</h1>
+            <a class="btn btn-info mt-2" href="/me/stored/orders">Danh sách đơn hàng</a>   
         </div>
-        {{#if deletedCount}}
-        <a class="btn btn-secondary" href="/me/trash/orders"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
-            {{deletedCount}} )</a>
-        {{/if}}
         <table class="table table-stored">
             <thead>
                 <tr>
@@ -18,6 +15,7 @@
                     <th scope="col">Shipped</th>
                     <th scope="col">PT thanh toán</th>
                     <th scope="col">Tổng giá</th>
+                    <th scope="col">Thời gian xóa</th>
                     <th></th>
                 </tr>
             </thead>
@@ -32,15 +30,17 @@
                     <td>{{this.isDelivered}}</td>
                     <td>{{this.paymentMethod}}</td>
                     <td>{{this.totalPrice}}</td>
+                    <td>{{this.deletedAt}}</td>
                     <td>
-                        <a class="btn btn-info" href="/me/stored/order-detail/{{this._id}}"> Xem chi tiết </a>
+                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+                        
                         <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
-                            data-target="#delete_order_model"><i class="fa-regular fa-trash-can"></i></a>
+                        data-target="#delete_order_model"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
                 {{else}}
                 <tr class="text-center">
-                    <td colspan="7">Không có đơn hàng nào nào.</td>
+                    <td colspan="7">Thùng rác trống.</td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -49,33 +49,33 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 {{#backPage page newUrl}}
-                {{this}}
+                    {{this}}
                 {{/backPage}}
 
                 {{#eachPage page maxPage newUrl}}
-                {{this}}
+                    {{this}}
                 {{/eachPage}}
-
+                
                 {{#nextPage page maxPage newUrl}}
-                {{this}}
+                    {{this}}
                 {{/nextPage}}
             </ul>
         </nav>
     </div>
 </div>
 
-<!-- Modal confirm delete course -->
+<!-- Modal confirm delete shoe -->
 <div id="delete_order_model" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Xóa đơn hàng?</h5>
+                <h5 class="modal-title">Xóa vĩnh viễn đơn hàng?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Bạn có chắc chắn muốn xóa đơn hàng này ?</p>
+                <p>Hành động không thể khôi phục. Bạn có chắc chắn muốn xóa đơn hàng vĩnh viễn?</p>
             </div>
             <div class="modal-footer">
                 <button id="btn-delete-order" type="button" class="btn btn-danger">Xóa bỏ</button>
@@ -86,7 +86,8 @@
 </div>
 
 {{!-- Delete Hidden form --}}
-<form name="delete-order-form" method="POST"></form>
+    <form name="delete-order-form" method="POST" ></form>
+    <form name="restore-order-form" method="POST" ></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -94,18 +95,29 @@
         var btnDeleteOrder = document.getElementById('btn-delete-order')
         var orderId
         var deleteOrderForm = document.forms['delete-order-form']
-
+        var btnRestore = $('.btn-restore')  
+        var restoreOrderForm = document.forms['restore-order-form']
+        
         // When dialog confirm clicked
         $('#delete_order_model').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             orderId = button.data('id')
-
+            
         })
 
         btnDeleteOrder.onclick = function () {
-            deleteOrderForm.action = '/me/' + orderId + '/delete/order?_method=DELETE'
+            deleteOrderForm.action = '/me/' + orderId + '/destroy/order?_method=DELETE'
             deleteOrderForm.submit()
         }
+
+        btnRestore.click(function(e) {
+            e.preventDefault()
+            var orderId = $(this).data('id')
+
+            restoreOrderForm.action = '/me/' + orderId + '/restore/order?_method=PATCH'
+            restoreOrderForm.submit()
+        })
+
     })
 
 </script>

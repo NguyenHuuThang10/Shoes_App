@@ -10,7 +10,7 @@
             <thead>
                 <tr >
                     <th scope="col">#</th>
-                    <th scope="col" style="width: 20%;">Tên
+                    <th scope="col" style="width: 15%;">Tên
                         {{{sortable 'name' _sort}}}
                     </th>
                     <th scope="col">email
@@ -19,8 +19,11 @@
                     <th scope="col">Số điện thoại
                         {{{sortable 'phone' _sort}}}
                     </th>
-                    <th scope="col">Thời gian tạo
+                    <th style="width: 22%;" scope="col">Thời gian tạo
                         {{{sortable 'createdAt' _sort}}}
+                    </th>
+                    <th scope="col">Trạng thái
+                        {{{sortable 'activeToken' _sort}}}
                     </th>
                     <th scope="col" class="text-center">Phân quyền</th>
                     <th></th>
@@ -30,15 +33,23 @@
                 {{#each users}}
                 <tr>
                     <th scope="row">{{sum @index 1}}</th>
-                    <td>{{this.name}}</td>
+                    <td >{{this.name}}</td>
                     <td>{{this.email}}</td>
                     <td>{{this.phone}}</td>
-                    <td style="width: 20%;">{{this.createdAt}}</td>
+                    <td>{{this.createdAt}}</td>
+                    {{#ifEquals this.activeToken null}}
+                        <td class="text-center"><button type="button" class="btn btn-success">Kích hoạt</button></td>
+                    {{else}}
+                        <td class="text-center"><button type="button" class="btn btn-danger">Chưa kích hoạt</button></td>
+                    {{/ifEquals}}
+
                     {{#if this.isAdmin}}
                         <td class="text-center"><button type="button" class="btn btn-warning">Admin</button></td>
                     {{else}}
                         <td class="text-center"><button type="button" class="btn btn-success">Client</button></td>
                     {{/if}}
+
+                    
                     <td>
                         <a href="/me/{{this._id}}/edit/users    " class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></a>
                     

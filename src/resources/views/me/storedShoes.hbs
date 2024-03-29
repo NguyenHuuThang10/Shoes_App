@@ -20,10 +20,10 @@
                     <th scope="col">Giá
                         {{{sortable 'price' _sort}}}
                     </th>
-                    <th scope="col">Thời gian tạo
+                    <th style="width: 22%;" scope="col">Thời gian tạo
                         {{{sortable 'createdAt' _sort}}}
                     </th>
-                    <th scope="col">Thời gian sửa
+                    <th style="width: 22%;" scope="col">Thời gian sửa
                         {{{sortable 'updatedAt' _sort}}}
                     </th>
                     <th></th>
@@ -36,8 +36,8 @@
                     <td>{{this.name}}</td>
                     <td>{{this.typeDetail}}</td>
                     <td>{{this.price}}</td>
-                    <td style="width: 20%;">{{this.createdAt}}</td>
-                    <td style="width: 20%;">{{this.updatedAt}}</td>
+                    <td>{{this.createdAt}}</td>
+                    <td>{{this.updatedAt}}</td>
                     <td>
                         <a href="/me/{{this._id}}/edit/shoes" class="btn btn-link"><i
                                 class="fa-regular fa-pen-to-square"></i></a>
