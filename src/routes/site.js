@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 
 const siteController = require('../app/controllers/SiteController')
+const supportsController = require('../app/controllers/SupportsController')
+
+router.get('/wishlist', supportsController.wishlist)
 
 router.get('/forgot', siteController.checkClient, siteController.forgotPassword)
 router.post('/forgot', siteController.checkClient, siteController.sendGmail)

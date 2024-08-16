@@ -425,3 +425,38 @@ span#or-text {
 .size-option label:hover{
   border-color: red;
 }
+
+//Wishlist
+.box-wishlist{
+  padding: 32px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.box-wishlist .wishlist-title {
+  font-size: 24px;
+  line-height: 1.333;
+  border-bottom: 1px solid #ddd;
+}
+
+.wishlist-content .card {
+  margin-top: 32px;
+  border: none;
+}
+
+.wishlist-content img {
+  width: 100%;
+}
+
+.wishlist-btn .btn{
+  height: 45px;
+}
+
+.wishlist-add-to-cart {
+  background-color: #000;
+  color: #fff;
+}
+
+.wishlist-add-to-cart:hover {
+  background-color: #333;
+}
