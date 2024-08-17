@@ -10,67 +10,75 @@
         </div>
 
         <div class="wishlist-content">
-
+            {{#if user.wishlistItems}}
+            {{#each user.wishlistItems}}
             <div class="card mb-3">
-                <div class="row no-gutters">
-                    <div class="col-md-3">
-                        <img src="/uploads/1709126897676.jpg" alt="...">
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h2 class="card-title">Giày cao gót</h2>
-                            <p class="card-text"><b>Giá:</b> 250.000 VND</p>
-                            <p class="card-text"><b>Size:</b> 32</p>
-                            <p class="card-text" ><small class="text-muted">Còn hàng</small></p>
+                <form action="/shoes/add-to-cart" method="post">
+                    <div class="row no-gutters">
+                        <div class="col-md-3">
+                            <img src="/uploads/{{this.shoe.image}}" alt="...">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h2 class="card-title">{{this.shoe.name}}</h2>
+                                <p class="card-text"><b>Giá:</b> {{this.shoe.price}}.000 VND</p>
+                                <p class="card-text"><b>Size:</b> {{this.size}}</p>
+                                <p class="card-text"><small class="text-muted">Còn hàng</small></p>
 
-                            <p>
+                                <p>
                                 <div class="row wishlist-btn">
                                     <div class="col-10">
-                                        <button class="btn btn-block wishlist-add-to-cart"><b>THÊM VÀO GIỎ HÀNG</b></button>
+                                        <button type="submit" class="btn btn-block wishlist-add-to-cart"><b>THÊM VÀO GIỎ
+                                                HÀNG</b></button>
 
                                     </div>
 
-                                    <div class="col-2">
-                                        <button class="btn btn-block btn-danger"><i class="fa-solid fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </p>
-                        </div>
-                    </div>
+                                    <input type="hidden" name="shoeId" value="{{this.shoe._id}}">
+                                    <input type="hidden" name="amount" value="1">
+                                    <input type="hidden" name="size" value="{{this.size}}">
+                </form>
+                <div class="col-2">
+                    <a href="" class="btn btn-danger btn-block btn-delete-wishlist" data-id="{{this._id}}"=""><i class="fa-solid fa-trash"></i></a>
                 </div>
             </div>
-
-            <div class="card mb-3">
-                <div class="row no-gutters">
-                    <div class="col-md-3">
-                        <img src="/uploads/1709126897676.jpg" alt="...">
-                    </div>
-                    <div class="col-md-9">
-                        <div class="card-body">
-                            <h2 class="card-title">Giày cao gót</h2>
-                            <p class="card-text"><b>Giá:</b> 250.000 VND</p>
-                            <p class="card-text"><b>Size:</b> 32</p>
-                            <p class="card-text" ><small class="text-muted">Còn hàng</small></p>
-
-                            <p>
-                                <div class="row wishlist-btn">
-                                    <div class="col-10">
-                                        <button class="btn btn-block wishlist-add-to-cart"><b>THÊM VÀO GIỎ HÀNG</b></button>
-
-                                    </div>
-
-                                    <div class="col-2">
-                                        <button class="btn btn-block btn-danger"><i class="fa-solid fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            
+            </p>
         </div>
     </div>
+</div>
 
 </div>
+{{/each}}
+
+{{else}}
+<div class="text-center mt-3">
+        <p>{{wishlistEmpty}}</p>
+</div>
+{{/if}}
+
+
+
+</div>
+</div>
+
+</div>
+
+<form name="delete-wishlist-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var btnDeleteWishlists = document.querySelectorAll('.btn-delete-wishlist');
+        var deleteWishlistsForm = document.forms['delete-wishlist-form'];
+
+        btnDeleteWishlists.forEach(function (btnDeleteWishlist) {
+            var wishlistItemId = $(btnDeleteWishlist).data('id');
+            
+         
+            btnDeleteWishlist.onclick = function (e) {
+                e.preventDefault();
+                deleteWishlistsForm.action = '/delete-wishlist/' + wishlistItemId + '?_method=DELETE';
+                deleteWishlistsForm.submit();
+            };
+        });
+    })
+
+</script>

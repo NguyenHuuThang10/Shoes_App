@@ -5,13 +5,24 @@ const slug = require('mongoose-slug-updater')
 const bcrypt = require('bcrypt');
 
 const User = new Schema({
-    name: {type: String},
-    email: {type: String},
-    password: {type: String},
-    phone: {type: String},
-    resetToken: {type: String},
-    activeToken: {type: String},
-    isAdmin: {type: Boolean, default: false},
+    name: { type: String },
+    email: { type: String },
+    password: { type: String },
+    phone: { type: String },
+    resetToken: { type: String },
+    activeToken: { type: String },
+    isAdmin: { type: Boolean, default: false },
+    wishlistItems: [
+        {
+            size: { type: Number, required: true },
+            shoe: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Shoe',
+                required: true,
+            },
+        }
+
+    ]
 }, {
     conllection: 'users',
     timestamps: true
@@ -19,14 +30,14 @@ const User = new Schema({
 
 //Add plugin
 mongoose.plugin(slug)
-User.plugin(mongooseDelete,  { 
-    deletedAt : true, // Thêm thời gian xóa vào db
+User.plugin(mongooseDelete, {
+    deletedAt: true, // Thêm thời gian xóa vào db
     overrideMethods: 'all' // Ghi đè chỉ hiện những dữ liệu ko có field deleteAt
 });
 
 
 // Business Logic
-User.statics.createUser = async function(userData) {
+User.statics.createUser = async function (userData) {
     try {
         const { name, email, phone, password, confirm_password, isAdmin } = userData;
         const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -43,7 +54,7 @@ User.statics.createUser = async function(userData) {
         } else if (password !== confirm_password) {
             throw new Error('Nhập lại mật khẩu không trùng khớp!');
         }
-        
+
 
         const existingUser = await this.findOne({ email });
         if (existingUser) {
@@ -59,7 +70,7 @@ User.statics.createUser = async function(userData) {
             isAdmin: isAdmin === "Admin"
         });
         const success = await newUser.save();
-        if(!success){
+        if (!success) {
             throw new Error('Tạo tài khoản thất bại!');
         }
     } catch (error) {
@@ -67,7 +78,7 @@ User.statics.createUser = async function(userData) {
     }
 }
 
-User.statics.upadteUser = async function(userData, userId) {
+User.statics.upadteUser = async function (userData, userId) {
     try {
         const { name, email, phone, password, confirm_password, isAdmin } = userData;
         const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -82,20 +93,20 @@ User.statics.upadteUser = async function(userData, userId) {
         } else if (!isCheckPhone) {
             throw new Error('Số điện thoại không đúng định dạng!');
         }
-        
 
-        const existingUser = await this.findOne({ email, _id: { $ne: userId} });
+
+        const existingUser = await this.findOne({ email, _id: { $ne: userId } });
         if (existingUser) {
             throw new Error('Email đã tồn tại trong hệ thống!');
         }
 
-        if(password || confirm_password){
+        if (password || confirm_password) {
             if (password !== confirm_password) {
                 throw new Error('Nhập lại mật khẩu không trùng khớp!');
             }
 
             const hashedPassword = await bcrypt.hash(password, 10);
-            var success = await this.updateOne({ _id: userId}, {
+            var success = await this.updateOne({ _id: userId }, {
                 name,
                 email,
                 phone,
@@ -103,8 +114,8 @@ User.statics.upadteUser = async function(userData, userId) {
                 isAdmin: isAdmin === "Admin"
             })
 
-        }else{
-            var success = await this.updateOne({ _id: userId}, {
+        } else {
+            var success = await this.updateOne({ _id: userId }, {
                 name,
                 email,
                 phone,
@@ -112,7 +123,7 @@ User.statics.upadteUser = async function(userData, userId) {
             })
         }
 
-        if(!success){
+        if (!success) {
             throw new Error('Cập nhật người dùng thất bại!');
         }
     } catch (error) {

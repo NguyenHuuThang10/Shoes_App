@@ -14,26 +14,40 @@
                     <label for="">Kích thước</label>
                     <div class="size-option">
                         <!-- Thay đổi các nút button thành các nút radio để người dùng có thể chọn size -->
-                        <input type="radio" class="btn btn-danger" name="size" id="size36" required value="36">
+                        <input type="radio" class="btn btn-danger" name="size" id="size36" value="36">
                         <label for="size36">36</label>
-                        <input type="radio" class="btn btn-danger" name="size" id="size37" required value="37">
+                        <input type="radio" class="btn btn-danger" name="size" id="size37" value="37">
                         <label for="size37">37</label>
-                        <input type="radio" class="btn btn-danger" name="size" id="size38" required value="38">
+                        <input type="radio" class="btn btn-danger" name="size" id="size38" value="38">
                         <label for="size38">38</label>
-                        <input type="radio" class="btn btn-danger" name="size" id="size39" required value="39">
+                        <input type="radio" class="btn btn-danger" name="size" id="size39" value="39">
                         <label for="size39">39</label>
-                        <input type="radio" class="btn btn-danger" name="size" id="size40" required value="40">
+                        <input type="radio" class="btn btn-danger" name="size" id="size40" value="40">
                         <label for="size40">40</label>
-                        <input type="radio" class="btn btn-danger" name="size" id="size41" required value="41">
+                        <input type="radio" class="btn btn-danger" name="size" id="size41" value="41">
                         <label for="size41">41</label>
-                        <input type="radio" class="btn btn-danger" name="size" id="size42" required value="42">
+                        <input type="radio" class="btn btn-danger" name="size" id="size42" value="42">
                         <label for="size42">42</label>
                     </div>
                 </div>
                 <div class="order">
-                    <button type="submit" class="btn order-buy">Mua Ngay</button>
+                    <div class="row">
+                        <div class="col-4">
+                            <button type="submit" class="btn order-buy">Mua Ngay</button>
+                        </div>
+                    </div>
                 </div>
             </form>
+            <div class="row mt-3">
+                <div class="col-4">
+                    <form action="/add-wishlist" method="post">
+                        <input type="hidden" name="shoeId" value="{{shoe._id}}">
+                         <input type="hidden" name="size" id="wishlistSize">
+                        <button class="btn btn-light btn-block"> <i class="fa-regular fa-heart"></i> Thêm vào yêu thích</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="detail mt-5 ">
                 <div class="detail-product col-12 border">
                     <h4>Chi tiết sản phẩm</h4>
@@ -54,3 +68,42 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sizeInputs = document.querySelectorAll('input[name="size"]');
+        const wishlistSizeInput = document.getElementById('wishlistSize');
+
+        // Cập nhật giá trị size cho input ẩn khi chọn size
+        sizeInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                wishlistSizeInput.value = this.value;
+            });
+        });
+
+        // Kiểm tra nếu size đã được chọn
+        function isSizeSelected() {
+            return wishlistSizeInput.value !== '';
+        }
+
+        // Kiểm tra form "Thêm vào yêu thích"
+        const wishlistForm = document.querySelector('form[action="/add-wishlist"]');
+        wishlistForm.addEventListener('submit', function (event) {
+            if (!isSizeSelected()) {
+                event.preventDefault(); // Ngăn không cho gửi form
+                alert('Vui lòng chọn kích thước trước khi thêm vào yêu thích!');
+            }
+        });
+
+        // Kiểm tra form "Mua Ngay"
+        const orderForm = document.querySelector('form[action="/shoes/add-to-cart"]');
+        orderForm.addEventListener('submit', function (event) {
+            if (!isSizeSelected()) {
+                event.preventDefault(); // Ngăn không cho gửi form
+                alert('Vui lòng chọn kích thước trước khi mua sản phẩm!');
+            }
+        });
+    });
+</script>
+
+

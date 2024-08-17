@@ -25,7 +25,7 @@ class SiteController {
     if (checkLogin) {
       next();
     } else {
-      res.redirect("/");
+      res.redirect("/login");
     }
   }
 

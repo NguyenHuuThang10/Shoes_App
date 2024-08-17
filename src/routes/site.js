@@ -4,7 +4,9 @@ const router = express.Router()
 const siteController = require('../app/controllers/SiteController')
 const supportsController = require('../app/controllers/SupportsController')
 
-router.get('/wishlist', supportsController.wishlist)
+router.delete('/delete-wishlist/:id',  siteController.checkLoginClient ,supportsController.deleteWishlist)
+router.post('/add-wishlist',  siteController.checkLoginClient ,supportsController.addWishlist)
+router.get('/wishlist',  siteController.checkLoginClient ,supportsController.wishlist)
 
 router.get('/forgot', siteController.checkClient, siteController.forgotPassword)
 router.post('/forgot', siteController.checkClient, siteController.sendGmail)
