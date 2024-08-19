@@ -370,22 +370,6 @@ class MeController {
         });
       });
 
-      // Order.find({})
-      //   .populate({
-      //     path: "user",
-      //     model: "User",
-      //   })
-      //   .skip(offset)
-      //   .limit(PAGE_SIZE)
-      //   .then((orders) => {
-      //     res.render("me/storedOrder", {
-      //       page,
-      //       maxPage,
-      //       orders: mutipleMongooseToObject(orders),
-      //     });
-      //   })
-      //   .catch(next);
-
     } catch (error) {
       console.log("ERR: " + error);
     }
@@ -407,7 +391,8 @@ class MeController {
     Order.findById(req.params.id)
       .then(order => {
         res.render('me/editOrder', {
-          order: mongooseToObject(order)
+          order: mongooseToObject(order),
+          success: req.flash('success')
         })
       })
       .catch(err => {
@@ -422,24 +407,23 @@ class MeController {
       const orderId = req.params.id;
       let { fullName, phone, city, paymentMethod, isPaid, isDelivered, status } = req.body
       const regPhone = /^0\d{9}$/;
+      isDelivered = isDelivered === "Đã giao hàng"
+      isPaid = isPaid === 'Đã thanh toán'
 
       const isCheckPhone = regPhone.test(phone);
 
-      if (!fullName || !phone || !city || !paymentMethod || !isPaid || !isDelivered || !status) {
+
+      if (!fullName || !phone || !city || !paymentMethod || !status) {
         return res.render("me/editOrder", {
           err: "Vui lòng nhập đầy đủ thông tin!",
-          old: req.body
+          old: { fullName, phone, city, paymentMethod, isPaid, isDelivered, status }
         })
       } else if (!isCheckPhone) {
         return res.render("me/editOrder", {
           err: "Số điện thoại không đúng định dạng!",
-          old: req.body
+          old: { fullName, phone, city, paymentMethod, isPaid, isDelivered, status }
         })
       }
-
-      isPaid = isPaid === "Đã thanh toán"
-      isDelivered = isDelivered === "Đã giao hàng"
-
       Order.updateOne({ _id: orderId }, {
         shippingAddress: { fullName, phone, city },
         paymentMethod,
@@ -448,6 +432,7 @@ class MeController {
         status
       })
         .then(data => {
+          req.flash('success', 'Cập nhật đơn hàng thành công!')
           res.redirect("back")
         })
         .catch(next)

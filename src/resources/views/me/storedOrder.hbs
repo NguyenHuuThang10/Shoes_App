@@ -26,8 +26,8 @@
                 {{#each orders}}
                 <tr>
                     <th scope="row">{{sum @index 1}}</th>
-                    <td>{{this.user.name}}</td>
-                    <td>{{this.user.phone}}</td>
+                    <td>{{this.shippingAddress.fullName}}</td>
+                    <td>{{this.shippingAddress.phone}}</td>
                     <td>{{this.shippingAddress.city}}</td>
                     <td>{{this.isPaid}}</td>
                     <td>{{this.isDelivered}}</td>

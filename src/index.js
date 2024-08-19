@@ -11,6 +11,16 @@ const cookieParser = require('cookie-parser')
 const paypal = require('paypal-rest-sdk');
 const SortMiddleware = require('./app/middlewares/SortMiddleware')
 
+// request flash
+const flash = require('connect-flash');
+const session = require('express-session');
+
+app.use(session({ secret: '20112002', resave: true, saveUninitialized: true }));
+app.use(flash());
+
+
+
+
 // READ COOKIE
 app.use(cookieParser())
 
