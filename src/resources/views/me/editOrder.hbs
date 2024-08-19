@@ -1,0 +1,79 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Cập nhật đơn hàng:</h1>
+            {{#if err}}
+                <div class="alert alert-danger" role="alert">
+                    {{err}}
+                </div>
+            {{/if}}
+        </div>
+        <form action="?_method=PUT" method="post">
+            <div class="row">
+                <div class="col mx-sm-3">
+                    <div class="form-group">
+                        <label for="name">Tên người nhận</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName"  placeholder="Nhập tên người dùng" {{#if order}} value="{{order.shippingAddress.fullName}}" {{else}} value="{{old.fullName}}" {{/if}}>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="text" class="form-control" id="phone" name="phone"  placeholder="Nhập số điện thoại"  {{#if order}} value="{{order.shippingAddress.phone }}" {{else}} value="{{old.phone  }}" {{/if}}>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Địa chỉ</label>
+                        <input type="text" class="form-control" id="city" name="city"  placeholder="Nhập số điện thoại"  {{#if order}} value="{{order.shippingAddress.city }}" {{else}} value="{{old.city  }}" {{/if}}>
+                    </div>
+                </div>
+
+                <div class="col mx-sm-3">
+                    <div class="form-group">
+                        <label for="paymentMethod">Phương thức thanh toán</label>
+                        <select class="form-control" id="paymentMethod" name="paymentMethod">
+                            <option value="" selected>-- Phương thức thanh toán --</option>
+                            <option value="Thanh toán bằng tiền mặt" {{#ifEquals order.paymentMethod 'Thanh toán bằng tiền mặt'}}selected{{/ifEquals}}>Thanh toán bằng tiền mặt</option>
+                            <option value="Thanh toán bằng Paypal" {{#ifEquals order.paymentMethod 'Thanh toán bằng Paypal' }}selected{{/ifEquals}}>Thanh toán bằng Paypal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isPaid">Tình trạng thanh toán</label>
+                        <select class="form-control" id="isPaid" name="isPaid">
+                            <option value="" selected>-- Tình trạng thanh toán --</option>
+                            <option value="Đã thanh toán" {{#ifEquals order.isPaid true }}selected{{/ifEquals}}>Đã thanh toán</option>
+                            <option value="Chưa thanh toán" {{#ifEquals order.isPaid false }}selected{{/ifEquals}}>Chưa thanh toán</option>
+                        </select>    
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isDelivered">Tình trạng giao hàng</label>
+                        <select class="form-control" id="isDelivered" name="isDelivered">
+                            <option value="" selected>-- Tình trạng giao hàng --</option>
+                            <option value="Đã giao hàng" {{#ifEquals order.isDelivered true }}selected{{/ifEquals}}>Đã giao hàng</option>
+                            <option value="Chưa giao hàng" {{#ifEquals order.isDelivered false }}selected{{/ifEquals}}>Chưa giao hàng</option>
+                        </select>    
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Trạng thái đơn hàng</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="" selected>-- Trạng thái đơn hàng --</option>
+                            <option value="Chờ xử lý" {{#ifEquals order.status 'Chờ xử lý' }}selected{{/ifEquals}}>Chờ xử lý</option>
+                            <option value="Xác nhận đơn hàng" {{#ifEquals order.status 'Xác nhận đơn hàng' }}selected{{/ifEquals}}>Xác nhận đơn hàng</option>
+                            <option value="Đang giao hàng" {{#ifEquals order.status 'Đang giao hàng' }}selected{{/ifEquals}}>Đang giao hàng</option>
+                            <option value="Đã giao hàng" {{#ifEquals order.status 'Đã giao hàng' }}selected{{/ifEquals}}>Đã giao hàng</option>
+                            <option value="Đã Hủy" {{#ifEquals order.status 'Đã Hủy' }}selected{{/ifEquals}}>Đã Hủy</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mx-sm-3">Cập nhật</button>
+            <a href="/me/stored/orders" class="btn btn-success mx-sm-3">Quay lại</a>
+        </form>
+    </div>
+</div>
+
+
+

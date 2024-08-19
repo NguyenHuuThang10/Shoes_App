@@ -34,6 +34,7 @@ const Order = new Schema({
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
+    status: { type: String, default: "Chờ xử lý" },
 },
     {
         timestamps: true,

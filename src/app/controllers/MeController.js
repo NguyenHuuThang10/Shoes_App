@@ -11,7 +11,7 @@ const bcrypt = require("bcrypt");
 const PAGE_SIZE = 6;
 
 class MeController {
-  
+
   checkLoginAdmin(req, res, next) {
     var checkLogin = res.locals.currentUser;
     if (checkLogin && checkLogin.isAdmin) {
@@ -52,7 +52,7 @@ class MeController {
       const urlParams = new URLSearchParams(myURL.search);
       urlParams.delete('page');
 
-      const newUrl = "?"+urlParams.toString();
+      const newUrl = "?" + urlParams.toString();
 
 
       // const parsedUrl = url.parse(currenUrl, true);
@@ -66,7 +66,7 @@ class MeController {
 
       let shoeQuery = Shoe.find({});
 
-      if (req.query.hasOwnProperty('_sort')){
+      if (req.query.hasOwnProperty('_sort')) {
         shoeQuery = shoeQuery.sort({
           [req.query.column]: req.query.type
         })
@@ -215,12 +215,12 @@ class MeController {
       const urlParams = new URLSearchParams(myURL.search);
       urlParams.delete('page');
 
-      const newUrl = "?"+urlParams.toString();
+      const newUrl = "?" + urlParams.toString();
 
 
       let userQuery = User.find({});
 
-      if (req.query.hasOwnProperty('_sort')){
+      if (req.query.hasOwnProperty('_sort')) {
         userQuery = userQuery.sort({
           [req.query.column]: req.query.type
         })
@@ -354,7 +354,7 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      var orderQuery = Order.find({}).populate({path: "user", model: "User",})
+      var orderQuery = Order.find({}).populate({ path: "user", model: "User", })
 
       Promise.all([
         orderQuery,
@@ -391,16 +391,72 @@ class MeController {
     }
   }
 
-   // [DELETE] /me/:id/delete/order
-   async deleteOrder(req, res, next) {
+  // [DELETE] /me/:id/delete/order
+  async deleteOrder(req, res, next) {
     try {
       var orderId = req.params.id
-      await Order.delete({ _id: orderId})
+      await Order.delete({ _id: orderId })
       res.redirect("back");
     } catch (error) {
       next(error);
     }
   }
+
+  // [GET] /me/:id/edit/order
+  editOrder(req, res, next) {
+    Order.findById(req.params.id)
+      .then(order => {
+        res.render('me/editOrder', {
+          order: mongooseToObject(order)
+        })
+      })
+      .catch(err => {
+        console.log("ERR EDIT-ODER: " + err)
+      })
+      .catch(next)
+  }
+
+  // [PUT] /me/:id/edit/order
+  updateOrder(req, res, next) {
+    try {
+      const orderId = req.params.id;
+      let { fullName, phone, city, paymentMethod, isPaid, isDelivered, status } = req.body
+      const regPhone = /^0\d{9}$/;
+
+      const isCheckPhone = regPhone.test(phone);
+
+      if (!fullName || !phone || !city || !paymentMethod || !isPaid || !isDelivered || !status) {
+        return res.render("me/editOrder", {
+          err: "Vui lòng nhập đầy đủ thông tin!",
+          old: req.body
+        })
+      } else if (!isCheckPhone) {
+        return res.render("me/editOrder", {
+          err: "Số điện thoại không đúng định dạng!",
+          old: req.body
+        })
+      }
+
+      isPaid = isPaid === "Đã thanh toán"
+      isDelivered = isDelivered === "Đã giao hàng"
+
+      Order.updateOne({ _id: orderId }, {
+        shippingAddress: { fullName, phone, city },
+        paymentMethod,
+        isPaid,
+        isDelivered,
+        status
+      })
+        .then(data => {
+          res.redirect("back")
+        })
+        .catch(next)
+
+    } catch (err) {
+      console.log("ERR UPDATE-ODER: " + err)
+    }
+  }
+
 
   // [GET] /me/trash/orders
   async trashOrders(req, res, next) {
@@ -418,7 +474,7 @@ class MeController {
       var offset = (page - 1) * PAGE_SIZE;
 
       Order.findWithDeleted({ deleted: true })
-        .populate({path: "user", model: "User",})
+        .populate({ path: "user", model: "User", })
         .skip(offset)
         .limit(PAGE_SIZE)
         .then((orders) => {
@@ -434,44 +490,44 @@ class MeController {
     }
   }
 
-    // [PATCH] /me/:id/restore/order
-    async restoreOrder(req, res, next) {
-      try {
-        var orderId = req.params.id
-        await Order.restore({ _id: orderId })
-        res.redirect("back");
-      } catch (error) {
-        next(error);
-      }
+  // [PATCH] /me/:id/restore/order
+  async restoreOrder(req, res, next) {
+    try {
+      var orderId = req.params.id
+      await Order.restore({ _id: orderId })
+      res.redirect("back");
+    } catch (error) {
+      next(error);
     }
+  }
 
-    // [DELETE] /me/:id/destroy/order
-    async destroyOrder(req, res, next) {
-      try {
-        var orderId = req.params.id
-        await Order.deleteOne({ _id: orderId });
-        res.redirect("back");
-      } catch (error) {
-        next(error);
-      }
+  // [DELETE] /me/:id/destroy/order
+  async destroyOrder(req, res, next) {
+    try {
+      var orderId = req.params.id
+      await Order.deleteOne({ _id: orderId });
+      res.redirect("back");
+    } catch (error) {
+      next(error);
     }
+  }
 
   // [GET] /me/stored/order-detail/:id
   async orderDetail(req, res, next) {
     try {
-        const orderId = req.params.id
-        const order = await Order.findOne({
-            _id: orderId
-        })
-            .populate("orderItems.shoe")
-            .populate({
-            path: "user",
-            model: "User",
-            });
-
-        res.render("me/orderDetail", {
-            order: mongooseToObject(order),
+      const orderId = req.params.id
+      const order = await Order.findOne({
+        _id: orderId
+      })
+        .populate("orderItems.shoe")
+        .populate({
+          path: "user",
+          model: "User",
         });
+
+      res.render("me/orderDetail", {
+        order: mongooseToObject(order),
+      });
     } catch (error) {
       console.log("ERR OrderDetail: " + error);
     }
