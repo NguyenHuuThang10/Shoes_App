@@ -29,7 +29,7 @@
         {{#each shoes}}
         <div class="col-md-2 mt-4">
             <div class="img" style="border: solid #e6e6e6 1px;">
-                <a href="shoes/{{this.slug}}">
+                <a href="/shoes/{{this.slug}}">
                     <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
                 </a>
                 <div class="caption ml-2">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="mr-2">
-                        <a href="shoes/{{this.slug}}">
+                        <a href="/shoes/{{this.slug}}">
                             <b>{{this.name}}</b>
                         </a>
                         <p>{{this.price}}.000 đ</p>
@@ -56,31 +56,19 @@
     <nav aria-label="Page navigation example" class="mt-5">
         <ul class="pagination">
             {{#backPage page newUrl}}
-            {{this}}
+                {{this}}
             {{/backPage}}
 
             {{#eachPage page maxPage newUrl}}
-            {{this}}
+                {{this}}
             {{/eachPage}}
-
+            
             {{#nextPage page maxPage newUrl}}
-            {{this}}
+                {{this}}
             {{/nextPage}}
         </ul>
     </nav>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var hearts = document.querySelectorAll('.heart');
-
-        hearts.forEach(function (heart) {
-            heart.addEventListener('click', function () {
-                heart.classList.toggle('active'); // Chuyển đổi giữa trạng thái có class 'active' và không có
-            });
-        });
-    });
-</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

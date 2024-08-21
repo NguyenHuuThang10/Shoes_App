@@ -4,157 +4,215 @@
     </div>
 </div>
 
-<div class=" box-shoe">
-    <div class="title-product">
-        <a href="/shoes/shoe-type/{{shoeHightType}}">
-            <p>GIÀY CAO GÓT NỮ</p>
-        </a>
-    </div>
-    <div class="row">
-        {{#each shoeHight}}
-        <div class="col-md-2 mt-4">
-            <div class="img" style="border: solid #e6e6e6 1px;">
-                <a href="shoes/{{this.slug}}">
-                    <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
-                </a>
-                <div class="caption ml-2">
-                    <div class="row">
-                        <div class="col">
-                            7 Size
+<div class="container-fluid">
+
+    <div class=" box-shoe">
+        <div class="title-product">
+            <a href="/shoes/shoe-type/{{shoeHightType}}">
+                <p>GIÀY CAO GÓT NỮ</p>
+            </a>
+        </div>
+        <div class="row">
+            {{#each shoeHight}}
+            <div class="col-md-2 mt-4">
+                <div class="img" style="border: solid #e6e6e6 1px;">
+                    <a href="shoes/{{this.slug}}">
+                        <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                    </a>
+                    <div class="caption ml-2">
+                        <div class="row">
+                            <div class="col">
+                                7 Size
+                            </div>
+                            <div class="col mr-2" style="text-align: right;">
+                                <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                            </div>
                         </div>
-                        <div class="col mr-2" style="text-align: right;">
-                            <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                        <div class="mr-2">
+                            <a href="shoes/{{this.slug}}">
+                                <b>{{this.name}}</b>
+                            </a>
+                            <p>{{this.price}}.000 đ</p>
                         </div>
-                    </div>
-                    <div class="mr-2">
-                        <a href="shoes/{{this.slug}}">
-                            <b>{{this.name}}</b>
-                        </a>
-                        <p>{{this.price}}.000 đ</p>
                     </div>
                 </div>
             </div>
+
+            {{/each}}
+
         </div>
-
-        {{/each}}
-
+        <div class="showfull">
+            <p><a href="/shoes/shoe-type/{{shoeHightType}}"><u>Xem tất cả</u></a></p>
+        </div>
     </div>
-    <div class="showfull">
-        <p><a href="/shoes/shoe-type/{{shoeHightType}}"><u>Xem tất cả</u></a></p>
+
+    <div class=" box-shoe">
+        <div class="title-product">
+            <a href="">
+                <p>GIÀY BÚP BÊ</p>
+            </a>
+        </div>
+        <div class="row">
+            {{#each baby}}
+            <div class="col-md-2 mt-4 ">
+                <div class="img" style="border: solid #e6e6e6 1px;">
+                    <a href="shoes/{{this.slug}}">
+                        <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                    </a>
+                    <div class="caption ml-2">
+                        <div class="row">
+                            <div class="col">
+                                7 Size
+                            </div>
+                            <div class="col mr-2" style="text-align: right;">
+                                <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="mr-2">
+                            <a href="shoes/{{this.slug}}">
+                                <b>{{this.name}}</b>
+                            </a>
+                            <p>{{this.price}}.000 đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="showfull">
+            <p><a href="/shoes/shoe-type/{{babyType}}"><u>Xem tất cả</u></a></p>
+        </div>
     </div>
+
+    <div class=" box-shoe">
+        <div class="title-product">
+            <a href="/shoes/shoe-type/{{sandalType}}">
+                <p>DÉP NAM</p>
+            </a>
+        </div>
+        <div class="row">
+            {{#each sandal}}
+            <div class="col-md-2 mt-4 ">
+                <div class="img" style="border: solid #e6e6e6 1px;">
+                    <a href="shoes/{{this.slug}}">
+                        <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                    </a>
+                    <div class="caption ml-2">
+                        <div class="row">
+                            <div class="col">
+                                7 Size
+                            </div>
+                            <div class="col mr-2" style="text-align: right;">
+                                <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="mr-2">
+                            <a href="shoes/{{this.slug}}">
+                                <b>{{this.name}}</b>
+                            </a>
+                            <p>{{this.price}}.000 đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="showfull">
+            <p><a href="/shoes/shoe-type/{{sandalType}}"><u>Xem tất cả</u></a></p>
+        </div>
+    </div>
+
+    <div class=" box-shoe">
+        <div class="title-product">
+            <a href="">
+                <p>BOOT NAM</p>
+            </a>
+        </div>
+        <div class="row">
+            {{#each boot}}
+            <div class="col-md-2 mt-4 ">
+                <div class="img" style="border: solid #e6e6e6 1px;">
+                    <a href="shoes/{{this.slug}}">
+                        <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                    </a>
+                    <div class="caption ml-2">
+                        <div class="row">
+                            <div class="col">
+                                7 Size
+                            </div>
+                            <div class="col mr-2" style="text-align: right;">
+                                <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="mr-2">
+                            <a href="shoes/{{this.slug}}">
+                                <b>{{this.name}}</b>
+                            </a>
+                            <p>{{this.price}}.000 đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="showfull">
+            <p><a href="/shoes/shoe-type/{{bootType}}"><u>Xem tất cả</u></a></p>
+        </div>
+    </div>
+
+    <div class="sale m-5" style="text-align: center;">
+        <img src="/img/sale.png" alt="" width="1241px" height="417px">
+    </div>
+    <div class=" box-shoe">
+        <div class="title-product">
+            <a href="">
+                <p>SẢN PHẨM SALE ĐẬM SÂU</p>
+            </a>
+        </div>
+        <div class="row">
+            {{#each boot}}
+            <div class="col-md-2 mt-4 ">
+                <div class="img" style="border: solid #e6e6e6 1px;">
+                    <a href="shoes/{{this.slug}}">
+                        <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                    </a>
+                    <div class="caption ml-2">
+                        <div class="row">
+                            <div class="col">
+                                7 Size
+                            </div>
+                            <div class="col mr-2" style="text-align: right;">
+                                <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="mr-2">
+                            <a href="shoes/{{this.slug}}">
+                                <b>{{this.name}}</b>
+                            </a>
+                            <div class="row">
+                                <div class="col"><del>
+                                        <p>{{this.price}}.000 đ</p>
+                                    </del></div>
+                                <div class="col">
+                                    <p style="color: red;">{{this.price}}.000 đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="showfull">
+            <p><a href="/shoes/shoe-type/{{bootType}}"><u>Xem tất cả</u></a></p>
+        </div>
+    </div>
+
 </div>
 
-<div class=" box-shoe">
-    <div class="title-product">
-        <a href="">
-            <p>GIÀY BÚP BÊ</p>
-        </a>
-    </div>
-    <div class="row">
-        {{#each baby}}
-        <div class="col-md-2 mt-4 ">
-            <div class="img" style="border: solid #e6e6e6 1px;">
-                <a href="shoes/{{this.slug}}">
-                    <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
-                </a>
-                <div class="caption ml-2">
-                    <div class="row">
-                        <div class="col">
-                            7 Size
-                        </div>
-                        <div class="col mr-2" style="text-align: right;">
-                            <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
-                        </div>
-                    </div>
-                    <div class="mr-2">
-                        <a href="shoes/{{this.slug}}">
-                            <b>{{this.name}}</b>
-                        </a>
-                        <p>{{this.price}}.000 đ</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{/each}}
-    </div>
-    <div class="showfull">
-        <p><a href="/shoes/shoe-type/{{babyType}}"><u>Xem tất cả</u></a></p>
-    </div>
-</div>
-
-<div class=" box-shoe">
-    <div class="title-product">
-        <a href="/shoes/shoe-type/{{sandalType}}">
-            <p>DÉP NAM</p>
-        </a>
-    </div>
-    <div class="row">
-        {{#each sandal}}
-        <div class="col-md-2 mt-4 ">
-            <div class="img" style="border: solid #e6e6e6 1px;">
-                <a href="shoes/{{this.slug}}">
-                    <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
-                </a>
-                <div class="caption ml-2">
-                    <div class="row">
-                        <div class="col">
-                            7 Size
-                        </div>
-                        <div class="col mr-2" style="text-align: right;">
-                            <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
-                        </div>
-                    </div>
-                    <div class="mr-2">
-                        <a href="shoes/{{this.slug}}">
-                            <b>{{this.name}}</b>
-                        </a>
-                        <p>{{this.price}}.000 đ</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{/each}}
-    </div>
-    <div class="showfull">
-        <p><a href="/shoes/shoe-type/{{sandalType}}"><u>Xem tất cả</u></a></p>
-    </div>
-</div>
-
-<div class=" box-shoe">
-    <div class="title-product">
-        <a href="">
-            <p>BOOT NAM</p>
-        </a>
-    </div>
-    <div class="row">
-        {{#each boot}}
-        <div class="col-md-2 mt-4 ">
-            <div class="img" style="border: solid #e6e6e6 1px;">
-                <a href="shoes/{{this.slug}}">
-                    <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
-                </a>
-                <div class="caption ml-2">
-                    <div class="row">
-                        <div class="col">
-                            7 Size
-                        </div>
-                        <div class="col mr-2" style="text-align: right;">
-                            <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
-                        </div>
-                    </div>
-                    <div class="mr-2">
-                        <a href="shoes/{{this.slug}}">
-                            <b>{{this.name}}</b>
-                        </a>
-                        <p>{{this.price}}.000 đ</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{/each}}
-    </div>
-    <div class="showfull">
-        <p><a href="/shoes/shoe-type/{{bootType}}"><u>Xem tất cả</u></a></p>
+<div class="slideshow mt-5">
+    <div id="">
+        <img loading="lazy" id="image1" src="/img/mwc3.jpg" alt="Sample Image" width="100%" height="600px">
     </div>
 </div>
 {{!-- >>>>>>> frontend --}}
@@ -172,6 +230,21 @@
     }
 
     setInterval(changeImage, 3000);
+
+    /* slideshow cuối trang */
+    var image1 = document.getElementById('image1');
+    var images1 = [
+        '/img/mwc3.jpg',
+        '/img/mwc4.jpg'
+    ];
+    var currentIndex = 0;
+
+    function changeImage1() {
+        image1.src = images1[currentIndex];
+        currentIndex = (currentIndex + 1) % images.length;
+    }
+
+    setInterval(changeImage1, 3000);
 
     document.addEventListener('DOMContentLoaded', function () {
         var hearts = document.querySelectorAll('.heart');
