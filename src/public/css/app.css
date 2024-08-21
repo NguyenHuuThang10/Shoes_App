@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .ml-2 {
   margin-left: 2px;
 }
@@ -6,20 +7,42 @@
   margin-top: 100px;
 }
 
-.header-client {
-  background-color: #fff !important;
-  height: 62px;
-  top: 0;
-  position: fixed;
-  right: 0;
-  left: 0;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 100;
+/* navbar top */
+.col-nav1 {
+  color: white;
+  width: 100%;
+  line-height: 3em;
+  font-size: small;
+  margin-left: 50px;
+  font-weight: 500;
+}
+
+.col-nav2 {
+  color: white;
+  width: 100%;
+  line-height: 3em;
+  font-size: small;
+  text-align: right;
+  margin-right: 50px;
+  font-weight: 500;
+}
+
+#a-nav {
+  text-decoration: none;
+  color: white;
+}
+
+/* navbar top */
+/* main content */
+.main-content {
+  width: 100%;
+  background-size: cover;
+  background-position: 70%;
 }
 
 .header-client .logo-header {
   height: 100%;
-  width: 76px;
+  width: 85px;
 }
 
 #nav {
@@ -89,14 +112,27 @@
   background-color: #333333;
 }
 
+.input-group {
+  width: 300px;
+  margin: 10px;
+}
+
 .icon-user i {
-  font-size: 25px;
+  font-size: 20px;
   padding: 10px;
+  margin: 5px;
 }
 
 .icon-cart i {
-  font-size: 25px;
+  font-size: 20px;
   padding: 10px;
+  margin: 5px;
+}
+
+.icon-heart {
+  font-size: 20px;
+  padding: 5px;
+  margin: 5px;
 }
 
 .icon-header a {
@@ -104,18 +140,64 @@
   display: inline-block;
 }
 
+.suggestions-box {
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  position: absolute;
+  background-color: white;
+  z-index: 1000;
+  width: 300px;
+  margin-top: 41px;
+}
+
+.suggestions-box a {
+  display: block;
+  padding: 8px;
+  text-decoration: none;
+  color: black;
+}
+
+.suggestions-box a:hover {
+  background-color: #f1f1f1;
+}
+
+/* main content */
+/* Home.hbs */
+.heart {
+  color: #000;
+  /* Màu xám mặc định */
+  cursor: pointer;
+}
+
+.heart.active {
+  color: red; /* Màu đỏ khi được chọn */
+}
+
+/* Home.hbs */
+/*help*/
+.card-help {
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 3em;
+}
+
+/*help*/
 .footer ul {
   list-style-type: none;
 }
 
 .footer li {
   padding: 10px;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .footer .text-footer {
   font-size: 25px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .socials-list {
@@ -156,15 +238,17 @@
 }
 
 .title-product {
-  height: 100px;
+  height: 70px;
   width: 100%;
-  border-top: 1px solid;
 }
 
 .title-product p {
-  font-size: 30px;
-  text-align: center;
-  line-height: 100px;
+  font-weight: 700;
+  margin-top: 50px;
+  line-height: 50px;
+  font-size: 25PX;
+  text-align: left;
+  border-bottom: #ddd 1px solid;
 }
 
 .box-shoe a {
@@ -201,7 +285,7 @@
 }
 
 .caption {
-  text-align: center;
+  text-align: left;
   margin-top: 5px;
 }
 
@@ -420,10 +504,6 @@ span#or-text {
   line-height: 50px;
 }
 
-.mt-62 {
-  margin-top: 62px;
-}
-
 .list-profile a {
   color: black;
 }
@@ -484,4 +564,4 @@ span#or-text {
   border-color: red;
 }
 
-/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../resources/scss/app.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22AACA;EAEE;;;AAEF;EACA;;;AAEA;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;;;AAGF;EACE;;;AAEF;EACE;EACA;;;AAGF;EACE;;;AAIF;EACE;EACA;EACA;EACA;;;AAGF;AAAA;EAEE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;;;AAEF;EACE;;;AAEF;EACE;EACA;EACA;;;AAEF;EACE;EACA;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;;;AAEF;EACE;;;AAEF;EACE;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;EACA;;;AAEF;AAAA;AAAA;AAAA;EAIE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;;;AAEF;EACE;;;AAEF;EACE;EACA;EACA;;;AAEF;EACE;;;AAEF;EACE;;;AAEF;EACE;EACA;;;AAEF;AAAA;EAEE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAEF;EACE;;;AAEF;EACE;EACA;;;AAEF;EACE;;;AAEF;EACE;;;AAEF;EACE;;;AAEF;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAEF;EACE%22,%22file%22:%22app.css%22%7D */
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../resources/scss/app.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22;AAAA;EACE;;;AAGF;EACE;;;AAGF;AACA;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;AAEA;AACA;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;AAAA;EAEE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;AAEA;AACA;EACE;AACA;EACA;;;AAEF;EACE;;;AAEF;AACA;AACA;EACE;EACA;EACA;EACA;EACA;;;AAGF;AACA;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;AAAA;AAAA;AAAA;EAIE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;AAAA;EAEE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAIF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE%22,%22file%22:%22app.css%22%7D */

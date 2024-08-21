@@ -31,16 +31,16 @@ class SiteController {
 
   async index(req, res, next) {
     try {
-      var shoeHight = await Shoe.find({ typeDetail: "Giày cao gót"}).limit(4)
+      var shoeHight = await Shoe.find({ typeDetail: "Giày cao gót"}).limit(6)
       var shoeHightType = await Shoe.findOne({ typeDetail: "Giày cao gót"})
 
-      var sandal = await Shoe.find({ typeDetail: "Dép nam"}).limit(4)
+      var sandal = await Shoe.find({ typeDetail: "Dép nam"}).limit(6)
       var sandalType = await Shoe.findOne({ typeDetail: "Dép nam"})
 
-      var baby = await Shoe.find({ typeDetail: "Giày búp bê"}).limit(4)
+      var baby = await Shoe.find({ typeDetail: "Giày búp bê"}).limit(6)
       var babyType = await Shoe.findOne({ typeDetail: "Giày búp bê"})
 
-      var boot = await Shoe.find({ typeDetail: "Boot nam"}).limit(4)
+      var boot = await Shoe.find({ typeDetail: "Boot nam"}).limit(6)
       var bootType = await Shoe.findOne({ typeDetail: "Boot nam"})
       if( shoeHight ){
         res.render("home", {
