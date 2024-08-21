@@ -1,6 +1,7 @@
 const Shoe = require("../models/Shoe");
 const User = require("../models/User");
 const Order = require("../models/Order");
+const Blog = require("../models/Blog");
 const url = require('url')
 const { URL, URLSearchParams } = require('url');
 const {
@@ -36,6 +37,7 @@ class MeController {
     try {
       req.body.image = req.file.filename;
       await Shoe.createShoe(req.body);
+      req.flash('success', 'Thêm sản phẩm thành công!');
       res.redirect("/me/stored/shoes"); ///me/stored/shoes
     } catch (error) {
       next(error);
@@ -90,6 +92,7 @@ class MeController {
         shoes = shoes.slice(offset, offset + PAGE_SIZE);
 
         res.render("me/storedShoes", {
+          success: req.flash('success'),
           page,
           maxPage,
           deletedCount,
@@ -516,6 +519,29 @@ class MeController {
     } catch (error) {
       console.log("ERR OrderDetail: " + error);
     }
+  }
+
+  //[GET] /me/create/blogs
+  createBlogs (req, res, next) {
+    res.render('me/createBlogs', {
+      success: req.flash('success')
+    })
+  }
+
+  //[POST] /me/create/blogs
+  storeBlogs (req, res, next) {
+    if(req.file) {
+      req.body.avatar = req.file.filename;
+    }
+    
+    var newBlog = new Blog(req.body)
+
+    newBlog.save()
+      .then(() => {
+        req.flash('success', 'Thêm bài blog thành công!')
+        res.redirect('back')
+      })
+      .catch(next)
   }
 }
 

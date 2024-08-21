@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Shoe = require("../models/Shoe");
+const Blog = require("../models/Blog");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -78,6 +79,60 @@ class SupportsController {
                 .json({ message: "Đã xảy ra lỗi khi xóa wishlistItem" });
         }
     }
+
+    //[GET] /blogs
+    blogs(req, res, next) {
+        Blog.find({})
+            .then((blog) => {
+                res.render('blogs/blogsCategory', {
+                    blog: mutipleMongooseToObject(blog),
+                    category: "Tất cả bài viết"
+                });
+            })
+            .catch(next)
+    }
+
+    //[GET] /blogs/:slugCategory
+    blogCategory(req, res, next) {
+        let slugCategory = req.params.slugCategory;
+
+        Blog.findOne({ slugCategory })
+            .then((categoryBlogs) => {
+                if (categoryBlogs) {
+                    return Blog.find({ slugCategory: slugCategory })
+                        .then((blog) => {
+                            res.render('blogs/blogsCategory', {
+                                blog: mutipleMongooseToObject(blog),
+                                category: categoryBlogs.category
+                            });
+                        })
+                } else {
+                    res.send("Trang không tồn tại");
+                }
+
+            })
+            .catch(next)
+
+    }
+
+    //[GET] /blogs/:slugCategory/:slug
+    blogDetail(req, res, next) {
+        let slug = req.params.slug;
+        let slugCategory = req.params.slugCategory
+
+        Blog.findOne({ slug, slugCategory })
+            .then((blog) => {
+                if (blog) {
+                    res.render('blogs/blogDetail', {
+                        blog: mongooseToObject(blog)
+                    })
+                } else {
+                    res.send("Trang không tồn tại!")
+                }
+            })
+            .catch(next)
+    }
 }
+
 
 module.exports = new SupportsController();

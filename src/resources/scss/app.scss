@@ -459,3 +459,19 @@ span#or-text {
 .wishlist-add-to-cart:hover {
   background-color: #333;
 }
+
+//BLOGS
+.blog-size {
+  padding: 20px 0;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.blog-size img {
+  width: 80%;
+  -webkit-transition: all 1.5s;
+}
+
+.blog-size img:hover {
+  transform: scale(1.1);
+}

@@ -3,13 +3,15 @@ const { engine } = require("express-handlebars");
 const path = require("path");
 const morgan = require("morgan");
 const routes = require("./routes");
-const app = express();
-const port = 3000;
 const db = require("./config/db");
 const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser')
 const paypal = require('paypal-rest-sdk');
 const SortMiddleware = require('./app/middlewares/SortMiddleware')
+const moment = require('moment-timezone'); //format date
+
+const app = express();
+const port = 3000;
 
 // request flash
 const flash = require('connect-flash');
@@ -47,6 +49,8 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
 app.use(morgan("combined"));
 
 app.use(SortMiddleware)
@@ -56,6 +60,9 @@ app.engine(
   engine({
     extname: ".hbs",
     helpers: {
+      formatDate: function (date, timezone, format) {
+        return moment(date).tz(timezone).format(format);
+      },
       sum: (a, b) => a + b,
       multi: (a, b) => a * b,
       ifEquals: function (arg1, arg2, options) {
@@ -66,24 +73,24 @@ app.engine(
         let result = '';
 
         var begin = page - 2
-        if(begin < 1){
-            begin = 1
+        if (begin < 1) {
+          begin = 1
         }
 
         var end = page + 2
-        if(end > maxPage){
-            end = maxPage
+        if (end > maxPage) {
+          end = maxPage
         }
 
-        
-        
+
+
         for (let i = begin; i <= end; i++) {
           // Chỉ định class "active" cho trang hiện tại
           const activeClass = i === page ? 'active' : '';
 
-          if(newUrl){
+          if (newUrl) {
             currentPage = newUrl + `&page=${i}`
-          }else{
+          } else {
             currentPage = `?page=${i}`
           }
 
@@ -92,11 +99,11 @@ app.engine(
         return result;
       },
       backPage: function (page, newUrl, options) {
-        if (page > 1 ) {
+        if (page > 1) {
 
-          if(newUrl){
+          if (newUrl) {
             currentPage = newUrl + `&page=${page - 1}`
-          }else{
+          } else {
             currentPage = `?page=${page - 1}`
           }
 
@@ -106,17 +113,17 @@ app.engine(
                           <span class="sr-only">Previous</span>
                       </a>
                   </li>`
-        }else {
+        } else {
           result = ''
         }
         return result
       },
       nextPage: function (page, maxPage, newUrl, options) {
-        if (page < maxPage ) {
+        if (page < maxPage) {
 
-          if(newUrl){
+          if (newUrl) {
             currentPage = newUrl + `&page=${page + 1}`
-          }else{
+          } else {
             currentPage = `?page=${page + 1}`
           }
 
@@ -126,34 +133,34 @@ app.engine(
                           <span class="sr-only">Next</span>
                       </a>
                   </li>`
-        }else {
+        } else {
           result = ''
         }
         return result
       },
       sortable: (field, sort) => {
         const sortType = field === sort.column ? sort.type : 'default'
-  
+
         const icons = {
           default: 'fa-solid fa-sort',
           asc: 'fa-solid fa-arrow-down-short-wide',
           desc: 'fa-solid fa-arrow-down-wide-short'
         }
-  
+
         const types = {
           default: 'desc',
           asc: 'desc',
           desc: 'asc'
         }
-  
+
         const icon = icons[sortType]
         const type = types[sortType]
         return `<a href="?_sort&column=${field}&type=${type}">
                   <span class="${icon}"></span>
               </a>`
-  
+
       }
-      
+
     },
   })
 );
