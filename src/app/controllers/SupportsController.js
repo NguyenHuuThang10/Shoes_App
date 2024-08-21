@@ -132,6 +132,12 @@ class SupportsController {
             })
             .catch(next)
     }
+
+
+    //[GET] /help
+    help(req, res, next) {
+        res.render("supports/help");
+    }
 }
 
 

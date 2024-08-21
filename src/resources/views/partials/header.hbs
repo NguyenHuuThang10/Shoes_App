@@ -1,58 +1,127 @@
-<nav class="navbar navbar-expand-sm  navbar-light header-client">
-  <div class="container">
-    <a class="navbar-brand" href="/"><img class="logo-header" src="/img/logo.png" alt=""></a>
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0 " id="nav">
-      <li>
-        <a class="nav-header nav-link" href="/shoes/shoe-type/giay-cao-got" >
-          Giày Nữ
-        </a>
-        <ul class="subnav">
-          <li><a href="/shoes/shoe-type/giay-cao-got">Giày Cao Gót</a></li>
-          <li><a href="/shoes/shoe-type/giay-bup-be">Giày Búp Bê</a></li>
-          <li><a href="/shoes/shoe-type/dep-nu">Dép Nữ</a></li>
-          <li><a href="/shoes/shoe-type/boot-nu">Boot Nữ</a></li>
-        </ul>
-      </li>
-       <li>
-        <a class="nav-header nav-link " href="/shoes/shoe-type/giay-tay" >
-          Giày Nam
-        </a>
-        <ul class="subnav">
-          <li><a href="/shoes/shoe-type/giay-the-thao">Giày Thể Thao</a></li>
-          <li><a href="/shoes/shoe-type/boot-nam">Boot nam</a></li>
-          <li><a href="/shoes/shoe-type/dep-nam">Dép Nam</a></li>
-          <li><a href="/shoes/shoe-type/giay-tay">Giày Tây & SLip On</a></li>
-        </ul>
-      </li>
-      <li class="nav-item">
-        <a class="nav-header nav-link" href="/shoes/shoe-type/giay-cap">Giày Cặp</a>
-      </li>
-    </ul>
-    <div class="icon-header">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item dropdown " style="cursor: pointer;">
-          {{#if currentUser}}
-            <a class="nav-link " id="navbardrop" data-toggle="dropdown">
-              <img src="/img/img_avatar3.png" alt="" class="user-avatar">
-              Hi, {{currentUser.name}}
-            </a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
-              {{#if currentUser.isAdmin}}
-                <a class="dropdown-item" href="/me/home">Quản lý thông tin</a>
-              {{/if}}
-              <a class="dropdown-item" href="/shoes/my-order">Đơn hàng của tôi</a>
-              <a class="dropdown-item" href="/password">Đổi mật khẩu</a>
-              <a class="dropdown-item" href="/log-out">Đăng xuất</a>
-            </div>
-          {{else}}
-            <a href="/login" class="icon-user"><i class="fa-regular fa-user"></i></a> 
-          {{/if}}
-        </li>
-        <li><a href="/shoes/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
-      </ul>
-
+<!-- navbar top -->
+<div class="header">
+  <div class="navbar-top bg-dark">
+    <div class="row">
+      <div class="col col-nav1">Hotline: 1900.633.349 (8:00-21:00) | Liên hệ hợp tác</div>
+      <div class="col col-nav2">
+        <a href="/help" id="a-nav">Trợ giúp</a> |
+        <a href="/shoes/my-order" id="a-nav">Tình trạng đơn hàng</a> |
+        <a href="/wishlist" id="a-nav">Danh sách yêu thích</a>
+      </div>
     </div>
-{{!-- >>>>>>> frontend --}}
   </div>
-</nav>
+  <!-- navbar top -->
+
+  <!-- main content -->
+  <div class="main-content">
+    <nav class="navbar navbar-expand-sm  navbar-light header-client">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img class="logo-header" src="/img/logo.png" alt=""></a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0 " id="nav">
+          <li>
+            <a class="nav-header nav-link" href="/shoes/shoe-type/giay-cao-got">
+              Giày Nữ
+            </a>
+            <ul class="subnav">
+              <li><a href="/shoes/shoe-type/giay-cao-got">Giày Cao Gót</a></li>
+              <li><a href="/shoes/shoe-type/giay-bup-be">Giày Búp Bê</a></li>
+              <li><a href="/shoes/shoe-type/dep-nu">Dép Nữ</a></li>
+              <li><a href="/shoes/shoe-type/boot-nu">Boot Nữ</a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="nav-header nav-link " href="/shoes/shoe-type/giay-tay">
+              Giày Nam
+            </a>
+            <ul class="subnav">
+              <li><a href="/shoes/shoe-type/giay-the-thao">Giày Thể Thao</a></li>
+              <li><a href="/shoes/shoe-type/boot-nam">Boot nam</a></li>
+              <li><a href="/shoes/shoe-type/dep-nam">Dép Nam</a></li>
+              <li><a href="/shoes/shoe-type/giay-tay">Giày Tây & SLip On</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-header nav-link" href="/shoes/shoe-type/giay-cap">Giày Cặp</a>
+          </li>
+        </ul>
+        <!-- Search form -->
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text" id="btnGroupAddon"><i class="fa-solid fa-magnifying-glass fa-beat"></i></div>
+          </div>
+          <input type="text" class="form-control" placeholder="Tìm kiếm" aria-describedby="btnGroupAddon"
+            id="search-input">
+          <div id="suggestions" class="suggestions-box"></div> <!-- Thêm div này -->
+        </div>
+
+
+        <div class="icon-header">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item dropdown " style="cursor: pointer;">
+              {{#if currentUser}}
+              <a class="nav-link " id="navbardrop" data-toggle="dropdown">
+                <img src="/img/img_avatar3.png" alt="" class="user-avatar">
+                Hi, {{currentUser.name}}
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/profile">Thông tin cá nhân</a>
+                {{#if currentUser.isAdmin}}
+                <a class="dropdown-item" href="/me/home">Quản lý thông tin</a>
+                {{/if}}
+                <a class="dropdown-item" href="/shoes/my-order">Đơn hàng của tôi</a>
+                <a class="dropdown-item" href="/password">Đổi mật khẩu</a>
+                <a class="dropdown-item" href="/log-out">Đăng xuất</a>
+              </div>
+              {{else}}
+              <a href="/login" class="icon-user"><i class="fa-regular fa-user"></i></a>
+              {{/if}}
+            </li>
+            <li><a href="#" class="icon-heart"><i class="fa-regular fa-heart"></i></a></li>
+            <li><a href="/shoes/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+          </ul>
+
+        </div>
+        {{!-- >>>>>>> frontend --}}
+      </div>
+    </nav>
+  </div>
+  <!-- main content -->
+
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var searchInput = document.getElementById('search-input');
+    var suggestionsBox = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', function () {
+      var query = searchInput.value.trim();
+
+      if (query.length > 0) {
+        // Giả sử chúng ta có một danh sách các từ khóa gợi ý (thực tế bạn sẽ lấy dữ liệu từ server)
+        var suggestions = ['Giày Nữ', 'Giày Cao Gót', 'Giày Thể Thao', 'Boot Nam', 'Dép Nữ', 'Giày Tây'];
+
+        // Lọc danh sách gợi ý theo từ khóa
+        var filteredSuggestions = suggestions.filter(function (suggestion) {
+          return suggestion.toLowerCase().includes(query.toLowerCase());
+        });
+
+        // Hiển thị các gợi ý
+        var suggestionsHtml = filteredSuggestions.map(function (suggestion) {
+          return '<a href="/search?query=' + suggestion + '">' + suggestion + '</a>';
+        }).join('');
+
+        suggestionsBox.innerHTML = suggestionsHtml;
+        suggestionsBox.style.display = 'block';
+      } else {
+        suggestionsBox.style.display = 'none';
+      }
+    });
+
+    // Đóng danh sách gợi ý khi người dùng click ra ngoài
+    document.addEventListener('click', function (event) {
+      if (!searchInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
+        suggestionsBox.style.display = 'none';
+      }
+    });
+  });
+</script>
