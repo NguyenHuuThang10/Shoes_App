@@ -30,13 +30,13 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(changeImage1, 3000);
 
     // xử lý phần trái tim
-    var hearts = document.querySelectorAll('.heart');
+    // var hearts = document.querySelectorAll('.heart');
 
-    hearts.forEach(function (heart) {
-        heart.addEventListener('click', function () {
-            heart.classList.toggle('active'); // Chuyển đổi giữa trạng thái có class 'active' và không có
-        });
-    });
+    // hearts.forEach(function (heart) {
+    //     heart.addEventListener('click', function () {
+    //         heart.classList.toggle('active'); // Chuyển đổi giữa trạng thái có class 'active' và không có
+    //     });
+    // });
 
     const selectElement = document.getElementById('category');
     const shoeContainer = document.getElementById('shoeContainer');
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
+// Xứ lý phần form search trang shoe type
     const searchForm = document.querySelector('.form-search');
     const shoeItems = document.querySelectorAll('.img');
     const originalOrder = Array.from(shoeItems);

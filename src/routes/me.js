@@ -1,10 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const upload = require('../app/middlewares/uploads')
+const createUploadMiddleware = require('../app/middlewares/upload')
 
 const meController = require("../app/controllers/MeController");
 
-router.post("/create/blogs", meController.checkLoginAdmin, upload.single('avatar'), meController.storeBlogs);
+const uploadBlog = createUploadMiddleware('../../public/uploads/blogs')
+const uploadPage = createUploadMiddleware('../../public/uploads/pages')
+const upload = createUploadMiddleware('../../public/uploads')
+
+router.get("/create/pages", meController.checkLoginAdmin, meController.createPages);
+router.post("/create/pages", meController.checkLoginAdmin, uploadPage.single('avatar'), meController.storePages);
+
+router.post("/create/blogs", meController.checkLoginAdmin, uploadBlog.single('avatar'), meController.storeBlogs);
 router.get("/create/blogs", meController.checkLoginAdmin, meController.createBlogs);
 
 router.get("/stored/shoes", meController.checkLoginAdmin, meController.storedShoes);
@@ -16,7 +23,6 @@ router.put("/:id/update/shoes", meController.checkLoginAdmin, upload.single('ima
 router.delete("/:id/delete/shoes", meController.checkLoginAdmin, meController.deleteShoes);
 router.delete("/:id/destroy/shoes", meController.checkLoginAdmin, meController.destroyShoes);
 router.patch("/:id/restore/shoes", meController.checkLoginAdmin, meController.restoreShoes);
-
 
 router.get("/stored/users", meController.checkLoginAdmin, meController.storedUsers);
 router.get("/trash/users", meController.checkLoginAdmin, meController.trashUsers);

@@ -2,6 +2,7 @@ const Shoe = require("../models/Shoe");
 const User = require("../models/User");
 const Order = require("../models/Order");
 const Blog = require("../models/Blog");
+const Page = require("../models/Page");
 const url = require('url')
 const { URL, URLSearchParams } = require('url');
 const {
@@ -29,13 +30,26 @@ class MeController {
 
   // [GET] /me/create/shoes
   createShoes(req, res, next) {
-    res.render("me/createShoes");
+    res.render("me/createShoes", {
+      err: req.flash('err')
+    });
   }
 
   // [POST] /me/store/shoes
   async storeShoes(req, res, next) {
     try {
-      req.body.image = req.file.filename;
+      if (req.file) {
+        req.body.image = req.file.filename;
+      } else {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
+        return res.redirect('back')
+      }
+
+      const { name, type, typeDetail, description, quantity, status, price } = req.body
+      if (!name || !type || !typeDetail || !description || !quantity || !status || !price) {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
+        return res.redirect('back')
+      }
       await Shoe.createShoe(req.body);
       req.flash('success', 'Thêm sản phẩm thành công!');
       res.redirect("/me/stored/shoes"); ///me/stored/shoes
@@ -93,6 +107,7 @@ class MeController {
 
         res.render("me/storedShoes", {
           success: req.flash('success'),
+          err: req.flash('err'),
           page,
           maxPage,
           deletedCount,
@@ -142,6 +157,7 @@ class MeController {
       .then((shoe) => {
         res.render("me/editShoes", {
           shoe: mongooseToObject(shoe),
+          err: req.flash('err')
         });
       })
       .catch(next);
@@ -152,8 +168,18 @@ class MeController {
     try {
       if (req.file) {
         req.body.image = req.file.filename;
+      } else {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
+        return res.redirect('back')
+      }
+
+      const { name, type, typeDetail, description, quantity, status, price } = req.body
+      if (!name || !type || !typeDetail || !description || !quantity || !status || !price) {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
+        return res.redirect('back')
       }
       await Shoe.updateShoe(req.params.id, req.body);
+      req.flash('success', 'Cập nhật sản phẩm thành công!')
       res.redirect("/me/stored/shoes");
     } catch (error) {
       next(error);
@@ -522,18 +548,18 @@ class MeController {
   }
 
   //[GET] /me/create/blogs
-  createBlogs (req, res, next) {
+  createBlogs(req, res, next) {
     res.render('me/createBlogs', {
       success: req.flash('success')
     })
   }
 
   //[POST] /me/create/blogs
-  storeBlogs (req, res, next) {
-    if(req.file) {
+  storeBlogs(req, res, next) {
+    if (req.file) {
       req.body.avatar = req.file.filename;
     }
-    
+
     var newBlog = new Blog(req.body)
 
     newBlog.save()
@@ -543,6 +569,31 @@ class MeController {
       })
       .catch(next)
   }
+
+  // [GET] /me/create/pages
+  createPages(req, res, next) {
+    res.render('me/createPages', {
+      success: req.flash('success')
+    })
+  }
+
+  //[POST] /me/create/pages
+  storePages(req, res, next) {
+    if (req.file) {
+      req.body.avatar = req.file.filename;
+    }
+
+    var newPage = new Page(req.body)
+
+    newPage.save()
+      .then(() => {
+        req.flash('success', 'Thêm trang thành công!')
+        res.redirect('back')
+      })
+      .catch(next)
+  }
 }
+
+
 
 module.exports = new MeController();

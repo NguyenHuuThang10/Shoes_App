@@ -159,7 +159,12 @@ app.engine(
                   <span class="${icon}"></span>
               </a>`
 
+      },
+      //Xử lý phần trái tim đổi màu
+      isInWishlist: function (shoeId, wishlistItems) {
+        return wishlistItems.some(item => item.toString() === shoeId.toString());
       }
+
 
     },
   })

@@ -203,6 +203,10 @@
 }
 
 /*help*/
+.footer a {
+  color: #000 !important;
+}
+
 .footer ul {
   list-style-type: none;
 }
@@ -513,8 +517,9 @@ span#or-text {
 }
 
 .detail-product {
-  background-color: darkgray;
+  background-color: #f0f0f0;
   height: 50px;
+  padding-left: 5px;
 }
 
 .detail-product h4 {
@@ -630,4 +635,26 @@ span#or-text {
 
 .blog-size img:hover {
   transform: scale(1.1);
+}
+
+.product-policy {
+
+}
+
+.product-policy .product-policy-item {
+  padding: 15px 20px;
+}
+
+.product-policy .product-policy-item i {
+  color: red;
+  font-size: 20px;
+}
+
+.product-policy p{
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.btn-heart {
+  background-color: #fff;
 }

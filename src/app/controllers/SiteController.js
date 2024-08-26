@@ -31,31 +31,41 @@ class SiteController {
 
   async index(req, res, next) {
     try {
-      var shoeHight = await Shoe.find({ typeDetail: "Giày cao gót"}).limit(6)
-      var shoeHightType = await Shoe.findOne({ typeDetail: "Giày cao gót"})
-
-      var sandal = await Shoe.find({ typeDetail: "Dép nam"}).limit(6)
-      var sandalType = await Shoe.findOne({ typeDetail: "Dép nam"})
-
-      var baby = await Shoe.find({ typeDetail: "Giày búp bê"}).limit(6)
-      var babyType = await Shoe.findOne({ typeDetail: "Giày búp bê"})
-
-      var boot = await Shoe.find({ typeDetail: "Boot nam"}).limit(6)
-      var bootType = await Shoe.findOne({ typeDetail: "Boot nam"})
-      if( shoeHight ){
-        res.render("home", {
-          shoeHight: mutipleMongooseToObject(shoeHight),
-          sandal: mutipleMongooseToObject(sandal),
-          baby: mutipleMongooseToObject(baby),
-          boot: mutipleMongooseToObject(boot),
-          shoeHightType: shoeHightType.slugType,
-          sandalType: sandalType.slugType,
-          babyType: babyType.slugType,
-          bootType: bootType.slugType,
-        });
+      const [shoeHight, shoeHightType, sandal, sandalType, baby, babyType, boot, bootType, discount] = await Promise.all([
+        Shoe.find({ typeDetail: "Giày cao gót" }).limit(6),
+        Shoe.findOne({ typeDetail: "Giày cao gót" }),
+        Shoe.find({ typeDetail: "Dép nam" }).limit(6),
+        Shoe.findOne({ typeDetail: "Dép nam" }),
+        Shoe.find({ typeDetail: "Giày búp bê" }).limit(6),
+        Shoe.findOne({ typeDetail: "Giày búp bê" }),
+        Shoe.find({ typeDetail: "Boot nam" }).limit(6),
+        Shoe.findOne({ typeDetail: "Boot nam" }),
+        Shoe.find({ priceDiscount: { $ne: null } }).limit(6)
+      ]);
+  
+      let wishlistItemIds = null;
+      if (res.locals.currentUser) {
+        const userId = res.locals.currentUser._id;
+        const user = await User.findOne({ _id: userId }).populate("wishlistItems.shoe");
+        wishlistItemIds = user.wishlistItems.map(item => item.shoe._id.toString());
       }
+  
+      res.render("home", {
+        shoeHight: mutipleMongooseToObject(shoeHight),
+        sandal: mutipleMongooseToObject(sandal),
+        baby: mutipleMongooseToObject(baby),
+        boot: mutipleMongooseToObject(boot),
+        discount: mutipleMongooseToObject(discount),
+        shoeHightType: shoeHightType.slugType,
+        sandalType: sandalType.slugType,
+        babyType: babyType.slugType,
+        bootType: bootType.slugType,
+        wishlistItems: wishlistItemIds
+      });
+  
     } catch (error) {
-      console.log("ERR: " + error)
+      console.log("ERR: " + error);
+      next(error); // Đảm bảo chuyển tiếp lỗi đến middleware xử lý lỗi.
     }
   }
 
@@ -102,29 +112,29 @@ class SiteController {
           req.body.password = bcrypt.hashSync(password, 10);
           const user = new User(req.body);
           user.save()
-            .then(() =>{
-                var sendMail = mailer.sendMail(
-                  email,
-                  "Active User",
-                  `Hi, ${name}. Vui lòng bấm vào nút "Active" để kích hoạt tài khoản.<br> <br> <br> <a style="padding: 16px 32px;
+            .then(() => {
+              var sendMail = mailer.sendMail(
+                email,
+                "Active User",
+                `Hi, ${name}. Vui lòng bấm vào nút "Active" để kích hoạt tài khoản.<br> <br> <br> <a style="padding: 16px 32px;
                   display: inline-block;
                   background-color: green;
                   color: #fff;
                   text-decoration: none;
                   font-size: 25px;" href="${process.env.APP_URL}/active?token=${token}"> Active </a>`
-                );
-                if (sendMail) {
-                  return res.render("form/userForm", {
-                    sucessSignUp: "Tạo tài khoản thành công, vui lòng kiểm tra email để kích hoạt tài khoản!",
-                  })
-                } else {
-                  return res.render("form/userForm", {
-                    errSignUp: "Gửi mail thất bại!",
-                  })
-                }
+              );
+              if (sendMail) {
+                return res.render("form/userForm", {
+                  sucessSignUp: "Tạo tài khoản thành công, vui lòng kiểm tra email để kích hoạt tài khoản!",
+                })
+              } else {
+                return res.render("form/userForm", {
+                  errSignUp: "Gửi mail thất bại!",
+                })
+              }
             })
             .catch(next)
-          
+
         }
       })
       .catch((err) => {
@@ -137,23 +147,23 @@ class SiteController {
       .catch(next);
   }
 
-    // [Get] /active
-    async active (req, res, next) {
-      try {
-        var token = req.query.token
-        var checkToken = await User.findOneAndUpdate(
-                                    { activeToken: token },
-                                    {  activeToken: null },
-                                    { new: true }
-                                );
-        if(checkToken){
-            res.redirect('/login')
+  // [Get] /active
+  async active(req, res, next) {
+    try {
+      var token = req.query.token
+      var checkToken = await User.findOneAndUpdate(
+        { activeToken: token },
+        { activeToken: null },
+        { new: true }
+      );
+      if (checkToken) {
+        res.redirect('/login')
       }
-      } catch (error) {
-        console.log("ERR: " + error)
-      }
-      
+    } catch (error) {
+      console.log("ERR: " + error)
     }
+
+  }
 
   // [GET] /login
   signIn(req, res, next) {
@@ -176,7 +186,7 @@ class SiteController {
         errLogin: "Email không đúng định dạng!",
         oldLogin: req.body
       });
-      
+
 
     }
 
@@ -211,7 +221,7 @@ class SiteController {
         res.render("form/userForm", {
           errLogin: "Đăng nhập thất bại!",
           old: req.body
-          
+
         });
       })
       .catch(next);
@@ -304,18 +314,18 @@ class SiteController {
   }
 
   // [Get] /reset
-  async renderReset (req, res, next) {
+  async renderReset(req, res, next) {
     try {
       var token = req.query.token
       var email = req.query.email
       var checkToken = await User.findOneAndUpdate(
-                                  { resetToken: token },
-                                  {  resetToken: null },
-                                  { new: true }
-                              );
-      if(checkToken){
-          res.render('form/resetPassword', { email })
-      }else{
+        { resetToken: token },
+        { resetToken: null },
+        { new: true }
+      );
+      if (checkToken) {
+        res.render('form/resetPassword', { email })
+      } else {
         res.redirect('/login')
       }
     } catch (error) {
@@ -324,9 +334,9 @@ class SiteController {
   }
 
   // [PUT] /reset
-  resetPassword (req, res, next) {
+  resetPassword(req, res, next) {
     const { email, password, confirm_password } = req.body;
-    
+
     if (!password || !confirm_password) {
       return res.render("form/resetPassword", {
         msgErr: "Vui long nhập đầy đủ thông tin!",
@@ -340,104 +350,104 @@ class SiteController {
     }
 
     var passwordHash = bcrypt.hashSync(password, 10);
-    
+
     User.updateOne({ email }, { password: passwordHash })
-        .then(data => {
-          if(data){
-            res.redirect('/login')
-          }else{
-             res.render("form/resetPassword", {
-              msgErr: "Cấp lại mật khẩu không thành công!",
-              email
-            });
-          }
-        })
-        .catch(err => {
-            console.log("ERR: " + err)
-        })
-        .catch(next)
+      .then(data => {
+        if (data) {
+          res.redirect('/login')
+        } else {
+          res.render("form/resetPassword", {
+            msgErr: "Cấp lại mật khẩu không thành công!",
+            email
+          });
+        }
+      })
+      .catch(err => {
+        console.log("ERR: " + err)
+      })
+      .catch(next)
   }
 
-    cart (req, res, next) {
-        res.render('shoes/cart')
-    }
-    
-    async profile (req, res, next) {
-        var userId = res.locals.currentUser._id
-        var shippingAddress = await Order.findOne({ user: userId })
-        if(shippingAddress){
-          res.render('form/profile', {
-            user: res.locals.currentUser,
-            shippingAddress: mongooseToObject(shippingAddress.shippingAddress)
-          })
-        }else{
-          res.render('form/profile', {
-            user: res.locals.currentUser,
-          })
-        }
-    } 
-    
-    // [get] /password
-    password (req, res, next) {
+  cart(req, res, next) {
+    res.render('shoes/cart')
+  }
 
+  async profile(req, res, next) {
+    var userId = res.locals.currentUser._id
+    var shippingAddress = await Order.findOne({ user: userId })
+    if (shippingAddress) {
+      res.render('form/profile', {
+        user: res.locals.currentUser,
+        shippingAddress: mongooseToObject(shippingAddress.shippingAddress)
+      })
+    } else {
+      res.render('form/profile', {
+        user: res.locals.currentUser,
+      })
+    }
+  }
+
+  // [get] /password
+  password(req, res, next) {
+
+    var userId = res.locals.currentUser._id
+
+    res.render('form/password', {
+      user: res.locals.currentUser,
+    })
+  }
+
+  // [post] /password
+  async changePass(req, res, next) {
+    try {
+      var { passOld, passNew, confirm_password } = req.body
       var userId = res.locals.currentUser._id
-        
-        res.render('form/password', {
+
+      if (!passNew || !passOld || !confirm_password) {
+        return res.render('form/password', {
+          msgErr: "Vui lòng nhập đầy đủ thông tin!",
           user: res.locals.currentUser,
         })
-    }
+      }
+      var comparePassword = bcrypt.compareSync(passOld, res.locals.currentUser.password);
 
-    // [post] /password
-    async changePass (req, res, next) {
-      try {
-        var { passOld, passNew, confirm_password } = req.body
-        var userId = res.locals.currentUser._id
-
-        if(!passNew || !passOld || !confirm_password){
+      if (comparePassword) {
+        if (passNew !== confirm_password) {
           return res.render('form/password', {
-            msgErr: "Vui lòng nhập đầy đủ thông tin!",
+            msgErr: "Nhập lại mật khẩu không trùng khớp!",
             user: res.locals.currentUser,
           })
-        }
-        var comparePassword = bcrypt.compareSync(passOld, res.locals.currentUser.password);
+        } else {
+          var passNewHash = bcrypt.hashSync(passNew, 10);
+          var update = await User.findOneAndUpdate(
+            { _id: userId },
+            { password: passNewHash },
+            { new: true }
+          )
 
-        if(comparePassword) {
-          if (passNew !== confirm_password){
+          if (update) {
             return res.render('form/password', {
-              msgErr: "Nhập lại mật khẩu không trùng khớp!",
+              msg: "Đổi mật khẩu thành công!",
               user: res.locals.currentUser,
             })
-          }else{
-            var passNewHash = bcrypt.hashSync(passNew, 10);
-            var update = await User.findOneAndUpdate(
-              { _id: userId },
-              {  password: passNewHash },
-              { new: true }
-            )
-
-            if(update){
-              return res.render('form/password', {
-                msg: "Đổi mật khẩu thành công!",
-                user: res.locals.currentUser,
-              })
-            }else{
-              res.json('LOi')
-            }
-
+          } else {
+            res.json('LOi')
           }
-        }else{
-          return res.render('form/password', {
-            msgErr: "Mật khẩu cũ không đúng!",
-            user: res.locals.currentUser,
-          })
+
         }
-        
-      } catch (error) {
-        console.log("ERR: " + error)
+      } else {
+        return res.render('form/password', {
+          msgErr: "Mật khẩu cũ không đúng!",
+          user: res.locals.currentUser,
+        })
       }
 
-
+    } catch (error) {
+      console.log("ERR: " + error)
     }
+
+
+  }
 
 }
 

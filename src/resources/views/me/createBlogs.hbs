@@ -1,7 +1,7 @@
 <div class="content-wrapper" style="min-height: 650px; margin-bottom: 20px">
     <div class="container-fluid">
         <div class="content-header">
-            <h1>Thêm bài blog:</h1>
+            <h1>Thêm bài viết:</h1>
             {{#if err}}
                 <div class="alert alert-danger" role="alert">
                     {{err}}
@@ -18,11 +18,11 @@
                 <div class="col mx-sm-3">
                     <div class="form-group">
                         <label for="title">Tiêu đề</label>
-                        <input type="text" class="form-control" id="title" name="title"  placeholder="Nhập tiêu đề bài blog" value="{{old.name}}">
+                        <input type="text" class="form-control" id="title" name="title"  placeholder="Nhập tiêu đề bài viết" value="{{old.name}}">
                     </div>
                     <div class="form-group">
                         <label for="description">Mô tả</label>
-                        <input type="text" class="form-control" id="description" name="description"  placeholder="Nhập mô tả bài blog" value="{{old.email}}">
+                        <input type="text" class="form-control" id="description" name="description"  placeholder="Nhập mô tả bài viết" value="{{old.email}}">
                     </div>
 
                     <div class="form-group">
@@ -42,14 +42,14 @@
                     
                     <div class="form-group">
                         <label for="content">Nội dung</label>
-                        <textarea class="form-control" name="content" id="content"></textarea>
+                        <textarea class="form-control content" name="content" id="content"></textarea>
                     </div>
 
                     
                 </div>
 
             </div>
-            <button type="submit" class="btn btn-primary mx-sm-3">Thêm blog</button>
+            <button type="submit" class="btn btn-primary mx-sm-3">Thêm bài viết</button>
         </form>
     </div>
 </div>

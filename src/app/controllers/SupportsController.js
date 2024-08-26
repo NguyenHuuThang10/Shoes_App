@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Shoe = require("../models/Shoe");
 const Blog = require("../models/Blog");
+const Page = require("../models/Page");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const {
@@ -47,7 +48,7 @@ class SupportsController {
                 shoe: shoe._id,
             })
             await wishlist.save();
-            return res.redirect('back');
+            return res.json({ success: true, message: "Đã thêm vào yêu thích" });
 
 
         } catch (error) {
@@ -63,6 +64,7 @@ class SupportsController {
     async deleteWishlist(req, res, next) {
         try {
             const wishlistItemId = req.params.id;
+           
             const user = await User.findOneAndUpdate(
                 { "wishlistItems._id": wishlistItemId },
                 { $pull: { wishlistItems: { _id: wishlistItemId } } },
@@ -137,6 +139,23 @@ class SupportsController {
     //[GET] /help
     help(req, res, next) {
         res.render("supports/help");
+    }
+
+    //[GET] /pages/:slugCategory
+    pageDetail (req, res, next) {
+        let slugCategory = req.params.slugCategory
+
+        Page.findOne({ slugCategory })
+            .then((page) => {
+                if (page) {
+                    res.render('pages/pageDetail', {
+                        page: mongooseToObject(page)
+                    })
+                } else {
+                    res.send("Trang không tồn tại!")
+                }
+            })
+            .catch(next)
     }
 }
 

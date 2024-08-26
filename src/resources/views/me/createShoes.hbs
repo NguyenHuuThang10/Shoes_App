@@ -3,6 +3,11 @@
         <div class="content-header">
             <h1>Đăng sản phẩm:</h1>
         </div>
+        {{#if err}}
+        <div class="alert alert-danger" role="alert">
+            {{err}}
+        </div>
+        {{/if}}
         <form action="/me/store/shoes" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col mx-sm-3">
@@ -10,10 +15,7 @@
                         <label for="name">Tên sản phẩm</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên sản phẩm">
                     </div>
-                    <div class="form-group">
-                        <label for="description">Mô tả</label>
-                        <textarea class="form-control" id="description" name="description" placeholder="Nhập mô tả"></textarea>
-                    </div>
+
                     <div class="form-group">
                         <label for="type">Kiểu giày</label>
                         <select class="form-control" id="type" name="type">
@@ -24,34 +26,48 @@
                     </div>
                     <div class="form-group">
                         <label for="typeDetail">Kiểu dáng</label>
-                        <input type="text" class="form-control" id="typeDetail" name="typeDetail" placeholder="Nhập kiểu dáng">
+                        <input type="text" class="form-control" id="typeDetail" name="typeDetail"
+                            placeholder="Nhập kiểu dáng">
                     </div>
+
                     <div class="form-group">
-                        <label for="origin">Xuất xứ</label>
-                        <input type="text" class="form-control" id="origin" name="origin" placeholder="Nhập xuất xứ">
+                        <label for="description">Mô tả</label>
+                        <textarea class="form-control content" id="description" name="description"
+                            placeholder="Nhập mô tả"></textarea>
                     </div>
+
                 </div>
 
                 <div class="col mx-sm-3">
                     <div class="form-group">
-                        <label for="material">Chất liệu</label>
-                        <input type="text" class="form-control" id="material" name="material" placeholder="Nhập chất liệu">
+                        <label for="quantity">Số lượng hàng trong kho</label>
+                        <input type="text" class="form-control" id="quantity" name="quantity"
+                            placeholder="Nhập số lượng hàng trong kho">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Tình trạng hàng</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="" selected>-- Tình trạng hàng --</option>
+                            <option value="1">Còn hàng</option>
+                            <option value="0">Đã hết hàng</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="soleMaterial">Chất liệu đế</label>
-                        <input type="text" class="form-control" id="soleMaterial" name="soleMaterial" placeholder="Nhập chất liệu đế">
+                        <label for="price">Giá gốc</label>
+                        <input type="text" class="form-control" id="price" name="price" placeholder="Nhập giá gốc">
                     </div>
+
                     <div class="form-group">
-                        <label for="height">Chiều cao</label>
-                        <input type="text" class="form-control" id="height" name="height" placeholder="Nhập chiều cao">
+                        <label for="priceDiscount">Giá giảm</label>
+                        <input type="text" class="form-control" id="priceDiscount" name="priceDiscount"
+                            placeholder="Nhập giá giảm">
                     </div>
-                    <div class="form-group">
-                        <label for="price">Giá</label>
-                        <input type="text" class="form-control" id="price" name="price" placeholder="Nhập giá">
-                    </div>
+
                     <div class="form-group">
                         <label for="image">Hình ảnh</label>
-                        <input type="file" class="form-control-file" id="image" name="image" placeholder="Nhập hình ảnh">
+                        <input type="file" class="form-control-file" id="image" name="image"
+                            placeholder="Nhập hình ảnh">
                     </div>
 
                 </div>

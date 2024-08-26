@@ -9,8 +9,21 @@
                 <input type="hidden" name="amount" value="1">
 
                 <h3 class="product-name">{{shoe.name}}</h3>
+                {{#if shoe.priceDiscount}}
+                <div class="row">
+                    <div class="col-2"><del>
+                            <p>{{shoe.priceDiscount}}.000 đ</p>
+                        </del></div>
+                    <div class="col">
+                        <h3 class="price">{{shoe.price}}.000 đ</h3>
+                    </div>
+                </div>
+                {{else}}
                 <h3 class="price">{{shoe.price}}.000 đ</h3>
-                <div class="size mt-5">
+                {{/if}}
+
+
+                <div class="size mt-4">
                     <label for="">Kích thước</label>
                     <div class="size-option">
                         <!-- Thay đổi các nút button thành các nút radio để người dùng có thể chọn size -->
@@ -30,7 +43,7 @@
                         <label for="size42">42</label>
                     </div>
                 </div>
-                <div class="order">
+                <div class="order mt-4">
                     <div class="row">
                         <div class="col-4">
                             <button type="submit" class="btn order-buy">Mua Ngay</button>
@@ -42,28 +55,52 @@
                 <div class="col-4">
                     <form action="/add-wishlist" method="post">
                         <input type="hidden" name="shoeId" value="{{shoe._id}}">
-                         <input type="hidden" name="size" id="wishlistSize">
-                        <button class="btn btn-light btn-block"> <i class="fa-regular fa-heart"></i> Thêm vào yêu thích</button>
+                        <input type="hidden" name="size" id="wishlistSize">
+                        <button class="btn btn-light btn-block"> <i class="fa-regular fa-heart"></i> Thêm vào yêu
+                            thích</button>
                     </form>
                 </div>
             </div>
 
-            <div class="detail mt-5 ">
-                <div class="detail-product col-12 border">
-                    <h4>Chi tiết sản phẩm</h4>
+            <div class="row text-center product-policy mt-4" >
+                <div class="col-4 product-policy-item">
+                    <i class="fa-solid fa-award"></i>
+                    <p>Bảo hành keo vĩnh viễn</p>
                 </div>
-                <div class="col-12 border p-3">
-                    <h6>MÃ SẢN PHẨM : {{shoe.name}}</h6>
-                    <p>{{shoe.description}}</p>
-                    <h6>Chi tiết sản phẩm</h6>
-                    <ul>
-                        <li>Chiều cao : {{shoe.height}}</li>
-                        <li>Chất liệu : {{shoe.material}}</li>
-                        <li>Đế : {{shoe.soleMaterial}}</li>
-                        <li>Kiểu dáng : {{shoe.typeDetail}}</li>
-                        <li>Xuất sứ : {{shoe.origin}}</li>
-                    </ul>
+                <div class="col-4 product-policy-item">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <p>Miễn phí vận chuyển toàn quốc cho đơn hàng từ 500k</p>
                 </div>
+                <div class="col-4 product-policy-item">
+                    <i class="fa-solid fa-right-left"></i>
+                    <p>Đổi trả dễ dàng (trong vòng 7 ngày nếu lỗi nhà sản xuất)</p>
+                </div>
+            </div>
+            <div class="row text-center product-policy">
+                <div class="col-4 product-policy-item">
+                    <i class="fa-solid fa-phone-volume"></i>
+                    <p>Hotline 1900.633.349 hỗ trợ từ 8h30-21h30</p>
+                </div>
+                <div class="col-4 product-policy-item">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                    <p>Giao hàng tận nơi, nhận hàng xong thanh toán</p>
+                </div>
+                <div class="col-4 product-policy-item">
+                    <i class="fa-solid fa-ticket"></i>
+                    <p>Ưu đãi tích điểm và hưởng quyền lợi thành viên từ TOPSHOES</p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="detail mt-5 col">
+            <div class="detail-product border">
+                <h4>Chi tiết sản phẩm</h4>
+            </div>
+            <div class="border p-3">
+                {{{shoe.description}}}
             </div>
         </div>
     </div>
@@ -105,5 +142,3 @@
         });
     });
 </script>
-
-

@@ -22,7 +22,16 @@
                             <div class="card-body">
                                 <h2 class="card-title">{{this.shoe.name}}</h2>
                                 <p class="card-text"><b>Giá:</b> {{this.shoe.price}}.000 VND</p>
-                                <p class="card-text"><b>Size:</b> {{this.size}}</p>
+                                {{!-- <p class="card-text"><b>Size:</b> {{this.size}}</p> --}}
+                                <select name="size" class="form-control" id="" style="width: 10%;">
+                                    <option {{#ifEquals this.size "36" }}selected{{/ifEquals}} value="36">36</option>
+                                    <option {{#ifEquals this.size "37" }}selected{{/ifEquals}} value="37">37</option>
+                                    <option {{#ifEquals this.size "38" }}selected{{/ifEquals}} value="38">38</option>
+                                    <option {{#ifEquals this.size "39" }}selected{{/ifEquals}} value="39">39</option>
+                                    <option {{#ifEquals this.size "40" }}selected{{/ifEquals}} value="40">40</option>
+                                    <option {{#ifEquals this.size "41" }}selected{{/ifEquals}} value="41">41</option>
+                                    <option {{#ifEquals this.size "42" }}selected{{/ifEquals}} value="42">42</option>
+                                </select>
                                 <p class="card-text"><small class="text-muted">Còn hàng</small></p>
 
                                 <p>
@@ -35,10 +44,10 @@
 
                                     <input type="hidden" name="shoeId" value="{{this.shoe._id}}">
                                     <input type="hidden" name="amount" value="1">
-                                    <input type="hidden" name="size" value="{{this.size}}">
+                                    {{!-- <input type="hidden" name="size" value="{{this.size}}"> --}}
                 </form>
                 <div class="col-2">
-                    <a href="" class="btn btn-danger btn-block btn-delete-wishlist" data-id="{{this._id}}"=""><i class="fa-solid fa-trash"></i></a>
+                    <a href="" class="btn btn-danger btn-block btn-delete-wishlist" data-id="{{this._id}}"><i class="fa-solid fa-trash"></i></a>
                 </div>
             </div>
             </p>

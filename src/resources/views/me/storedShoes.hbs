@@ -7,6 +7,12 @@
                 {{success}}
             </div>
             {{/if}}
+            
+            {{#if err}}
+            <div class="alert alert-danger" role="alert">
+                {{err}}
+            </div>
+            {{/if}}
             {{#if deletedCount}}
             <a class="btn btn-secondary" href="/me/trash/shoes"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
                 {{deletedCount}} )</a>

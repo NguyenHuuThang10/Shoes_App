@@ -39,14 +39,42 @@
                                 7 Size
                             </div>
                             <div class="col mr-2" style="text-align: right;">
-                                <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                                {{#if ../currentUser}}
+                                {{#if (isInWishlist this._id ../wishlistItems)}}
+                                <a href="/wishlist" class="btn"><i class="fa-solid fa-heart heart active"
+                                        id="heart"></i></a>
+                                {{else}}
+                                <form action="/add-wishlist" method="post">
+                                    <input type="hidden" name="shoeId" value="{{this._id}}">
+                                    <input type="hidden" name="size" id="wishlistSize" value="36">
+                                    <button type="button" class="btn btn-heart add-to-wishlist"
+                                        data-shoe-id="{{this._id}}" data-shoe-size="36"><i
+                                            class="fa-solid fa-heart heart" id="heart"></i></button>
+                                </form>
+                                {{/if}}
+                                {{else}}
+                                <a href="/login"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                                {{/if}}
                             </div>
                         </div>
                         <div class="mr-2">
                             <a href="/shoes/{{this.slug}}">
                                 <b>{{this.name}}</b>
                             </a>
-                            <p>{{this.price}}.000 đ</p>
+                            <div class="row">
+                                {{#if this.priceDiscount}}
+                                <div class="col"><del>
+                                        <p>{{this.price}}.000 đ</p>
+                                    </del></div>
+                                <div class="col">
+                                    <p style="color: red;">{{this.priceDiscount}}.000 đ</p>
+                                </div>
+                                {{else}}
+                                <div class="col">
+                                    <p>{{this.price}}.000 đ</p>
+                                </div>
+                                {{/if}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,3 +100,36 @@
     </div>
 
 </div>
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        const wishlistButtons = document.querySelectorAll('.add-to-wishlist');
+
+        wishlistButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                const shoeId = this.getAttribute('data-shoe-id');
+                const shoeSize = this.getAttribute('data-shoe-size');
+
+                fetch('/add-wishlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ shoeId: shoeId, size: shoeSize })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Xử lý khi thành công, ví dụ: đổi màu trái tim
+                            this.querySelector('i.heart').classList.add('active');
+                        } else {
+                            // Xử lý khi có lỗi
+                            alert('Có lỗi xảy ra, vui lòng thử lại!');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
+</script>
