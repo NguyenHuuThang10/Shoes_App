@@ -2,7 +2,7 @@
     <div class="box-shoe" style="margin-top: 115px;">
         <div class="row">
             <div class="col bgsale">
-                <p>{{shoeType}}</p>
+                <p>Thông tin tìm kiếm</p>
             </div>
         </div>
         <div class="filter">
@@ -18,20 +18,24 @@
                             <option value="ZA">Sắp Xếp Từ Z -> A</option>
                         </select>
                     </form>
-                    <div class="row ">
+                    <div class="row">
                         <form class="form-search">
                             <input class="form-control mr-sm-2 p-3" type="search"
                                 placeholder="Gõ vài từ tìm kiếm nào..." aria-label="Search">
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
+
+
         <div class="row" id="shoeContainer">
             {{#each shoes}}
             <div class="col-md-2 mt-4">
-                <div class="img" style="border: solid #e6e6e6 1px; height: 350px;">
+                <div class="img" style="border: solid #e6e6e6 1px; height: 330px;">
+                    <div class="shoes-percent">
+                        <span class="pro-sale">SALE<br> OFF </span>
+                    </div>
                     <a href="/shoes/{{this.slug}}">
                         <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
                     </a>
@@ -41,37 +45,26 @@
                                 7 Size
                             </div>
                             <div class="col mr-2" style="text-align: right;">
-                                <a href="javascript:void(0);"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                                <a href="/shoes/{{this.slug}}"><i class="fa-solid fa-heart heart"></i></a>
                             </div>
                         </div>
                         <div class="mr-2">
                             <a href="/shoes/{{this.slug}}">
                                 <b>{{this.name}}</b>
                             </a>
-                            <p>{{this.price}}.000 đ</p>
+                            <div class="row">
+                                <div class="col"><del>
+                                        <p>{{this.price}}.000đ</p>
+                                    </del></div>
+                                <div class="col">
+                                    <p style="color: red; font-size: 20px;">{{this.price}}.000đ</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             {{/each}}
         </div>
-
-        <nav aria-label="Page navigation example" class="mt-5">
-            <ul class="pagination">
-                {{#backPage page newUrl}}
-                {{this}}
-                {{/backPage}}
-
-                {{#eachPage page maxPage newUrl}}
-                {{this}}
-                {{/eachPage}}
-
-                {{#nextPage page maxPage newUrl}}
-                {{this}}
-                {{/nextPage}}
-            </ul>
-        </nav>
     </div>
-
-</div>
 </div>

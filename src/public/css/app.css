@@ -95,7 +95,7 @@
   top: 45px;
   left: 0;
   background-color: #fff;
-  min-width: 190px;
+  min-width: 200px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -155,26 +155,45 @@
 }
 
 .suggestions-box {
-  border: 1px solid #ccc;
-  max-height: 200px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  max-height: 300px;
   overflow-y: auto;
   display: none;
   position: absolute;
-  background-color: white;
   z-index: 1000;
   width: 300px;
   margin-top: 41px;
 }
 
-.suggestions-box a {
-  display: block;
-  padding: 8px;
-  text-decoration: none;
-  color: black;
+.suggestion-item {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid #f1f1f1;
+  align-items: center;
 }
 
-.suggestions-box a:hover {
-  background-color: #f1f1f1;
+.suggestion-item img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.suggestion-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestion-info a {
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+}
+
+.suggestion-info p {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
 }
 
 /* main content */
@@ -201,6 +220,33 @@
 }
 
 /*help*/
+/* sale.hbs */
+.sale-price-discount {
+  border: 1px solid #e71a3c;
+  color: #e71a3c;
+  border-radius: 3px;
+  padding: 2px 5px;
+  background: #ffe9ea;
+  height: 30px;
+}
+
+.shoes-percent {
+  position: absolute;
+  z-index: 9;
+}
+
+.pro-sale {
+  display: block;
+  background: red;
+  color: white;
+  text-align: center;
+  padding: 5px 10px;
+  font-weight: 500;
+  font-size: 13px;
+  border-radius: 0 0 10px 10px;
+}
+
+/* sale.hbs */
 .footer ul {
   list-style-type: none;
 }
@@ -232,6 +278,7 @@
 
 .form-arrange {
   display: flex;
+  justify-content: space-between;
   line-height: 100px;
 }
 
@@ -239,17 +286,20 @@
   display: flex;
   height: 35px;
   margin-top: 30px;
-  margin-left: 20px;
+  margin-right: 10px;
 }
 
 .form-search input {
   margin: 0;
   padding: 0;
   height: 38px;
+  width: 250px;
 }
 
 #category {
   height: 35px;
+  width: 250px;
+  margin-left: 10px;
 }
 
 .title-product {
@@ -261,14 +311,34 @@
   font-weight: 700;
   margin-top: 50px;
   line-height: 50px;
-  font-size: 25PX;
-  text-align: left;
+  font-size: 30px;
+  text-align: center;
   border-bottom: #ddd 1px solid;
 }
 
 .box-shoe a {
   text-decoration: none;
   color: black;
+}
+
+.bgsale p {
+  text-align: center;
+  font-size: 40px;
+  margin-top: 25px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 0 10px #00b3ff, 0 0 20px #00b3ff, 0 0 30px #00b3ff, 0 0 40px #00b3ff, 0 0 50px #00b3ff, 0 0 60px #00b3ff, 0 0 70px #00b3ff;
+  transition: text-shadow 0.5s ease;
+}
+
+.bgsale p:hover {
+  text-shadow: 0 0 20px #00e6ff, 0 0 30px #00e6ff, 0 0 40px #00e6ff, 0 0 50px #00e6ff, 0 0 60px #00e6ff, 0 0 70px #00e6ff, 0 0 80px #00e6ff;
+}
+
+.bgsale {
+  background-image: url(/img/backgroudsale2.png);
+  background-size: cover;
 }
 
 .showfull {
@@ -283,16 +353,12 @@
 .filter {
   height: 60px;
   width: 100%;
-}
-
-.filter .row p {
-  font-size: 40px;
-  text-align: left;
-  line-height: 100px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .filterForm {
-  width: 300px;
+  width: 400px;
 }
 
 .mt-35 {
@@ -627,4 +693,4 @@ span#or-text {
   transform: scale(1.1);
 }
 
-/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../resources/scss/app.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22;AAAA;EACE;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;AACA;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;AAEA;EACE;EACA;EACA;EACA;EACA;EACA;;;AAIF;AACA;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;AAAA;EAEE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;AAEA;AACA;EACE;AACA;EACA;;;AAGF;EACE;AACA;;;AAGF;AACA;AACA;EACE;EACA;EACA;EACA;EACA;;;AAGF;AACA;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;AAAA;AAAA;AAAA;EAIE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;AAAA;EAEE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAIF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAIF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAIF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE%22,%22file%22:%22app.css%22%7D */
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../resources/scss/app.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22;AACA;EACE;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;AACA;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;AAEA;EACE;EACA;EACA;EACA;EACA;EACA;;;AAIF;AACA;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;AAAA;EAEE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EAUE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAaF;AAEA;AACA;EACE;AACA;EACA;;;AAGF;EACE;AACA;;;AAGF;AACA;AACA;EACE;EACA;EACA;EACA;EACA;;;AAGF;AAEA;AACA;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;AACA;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;;;AASF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;AAAA;AAAA;AAAA;EAIE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;AAAA;EAEE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAIF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;EACA;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAIF;EACE;EACA;EACA;;;AAGF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAGF;EACE;;;AAGF;EACE;EACA;;;AAGF;EACE;;;AAIF;EACE;EACA;EACA;;;AAGF;EACE;EACA;;;AAGF;EACE%22,%22file%22:%22app.css%22%7D */

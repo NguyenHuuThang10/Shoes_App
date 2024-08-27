@@ -3,6 +3,8 @@ const router = express.Router()
 
 const shoesController = require('../app/controllers/ShoesController')
 
+router.get('/sale', shoesController.sale)
+
 router.delete('/delete-cart/:id', shoesController.checkLoginClient, shoesController.deleteToCart)
 router.post('/update-cart/:id', shoesController.checkLoginClient, shoesController.updateShippingCart)
 router.put('/quantity/:id', shoesController.checkLoginClient, shoesController.updateQuantity)

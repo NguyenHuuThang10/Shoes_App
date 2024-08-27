@@ -32,37 +32,37 @@ class ShoesController {
   }
 
   // [GET] /shoes/shoes-type/:type
-  async shoeType (req, res, next) {
+  async shoeType(req, res, next) {
     try {
-        var type = req.params.type
-        var shoeType = await Shoe.findOne({ slugType: type})
+      var type = req.params.type
+      var shoeType = await Shoe.findOne({ slugType: type })
 
-        var page = parseInt(req.query.page) || 1;
-        var allShoe = await Shoe.find({ slugType: type}).countDocuments();
-        var maxPage = Math.ceil(allShoe / PAGE_SIZE);
+      var page = parseInt(req.query.page) || 1;
+      var allShoe = await Shoe.find({ slugType: type }).countDocuments();
+      var maxPage = Math.ceil(allShoe / PAGE_SIZE);
 
-        if (page > maxPage) {
-          page = 1;
-        }
+      if (page > maxPage) {
+        page = 1;
+      }
 
-        var offset = (page - 1) * PAGE_SIZE;
+      var offset = (page - 1) * PAGE_SIZE;
 
-        Shoe.find({ slugType: type })
-          .skip(offset)
-          .limit(PAGE_SIZE)
-          .then(shoes => {
-            res.render('shoes/shoeType', {
-              page,
-              maxPage,
-              shoes: mutipleMongooseToObject(shoes),
-              shoeType: shoeType.typeDetail
-            })
-    
+      Shoe.find({ slugType: type })
+        .skip(offset)
+        .limit(PAGE_SIZE)
+        .then(shoes => {
+          res.render('shoes/shoeType', {
+            page,
+            maxPage,
+            shoes: mutipleMongooseToObject(shoes),
+            shoeType: shoeType.typeDetail
           })
-          .catch(err => {
-            console.log("ERR: " + err)
-          })
-          .catch(next)
+
+        })
+        .catch(err => {
+          console.log("ERR: " + err)
+        })
+        .catch(next)
     } catch (error) {
       console.log("ERR: " + error)
     }
@@ -323,12 +323,12 @@ class ShoesController {
       ],
     };
 
-    Order.findOne({ _id: orderId,  paymentMethod: "Thanh toán bằng tiền mặc"})
+    Order.findOne({ _id: orderId, paymentMethod: "Thanh toán bằng tiền mặc" })
       .then(data => {
         return res.redirect("/shoes/my-order");
       })
-      .catch(err =>{
-        console.log("ERR: "+err)
+      .catch(err => {
+        console.log("ERR: " + err)
       })
       .catch(next)
 
@@ -341,7 +341,7 @@ class ShoesController {
         } else {
           Order.updateOne(
             { _id: orderId },
-            { paymentMethod: "Thanh toán bằng Paypal", isPaid: true, paidAt: Date.now()}
+            { paymentMethod: "Thanh toán bằng Paypal", isPaid: true, paidAt: Date.now() }
           )
             .then((data) => {
               res.redirect("/shoes/my-order");
@@ -353,9 +353,9 @@ class ShoesController {
   }
 
   // [get] /shoes/my-order
-  myOrder (req, res, next) {
+  myOrder(req, res, next) {
     var userId = res.locals.currentUser._id
-    if(userId){
+    if (userId) {
       Order.find({ user: userId, paymentMethod: { $ne: null } })
         .populate("orderItems.shoe")
         .populate({
@@ -374,9 +374,9 @@ class ShoesController {
         .catch(next)
     }
   }
-  
+
   // [GET] /shoes/my-order-detail
-  myOrderDetail (req, res, next) {
+  myOrderDetail(req, res, next) {
     var orderId = req.params.id
     Order.findOne({ _id: orderId })
       .populate("orderItems.shoe")
@@ -385,13 +385,13 @@ class ShoesController {
         model: "User",
       })
       .then((data) => {
-        if(data){
+        if (data) {
           res.render('shoes/myOrderDetail', {
             user: res.locals.currentUser,
             order: mongooseToObject(data)
           })
 
-        }else{
+        } else {
           res.redirect('back')
         }
       })
@@ -401,16 +401,16 @@ class ShoesController {
       .catch(next)
   }
 
-    // [DELETE] /shoes/my-order/:id/delete
-    async deleteOrder(req, res, next) {
-      try {
-        await Order.deleteOne({ _id: req.params.id});
-        res.redirect("back");
-      } catch (error) {
-        console.log("ERR: " + error)
-        next(error);
-      }
+  // [DELETE] /shoes/my-order/:id/delete
+  async deleteOrder(req, res, next) {
+    try {
+      await Order.deleteOne({ _id: req.params.id });
+      res.redirect("back");
+    } catch (error) {
+      console.log("ERR: " + error)
+      next(error);
     }
+  }
 
 
   // [DELETE] /shoes/delete-cart/:id
@@ -456,7 +456,16 @@ class ShoesController {
     }
   }
 
-  
+  // [GET] /shoes/sale
+  sale(req, res, next) {
+    Shoe.find({})
+      .then(shoes => {
+        res.render('shoes/sale', {
+          shoes: mutipleMongooseToObject(shoes)
+        })
+      })
+  }
+
 }
 
-module.exports = new ShoesController();
+module.exports = new ShoesController()
