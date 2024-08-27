@@ -1,7 +1,7 @@
 <div class="content-wrapper" style="min-height: 650px; margin-bottom: 20px">
     <div class="container-fluid">
         <div class="content-header">
-            <h1>Thêm bài viết:</h1>
+            <h1>Cập nhật trang:</h1>
             {{#if err}}
                 <div class="alert alert-danger" role="alert">
                     {{err}}
@@ -13,16 +13,12 @@
                 </div>
             {{/if}}
         </div>
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="?_method=PUT" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col mx-sm-3">
                     <div class="form-group">
                         <label for="title">Tiêu đề</label>
-                        <input type="text" class="form-control" id="title" name="title"  placeholder="Nhập tiêu đề bài viết" value="{{old.title}}">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Mô tả</label>
-                        <input type="text" class="form-control" id="description" name="description"  placeholder="Nhập mô tả bài viết" value="{{old.description}}">
+                        <input type="text" class="form-control" id="title" name="title"  placeholder="Nhập tiêu đề trang" value="{{#if page }} {{page.title}} {{else}} {{old.title}} {{/if}}">
                     </div>
 
                     <div class="form-group">
@@ -34,22 +30,22 @@
                         <label for="category">Chuyên mục</label>
                         <select class="form-control" id="category" name="category">
                             <option value="" selected>-- Chuyện mục --</option>
-                            <option value="Tư vấn chọn size" {{#ifEquals old.category "Tư vấn chọn size" }}selected{{/ifEquals}}>Tư vấn chọn size</option>
-                            <option value="Xu hướng thời trang" {{#ifEquals old.category "Xu hướng thời trang" }}selected{{/ifEquals}}>Xu hướng thời trang</option>
-                            <option value="Kinh nghiệm hay" {{#ifEquals old.category "Kinh nghiệm hay" }}selected{{/ifEquals}}>Kinh nghiệm hay</option>
+                            <option value="Về chúng tôi" {{#ifEquals page.category "Về chúng tôi" }}selected{{/ifEquals}}>Về chúng tôi</option>
+                            <option value="Chính sách bảo mật" {{#ifEquals page.category "Chính sách bảo mật" }}selected{{/ifEquals}}>Chính sách bảo mật</option>
+                            <option value="Chính sách đổi trả bảo hành" {{#ifEquals page.category "Chính sách đổi trả bảo hành" }}selected{{/ifEquals}}>Chính sách đổi trả bảo hành</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
                         <label for="content">Nội dung</label>
-                        <textarea class="form-control content" name="content" id="content"></textarea>
+                        <textarea class="form-control content" name="content" id="content">{{#if page.content}} {{page.content}} {{/if}}</textarea>
                     </div>
 
                     
                 </div>
 
             </div>
-            <button type="submit" class="btn btn-primary mx-sm-3">Thêm bài viết</button>
+            <button type="submit" class="btn btn-primary mx-sm-3">Cập nhật</button>
         </form>
     </div>
 </div>

@@ -1,0 +1,134 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Thùng rác bài viết:</h1>
+            <a class="btn btn-info mt-2" href="/me/stored/blogs">Danh sách bài viết</a>
+            {{#if success}}
+            <div class="alert alert-success mt-3" role="alert">
+                {{success}}
+            </div>
+            {{/if}}
+            {{#if err}}
+            <div class="alert alert-danger mt-3" role="alert">
+                {{err}}
+            </div>
+            {{/if}}
+        </div>
+        <table class="table table-stored">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" style="width: 35%;">Tiêu đề
+                        {{{sortable 'title' _sort}}}
+                    </th>
+                    <th scope="col">Chuyên mục
+                        {{{sortable 'category' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian tạo
+                        {{{sortable 'createdAt' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian sửa
+                        {{{sortable 'updatedAt' _sort}}}
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each blogs}}
+                <tr>
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.title}}</td>
+                    <td>{{this.category}}</td>
+                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
+                    <td>{{formatDate this.updatedAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
+                    <td>
+                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i
+                                class="fa-solid fa-arrow-rotate-left"></i></a>
+
+                        <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
+                            data-target="#delete_blog_model"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr class="text-center">
+                    <td colspan="7">Thùng rác trống.</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {{#backPage page newUrl}}
+                {{this}}
+                {{/backPage}}
+
+                {{#eachPage page maxPage newUrl}}
+                {{this}}
+                {{/eachPage}}
+
+                {{#nextPage page maxPage newUrl}}
+                {{this}}
+                {{/nextPage}}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- Modal confirm delete shoe -->
+<div id="delete_blog_model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa vĩnh viễn bài viết?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Hành động không thể khôi phục. Bạn có chắc chắn muốn xóa bài viết vĩnh viễn?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-blog" type="button" class="btn btn-danger">Xóa bỏ</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete Hidden form --}}
+<form name="delete-blog-form" method="POST"></form>
+<form name="restore-blog-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var btnDeleteBlog = document.getElementById('btn-delete-blog')
+        var blogId
+        var deleteBlogForm = document.forms['delete-blog-form']
+        var btnRestore = $('.btn-restore')
+        var restoreBlogForm = document.forms['restore-blog-form']
+
+        // When dialog confirm clicked
+        $('#delete_blog_model').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            blogId = button.data('id')
+
+        })
+
+        btnDeleteBlog.onclick = function () {
+            deleteBlogForm.action = '/me/' + blogId + '/destroy/blogs?_method=DELETE'
+            deleteBlogForm.submit()
+        }
+
+        btnRestore.click(function (e) {
+            e.preventDefault()
+            var blogId = $(this).data('id')
+
+            restoreBlogForm.action = '/me/' + blogId + '/restore/blogs?_method=PATCH'
+            restoreBlogForm.submit()
+        })
+
+    })
+
+</script>

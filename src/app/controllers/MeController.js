@@ -166,17 +166,12 @@ class MeController {
   // [PUT] /me/:id/update/shoes
   async updateShoes(req, res, next) {
     try {
-      if (req.file) {
-        req.body.image = req.file.filename;
-      } else {
-        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
-        return res.redirect('back')
-      }
-
       const { name, type, typeDetail, description, quantity, status, price } = req.body
-      if (!name || !type || !typeDetail || !description || !quantity || !status || !price) {
+      if (!name || !type || !typeDetail || !description || !quantity || !status || !price || !req.file) {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
         return res.redirect('back')
+      } else {
+        req.body.image = req.file.filename;
       }
       await Shoe.updateShoe(req.params.id, req.body);
       req.flash('success', 'Cập nhật sản phẩm thành công!')
@@ -550,13 +545,19 @@ class MeController {
   //[GET] /me/create/blogs
   createBlogs(req, res, next) {
     res.render('me/createBlogs', {
-      success: req.flash('success')
+      success: req.flash('success'),
+      err: req.flash('err')
     })
   }
 
   //[POST] /me/create/blogs
   storeBlogs(req, res, next) {
-    if (req.file) {
+
+    const { title, description, category, content } = req.body
+    if (!title || !description || !category || !content || !req.file) {
+      req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
+      return res.redirect('back')
+    } else {
       req.body.avatar = req.file.filename;
     }
 
@@ -568,6 +569,180 @@ class MeController {
         res.redirect('back')
       })
       .catch(next)
+  }
+
+  //[GET] /me/stored/blogs
+  async storedBlogs(req, res, next) {
+    try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+      let blogQuery = Blog.find({});
+
+      if (req.query.hasOwnProperty('_sort')) {
+        blogQuery = blogQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
+
+      var page = parseInt(req.query.page) || 1;
+      var allBlog = await Blog.find({}).countDocuments();
+      var maxPage = Math.ceil(allBlog / PAGE_SIZE);
+
+      if (page > maxPage) {
+        page = 1;
+      }
+
+      var offset = (page - 1) * PAGE_SIZE;
+
+      Promise.all([
+        blogQuery,
+        Blog.countDocumentsWithDeleted({ deleted: true }),
+      ]).then(([blogs, deletedCount]) => {
+        blogs = blogs.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/storedBlogs", {
+          success: req.flash('success'),
+          err: req.flash('err'),
+          page,
+          maxPage,
+          deletedCount,
+          newUrl: newUrl,
+          blogs: mutipleMongooseToObject(blogs),
+        });
+      });
+    } catch (error) {
+      console.log("ERR: " + error);
+    }
+  }
+
+  // [Get] /me/trash/blogs
+  async trashBlogs(req, res, next) {
+    try {
+      var page = parseInt(req.query.page) || 1;
+      var allBlog = await Blog.findWithDeleted({
+        deleted: true,
+      }).countDocuments();
+      var maxPage = Math.ceil(allBlog / PAGE_SIZE);
+
+      if (page > maxPage) {
+        page = 1;
+      }
+
+      var offset = (page - 1) * PAGE_SIZE;
+
+      Blog.findWithDeleted({ deleted: true })
+        .skip(offset)
+        .limit(PAGE_SIZE)
+        .then((blogs) => {
+          res.render("me/trashBlogs", {
+            page,
+            maxPage,
+            blogs: mutipleMongooseToObject(blogs),
+            success: req.flash('success')
+          });
+        })
+        .catch(next);
+    } catch (error) {
+      console.log("ERR: " + error);
+    }
+  }
+
+  // [delete] /me/:id/delete/blogs
+  deleteBlogs(req, res, next) {
+    try {
+      const blogId = req.params.id;
+      if (blogId) {
+        Blog.delete({ _id: blogId })
+          .then(() => {
+            req.flash('success', 'Xóa bài viết thành công!')
+            res.redirect('back')
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [patch] /me/:id/restore/blogs
+  restoreBlogs(req, res, next) {
+    try {
+      const blogId = req.params.id;
+      if (blogId) {
+        Blog.restore({ _id: blogId })
+          .then(() => {
+            req.flash('success', 'Phục hồi bài viết thành công!')
+            res.redirect('back')
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [delete] /me/:id/destroy/blogs
+  destroyBlogs(req, res, next) {
+    try {
+      const blogId = req.params.id
+      if (blogId) {
+        Blog.deleteOne({ _id: blogId })
+          .then(() => {
+            req.flash('success', 'Xóa vĩnh viễn bài viết thành công!')
+            res.redirect("back");
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [GET] /me/:id/edit/shoes
+  editBlogs(req, res, next) {
+    const blogId = req.params.id
+    if (blogId) {
+      Blog.findById(blogId)
+        .then((blog) => {
+          res.render("me/editBlogs", {
+            blog: mongooseToObject(blog),
+            err: req.flash('err')
+          });
+        })
+        .catch(next);
+    }
+  }
+
+  //[PUT] /me/:id/edit/shoes
+  updateBlogs(req, res, next) {
+    try {
+      const blogId = req.params.id
+      const { title, description, category, content } = req.body
+      if (!title || !description || !category || !content) {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
+        return res.redirect('back')
+      }
+
+      if (req.file) {
+        req.body.avatar = req.file.filename;
+      }
+
+      if (blogId) {
+        Blog.updateOne({ _id: blogId }, req.body)
+          .then(() => {
+            req.flash('success', 'Cập nhật bài viết thành công!')
+            res.redirect('/me/stored/blogs')
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+
   }
 
   // [GET] /me/create/pages
@@ -592,6 +767,181 @@ class MeController {
       })
       .catch(next)
   }
+
+  //[GET] /me/stored/pages
+  async storedPages(req, res, next) {
+    try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+      let pageQuery = Page.find({});
+
+      if (req.query.hasOwnProperty('_sort')) {
+        pageQuery = pageQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
+
+      var page = parseInt(req.query.page) || 1;
+      var allPage = await Page.find({}).countDocuments();
+      var maxPage = Math.ceil(allPage / PAGE_SIZE);
+
+      if (page > maxPage) {
+        page = 1;
+      }
+
+      var offset = (page - 1) * PAGE_SIZE;
+
+      Promise.all([
+        pageQuery,
+        Page.countDocumentsWithDeleted({ deleted: true }),
+      ]).then(([pages, deletedCount]) => {
+        pages = pages.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/storedPages", {
+          success: req.flash('success'),
+          err: req.flash('err'),
+          page,
+          maxPage,
+          deletedCount,
+          newUrl: newUrl,
+          pages: mutipleMongooseToObject(pages),
+        });
+      });
+    } catch (error) {
+      console.log("ERR: " + error);
+    }
+  }
+
+  // [Get] /me/trash/pages
+  async trashPages(req, res, next) {
+    try {
+      var page = parseInt(req.query.page) || 1;
+      var allPage = await Blog.findWithDeleted({
+        deleted: true,
+      }).countDocuments();
+      var maxPage = Math.ceil(allPage / PAGE_SIZE);
+
+      if (page > maxPage) {
+        page = 1;
+      }
+
+      var offset = (page - 1) * PAGE_SIZE;
+
+      Page.findWithDeleted({ deleted: true })
+        .skip(offset)
+        .limit(PAGE_SIZE)
+        .then((pages) => {
+          res.render("me/trashPages", {
+            page,
+            maxPage,
+            pages: mutipleMongooseToObject(pages),
+            success: req.flash('success')
+          });
+        })
+        .catch(next);
+    } catch (error) {
+      console.log("ERR: " + error);
+    }
+  }
+
+  // [delete] /me/:id/delete/blogs
+  deletePages(req, res, next) {
+    try {
+      const pageId = req.params.id;
+      if (pageId) {
+        Page.delete({ _id: pageId })
+          .then(() => {
+            req.flash('success', 'Xóa trang thành công!')
+            res.redirect('back')
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [patch] /me/:id/restore/blogs
+  restorePages(req, res, next) {
+    try {
+      const pageId = req.params.id;
+      if (pageId) {
+        Page.restore({ _id: pageId })
+          .then(() => {
+            req.flash('success', 'Phục hồi trang thành công!')
+            res.redirect('back')
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [delete] /me/:id/destroy/blogs
+  destroyPages(req, res, next) {
+    try {
+      const pageId = req.params.id
+      if (pageId) {
+        Page.deleteOne({ _id: pageId })
+          .then(() => {
+            req.flash('success', 'Xóa vĩnh viễn trang thành công!')
+            res.redirect("back");
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // [GET] /me/:id/edit/shoes
+  editPages(req, res, next) {
+    const pageId = req.params.id
+    if (pageId) {
+      Page.findById(pageId)
+        .then((page) => {
+          res.render("me/editPages", {
+            page: mongooseToObject(page),
+            err: req.flash('err')
+          });
+        })
+        .catch(next);
+    }
+  }
+
+  //[PUT] /me/:id/edit/shoes
+  updatePages(req, res, next) {
+    try {
+      const pageId = req.params.id
+      const { title, category, content } = req.body
+      if (!title || !category || !content) {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
+        return res.redirect('back')
+      }
+
+      if (req.file) {
+        req.body.avatar = req.file.filename;
+      }
+
+      if (pageId) {
+        Page.updateOne({ _id: pageId }, req.body)
+          .then(() => {
+            req.flash('success', 'Cập nhật trang thành công!')
+            res.redirect('/me/stored/pages')
+          })
+      }
+    } catch (error) {
+      next(error);
+    }
+
+  }
+
 }
 
 

@@ -1,0 +1,134 @@
+<div class="content-wrapper" style="min-height: 650px;">
+    <div class="container-fluid">
+        <div class="content-header">
+            <h1>Thùng rác trang:</h1>
+            <a class="btn btn-info mt-2" href="/me/stored/pages">Danh sách trang</a>
+            {{#if success}}
+            <div class="alert alert-success mt-3" role="alert">
+                {{success}}
+            </div>
+            {{/if}}
+            {{#if err}}
+            <div class="alert alert-danger mt-3" role="alert">
+                {{err}}
+            </div>
+            {{/if}}
+        </div>
+        <table class="table table-stored">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" style="width: 35%;">Tiêu đề
+                        {{{sortable 'title' _sort}}}
+                    </th>
+                    <th scope="col">Chuyên mục
+                        {{{sortable 'category' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian tạo
+                        {{{sortable 'createdAt' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian sửa
+                        {{{sortable 'updatedAt' _sort}}}
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each pages}}
+                <tr>
+                    <th scope="row">{{sum @index 1}}</th>
+                    <td>{{this.title}}</td>
+                    <td>{{this.category}}</td>
+                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
+                    <td>{{formatDate this.updatedAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
+                    <td>
+                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i
+                                class="fa-solid fa-arrow-rotate-left"></i></a>
+
+                        <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
+                            data-target="#delete_page_model"><i class="fa-regular fa-trash-can"></i></a>
+                    </td>
+                </tr>
+                {{else}}
+                <tr class="text-center">
+                    <td colspan="7">Thùng rác trống.</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {{#backPage page newUrl}}
+                {{this}}
+                {{/backPage}}
+
+                {{#eachPage page maxPage newUrl}}
+                {{this}}
+                {{/eachPage}}
+
+                {{#nextPage page maxPage newUrl}}
+                {{this}}
+                {{/nextPage}}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- Modal confirm delete shoe -->
+<div id="delete_page_model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa vĩnh viễn bài viết?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Hành động không thể khôi phục. Bạn có chắc chắn muốn xóa bài viết vĩnh viễn?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-page" type="button" class="btn btn-danger">Xóa bỏ</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete Hidden form --}}
+<form name="delete-page-form" method="POST"></form>
+<form name="restore-page-form" method="POST"></form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var btnDeletePage = document.getElementById('btn-delete-page')
+        var pageId
+        var deletePageForm = document.forms['delete-page-form']
+        var btnRestore = $('.btn-restore')
+        var restorePageForm = document.forms['restore-page-form']
+
+        // When dialog confirm clicked
+        $('#delete_page_model').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            pageId = button.data('id')
+
+        })
+
+        btnDeletePage.onclick = function () {
+            deletePageForm.action = '/me/' + pageId + '/destroy/pages?_method=DELETE'
+            deletePageForm.submit()
+        }
+
+        btnRestore.click(function (e) {
+            e.preventDefault()
+            var pageId = $(this).data('id')
+
+            restorePageForm.action = '/me/' + pageId + '/restore/pages?_method=PATCH'
+            restorePageForm.submit()
+        })
+
+    })
+
+</script>

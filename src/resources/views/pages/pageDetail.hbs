@@ -1,12 +1,12 @@
 <div class="container">
     <div class="mt-top">
         <h1 class="title">{{page.title}}</h1>
+        <p class="card-text"><small class="text-muted">{{formatDate this.createdAt "Asia/Ho_Chi_Minh"
+                "DD-MM-YYYY"}}</small></p>
         <div class="text-center">
             <img src="/uploads/pages/{{page.avatar}}" alt="" width="80%">
 
         </div>
-        <p class="card-text"><small class="text-muted">{{formatDate this.createdAt "Asia/Ho_Chi_Minh"
-                "DD-MM-YYYY"}}</small></p>
         <div class="content">
             {{{page.content}}}
         </div>

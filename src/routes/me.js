@@ -8,9 +8,23 @@ const uploadBlog = createUploadMiddleware('../../public/uploads/blogs')
 const uploadPage = createUploadMiddleware('../../public/uploads/pages')
 const upload = createUploadMiddleware('../../public/uploads')
 
+router.put("/:id/edit/pages", meController.checkLoginAdmin, uploadPage.single('avatar'), meController.updatePages);
+router.get("/:id/edit/pages", meController.checkLoginAdmin, meController.editPages);
+router.delete("/:id/destroy/pages", meController.checkLoginAdmin, meController.destroyPages);
+router.patch("/:id/restore/pages", meController.checkLoginAdmin, meController.restorePages);
+router.get("/trash/pages", meController.checkLoginAdmin, meController.trashPages);
+router.delete("/:id/delete/pages", meController.checkLoginAdmin, meController.deletePages);
+router.get("/stored/pages", meController.checkLoginAdmin, meController.storedPages);
 router.get("/create/pages", meController.checkLoginAdmin, meController.createPages);
 router.post("/create/pages", meController.checkLoginAdmin, uploadPage.single('avatar'), meController.storePages);
 
+router.put("/:id/edit/blogs", meController.checkLoginAdmin, uploadBlog.single('avatar'), meController.updateBlogs);
+router.get("/:id/edit/blogs", meController.checkLoginAdmin, meController.editBlogs);
+router.get("/trash/blogs", meController.checkLoginAdmin, meController.trashBlogs);
+router.delete("/:id/destroy/blogs", meController.checkLoginAdmin, meController.destroyBlogs);
+router.patch("/:id/restore/blogs", meController.checkLoginAdmin, meController.restoreBlogs);
+router.delete("/:id/delete/blogs", meController.checkLoginAdmin, meController.deleteBlogs);
+router.get("/stored/blogs", meController.checkLoginAdmin, meController.storedBlogs);
 router.post("/create/blogs", meController.checkLoginAdmin, uploadBlog.single('avatar'), meController.storeBlogs);
 router.get("/create/blogs", meController.checkLoginAdmin, meController.createBlogs);
 
