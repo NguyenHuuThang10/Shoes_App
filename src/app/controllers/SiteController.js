@@ -42,14 +42,14 @@ class SiteController {
         Shoe.findOne({ typeDetail: "Boot nam" }),
         Shoe.find({ priceDiscount: { $ne: null } }).limit(6)
       ]);
-  
+
       let wishlistItemIds = null;
       if (res.locals.currentUser) {
         const userId = res.locals.currentUser._id;
         const user = await User.findOne({ _id: userId }).populate("wishlistItems.shoe");
         wishlistItemIds = user.wishlistItems.map(item => item.shoe._id.toString());
       }
-  
+
       res.render("home", {
         shoeHight: mutipleMongooseToObject(shoeHight),
         sandal: mutipleMongooseToObject(sandal),
@@ -62,7 +62,7 @@ class SiteController {
         bootType: bootType.slugType,
         wishlistItems: wishlistItemIds
       });
-  
+
     } catch (error) {
       console.log("ERR: " + error);
       next(error); // Đảm bảo chuyển tiếp lỗi đến middleware xử lý lỗi.
@@ -448,6 +448,13 @@ class SiteController {
 
 
   }
+
+  //[GET] /search
+  search(req, res, next) {
+    const keyWord = req.params.keyWord;
+    res.render("search");
+  }
+
 
 }
 

@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (!foundShoes) {
-            shoeContainer.innerHTML = '<p class="mt-4" id="message">Không tìm thấy sản phẩm phù hợp</p>';
+            shoeContainer.innerHTML = '<p class="mt-4 ml-4" id="message">Không tìm thấy sản phẩm phù hợp</p>';
         }
     }
 

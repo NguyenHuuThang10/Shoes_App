@@ -1,15 +1,17 @@
 <div class="container-fluid">
-    <div class="box-shoe mt-top ">
+    <div class="box-shoe" style="margin-top: 115px;">
+        <div class="row">
+            <div class="col bgsale">
+                <p>{{shoeType}}</p>
+            </div>
+        </div>
         <div class="filter">
             <div class="row">
-                <div class="col">
-                    <p>{{shoeType}}</p>
-                </div>
                 <div class="col form-arrange">
                     <form id="filterForm">
-                        <label for="category">Sắp xếp:</label>
+                        <label for="category"><i class="fa-solid fa-sliders"></i></label>
                         <select id="category">
-                            <option value="All">All</option>
+                            <option value="All">Sắp xếp theo</option>
                             <option value="Down">Giá Từ Cao Xuống Thấp</option>
                             <option value="Up">Giá Từ Thấp Lên Cao</option>
                             <option value="AZ">Sắp Xếp Từ A -> Z</option>
@@ -18,8 +20,8 @@
                     </form>
                     <div class="row ">
                         <form class="form-search">
-                            <input class="form-control mr-sm-2 p-3" type="search" placeholder="Tìm Kiếm"
-                                aria-label="Search">
+                            <input class="form-control mr-sm-2 p-3" type="search"
+                                placeholder="Gõ vài từ tìm kiếm nào..." aria-label="Search">
                         </form>
                     </div>
                 </div>
@@ -29,7 +31,7 @@
         <div class="row" id="shoeContainer">
             {{#each shoes}}
             <div class="col-md-2 mt-4">
-                <div class="img" style="border: solid #e6e6e6 1px;">
+                <div class="img" style="border: solid #e6e6e6 1px; height: 350px;">
                     <a href="/shoes/{{this.slug}}">
                         <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
                     </a>
@@ -98,6 +100,7 @@
             </ul>
         </nav>
     </div>
+</div>
 
 </div>
 
