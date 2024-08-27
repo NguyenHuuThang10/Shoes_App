@@ -167,10 +167,12 @@ class MeController {
   async updateShoes(req, res, next) {
     try {
       const { name, type, typeDetail, description, quantity, status, price } = req.body
-      if (!name || !type || !typeDetail || !description || !quantity || !status || !price || !req.file) {
+      if (!name || !type || !typeDetail || !description || !quantity || !status || !price) {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
         return res.redirect('back')
-      } else {
+      }
+
+      if(req.file) {
         req.body.image = req.file.filename;
       }
       await Shoe.updateShoe(req.params.id, req.body);

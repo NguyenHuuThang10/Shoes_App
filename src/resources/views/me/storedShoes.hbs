@@ -47,8 +47,8 @@
                     <td>{{this.name}}</td>
                     <td>{{this.typeDetail}}</td>
                     <td>{{this.price}}</td>
-                    <td>{{this.createdAt}}</td>
-                    <td>{{this.updatedAt}}</td>
+                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
+                    <td>{{formatDate this.updatedAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
                     <td>
                         <a href="/me/{{this._id}}/edit/shoes" class="btn btn-link"><i
                                 class="fa-regular fa-pen-to-square"></i></a>

@@ -36,7 +36,7 @@ class SupportsController {
     // [POST] /add-wishlist
     async addWishlist(req, res, next) {
         try {
-            const { shoeId, size } = req.body;
+            const { shoeId, size, show } = req.body;
 
             var userId = res.locals.currentUser._id
 
@@ -48,6 +48,9 @@ class SupportsController {
                 shoe: shoe._id,
             })
             await wishlist.save();
+            if(show == "add"){
+                return res.redirect('back')
+            }
             return res.json({ success: true, message: "Đã thêm vào yêu thích" });
 
 
