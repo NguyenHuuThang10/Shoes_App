@@ -439,6 +439,12 @@ class SiteController {
 
     }
 
+    //[GET] /search
+    search (req, res , next) {
+      const keyWord = req.params.keyWord; 
+      res.render("search");   
+    }
+
 }
 
 module.exports = new SiteController();

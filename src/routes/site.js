@@ -27,6 +27,7 @@ router.get('/profile', siteController.checkLoginClient ,siteController.profile)
 router.get('/password', siteController.checkLoginClient ,siteController.password)
 router.put('/password', siteController.checkLoginClient ,siteController.changePass)
 
+router.get('/search', siteController.search)
 router.get('/', siteController.index)
 
 
