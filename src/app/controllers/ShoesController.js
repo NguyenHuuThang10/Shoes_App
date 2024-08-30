@@ -47,24 +47,24 @@ class ShoesController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-        let wishlistItemIds = null;
-        if(res.locals.currentUser) {
-          const userId = res.locals.currentUser._id
-          var user = await User.findOne({ _id: userId}).populate("wishlistItems.shoe")
-          wishlistItemIds = user.wishlistItems.map(item => item.shoe._id.toString());
-        }
+      let wishlistItemIds = null;
+      if (res.locals.currentUser) {
+        const userId = res.locals.currentUser._id
+        var user = await User.findOne({ _id: userId }).populate("wishlistItems.shoe")
+        wishlistItemIds = user.wishlistItems.map(item => item.shoe._id.toString());
+      }
 
-        Shoe.find({ slugType: type })
-          .skip(offset)
-          .limit(PAGE_SIZE)
-          .then(shoes => {
-            res.render('shoes/shoeType', {
-              page,
-              maxPage,
-              shoes: mutipleMongooseToObject(shoes),
-              shoeType: shoeType.typeDetail, 
-              wishlistItems: wishlistItemIds
-            })
+      Shoe.find({ slugType: type })
+        .skip(offset)
+        .limit(PAGE_SIZE)
+        .then(shoes => {
+          res.render('shoes/shoeType', {
+            page,
+            maxPage,
+            shoes: mutipleMongooseToObject(shoes),
+            shoeType: shoeType.typeDetail,
+            wishlistItems: wishlistItemIds
+          })
 
         })
         .catch(err => {
@@ -465,11 +465,20 @@ class ShoesController {
   }
 
   // [GET] /shoes/sale
-  sale(req, res, next) {
-    Shoe.find({})
+  async sale(req, res, next) {
+
+    let wishlistItemIds = null;
+    if (res.locals.currentUser) {
+      const userId = res.locals.currentUser._id;
+      const user = await User.findOne({ _id: userId }).populate("wishlistItems.shoe");
+      wishlistItemIds = user.wishlistItems.map(item => item.shoe._id.toString());
+    }
+
+    Shoe.find({ priceDiscount: { $ne: null } })
       .then(shoes => {
         res.render('shoes/sale', {
-          shoes: mutipleMongooseToObject(shoes)
+          shoes: mutipleMongooseToObject(shoes),
+          wishlistItems: wishlistItemIds
         })
       })
   }

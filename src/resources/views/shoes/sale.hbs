@@ -32,12 +32,12 @@
         <div class="row" id="shoeContainer">
             {{#each shoes}}
             <div class="col-md-2 mt-4">
-                <div class="img" style="border: solid #e6e6e6 1px; height: 350px;">
+                <div class="img box-shoes">
                     <div class="shoes-percent">
                         <span class="pro-sale">SALE<br> OFF </span>
                     </div>
                     <a href="/shoes/{{this.slug}}">
-                        <img loading="lazy" class="img-fluid" src="/uploads/{{this.image}}" alt="" width="100%">
+                        <img loading="lazy" class="img-fluid box-img-shoes" src="/uploads/{{this.image}}" alt="" width="100%">
                     </a>
                     <div class="caption ml-2">
                         <div class="row">
@@ -45,7 +45,22 @@
                                 7 Size
                             </div>
                             <div class="col mr-2" style="text-align: right;">
-                                <a href="/shoes/{{this.slug}}"><i class="fa-solid fa-heart heart"></i></a>
+                                {{#if ../currentUser}}
+                                {{#if (isInWishlist this._id ../wishlistItems)}}
+                                <a href="/wishlist" class="btn"><i class="fa-solid fa-heart heart active"
+                                        id="heart"></i></a>
+                                {{else}}
+                                <form action="/add-wishlist" method="post">
+                                    <input type="hidden" name="shoeId" value="{{this._id}}">
+                                    <input type="hidden" name="size" id="wishlistSize" value="36">
+                                    <button type="button" class="btn btn-heart add-to-wishlist"
+                                        data-shoe-id="{{this._id}}" data-shoe-size="36"><i
+                                            class="fa-solid fa-heart heart" id="heart"></i></button>
+                                </form>
+                                {{/if}}
+                                {{else}}
+                                <a href="/login"><i class="fa-solid fa-heart heart" id="heart"></i></a>
+                                {{/if}}
                             </div>
                         </div>
                         <div class="mr-2">
@@ -57,7 +72,7 @@
                                         <p>{{this.price}}.000đ</p>
                                     </del></div>
                                 <div class="col">
-                                    <p style="color: red; font-size: 20px;">{{this.price}}.000đ</p>
+                                    <p style="color: red; font-size: 20px;">{{this.priceDiscount}}.000đ</p>
                                 </div>
                             </div>
                         </div>
@@ -68,3 +83,36 @@
         </div>
     </div>
 </div>
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        const wishlistButtons = document.querySelectorAll('.add-to-wishlist');
+
+        wishlistButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                const shoeId = this.getAttribute('data-shoe-id');
+                const shoeSize = this.getAttribute('data-shoe-size');
+
+                fetch('/add-wishlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ shoeId: shoeId, size: shoeSize })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Xử lý khi thành công, ví dụ: đổi màu trái tim
+                            this.querySelector('i.heart').classList.add('active');
+                        } else {
+                            // Xử lý khi có lỗi
+                            alert('Có lỗi xảy ra, vui lòng thử lại!');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+
+</script>

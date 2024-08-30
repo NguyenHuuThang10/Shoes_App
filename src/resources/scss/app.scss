@@ -4,7 +4,7 @@
 }
 
 .mt-header {
-  margin-top: 114px;
+  margin-top: calc(114px - 39px);
 }
 
 .mt-top {
@@ -39,12 +39,20 @@
 /* navbar top */
 
 .header {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   z-index: 100;
+  // display: block;
+  // transition: top 0.3s;
+}
+
+#navbar {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: fixed;
-  top: 0;
+  top: 39px;
   right: 0;
   left: 0;
+  display: block;
+  transition: top 0.3s;
+  z-index: 100;
 }
 
 
@@ -752,4 +760,17 @@ span#or-text {
 
 .btn-heart {
   background-color: #fff;
+}
+
+.box-img-shoes:hover {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.box-shoes {
+  border: solid #e6e6e6 1px;
+}
+
+.box-shoes:hover {
+  border: 1px solid #777;
 }

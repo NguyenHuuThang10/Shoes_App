@@ -1,4 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // sroll header
+    var prevScrollpos = window.scrollY;
+    window.onscroll = function () {
+        var currentScrollPos = window.scrollY;
+        if (prevScrollpos > currentScrollPos) {
+            if (currentScrollPos != 0) {
+                document.getElementById("navbar").style.top = "0px";
+            } else{
+                document.getElementById("navbar").style.top = "39px";
+            }
+            
+
+            // }
+
+        } else {
+
+            document.getElementById("navbar").style.top = "-114px";
+        }
+        prevScrollpos = currentScrollPos;
+    }
+
     // slideshow đầu trang
     var image = document.getElementById('image');
     var images = [
@@ -75,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-// Xứ lý phần form search trang shoe type
+    // Xứ lý phần form search trang shoe type
     const searchForm = document.querySelector('.form-search');
     const shoeItems = document.querySelectorAll('.img');
     const originalOrder = Array.from(shoeItems);
@@ -87,12 +108,13 @@ document.addEventListener("DOMContentLoaded", function () {
         let foundShoes = false;
 
         originalOrder.forEach(shoe => {
-            const shoeName = shoe.querySelector('b').textContent.toLowerCase();
+            const shoeNameLower = shoe.querySelector('b').textContent.toLowerCase();
+            const shoeName = shoe.querySelector('b').textContent;
             const shoeImgSrc = shoe.querySelector('img').getAttribute('src');
             const shoePrice = shoe.querySelector('p').textContent.trim();
             const shoeLink = shoe.querySelector('a').getAttribute('href');
 
-            if (shoeName.includes(lowerKeyword)) {
+            if (shoeNameLower.includes(lowerKeyword)) {
                 foundShoes = true;
 
                 // Tạo lại cấu trúc sản phẩm khớp với cấu trúc gốc
