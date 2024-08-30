@@ -1,4 +1,3 @@
-
 .ml-2 {
   margin-left: 2px;
 }
@@ -8,7 +7,7 @@
 }
 
 .mt-top {
-  margin-top: 140px;
+  margin-top: calc(140px - 39px);
 }
 
 /* navbar top */
@@ -214,6 +213,7 @@
   margin: 0;
   font-size: 14px;
 }
+
 // .suggestions-box a {
 //   display: block;
 //   padding: 8px;
@@ -393,12 +393,6 @@
   margin-bottom: 20px;
   text-align: center;
 }
-
-// .filter .row p {
-//   font-size: 40px;
-//   text-align: left;
-//   line-height: 100px;
-// }
 
 .filterForm {
   width: 400px;
@@ -740,10 +734,6 @@ span#or-text {
   transform: scale(1.1);
 }
 
-.product-policy {
-
-}
-
 .product-policy .product-policy-item {
   padding: 15px 20px;
 }
@@ -753,7 +743,7 @@ span#or-text {
   font-size: 20px;
 }
 
-.product-policy p{
+.product-policy p {
   font-size: 12px;
   margin-top: 5px;
 }
@@ -761,6 +751,7 @@ span#or-text {
 .btn-heart {
   background-color: #fff;
 }
+
 
 .box-img-shoes:hover {
   -webkit-transform: scaleX(-1);
@@ -774,3 +765,35 @@ span#or-text {
 .box-shoes:hover {
   border: 1px solid #777;
 }
+
+.thumb-img ul {
+  display: flex;
+  flex-wrap: wrap;
+  /* Cho phép nội dung được trải ra nhiều hàng */
+  margin-top: 2px;
+  padding: 0;
+  list-style-type: none;
+  justify-content: space-between;
+}
+
+
+.thumb-img .w-30 {
+  flex: 0 0 calc((100% / 3) - 1.5px);
+  /* chia thành 3 ô 1 hàng */
+  box-sizing: border-box;
+  ;
+}
+
+.thumb-img ul li img {
+  width: 100%;
+  /* Đảm bảo ảnh chiếm toàn bộ không gian của thẻ <li> */
+  display: block;
+  transition: opacity 0.3s ease;
+  /* Thêm hiệu ứng chuyển đổi khi thay đổi độ mờ */
+}
+
+.thumb-img ul li img:hover {
+  opacity: 0.7;
+  /* Khi chạm vào, ảnh sẽ mờ đi */
+}
+

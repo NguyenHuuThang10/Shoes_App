@@ -1,8 +1,40 @@
-<div class="container-fluid ">
+<div class="container-fluid">
     <div class="row mt-top">
         <div class="col">
-            <img src="/uploads/{{shoe.image}}" alt="" width="100%">
+            <div class="wrapbox-img">
+                <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
+                    data-media="(max-width: 799px);(min-width: 800px)"
+                    data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
+                    <img src="/uploads/{{shoe.image}}" alt="{{shoe.name}}" width="100%" />
+                </a>
+            </div>
+            <div class="thumb-img">
+                <ul>
+                    <li class="w-30">
+                        <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
+                            data-media="(max-width: 799px);(min-width: 800px)"
+                            data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
+                            <img src="/uploads/{{shoe.image}}" alt="Image 2" />
+                        </a>
+                    </li>
+                    <li class="w-30">
+                        <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
+                            data-media="(max-width: 799px);(min-width: 800px)"
+                            data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
+                            <img src="/uploads/{{shoe.image}}" alt="Image 3" />
+                        </a>
+                    </li>
+                    <li class="w-30">
+                        <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
+                            data-media="(max-width: 799px);(min-width: 800px)"
+                            data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
+                            <img src="/uploads/{{shoe.image}}" alt="Image 4" />
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
         <div class="col ">
             <form action="/shoes/add-to-cart" method="post">
                 <input type="hidden" name="shoeId" value="{{shoe._id}}">
@@ -45,25 +77,25 @@
                 </div>
                 <div class="order mt-4">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-5">
                             <button type="submit" class="btn order-buy">Mua Ngay</button>
                         </div>
                     </div>
                 </div>
             </form>
             <div class="row mt-3">
-                <div class="col-4">
+                <div class="col-5">
                     <form action="/add-wishlist" method="post">
                         <input type="hidden" name="shoeId" value="{{shoe._id}}">
                         <input type="hidden" name="size" id="wishlistSize">
                         <input type="hidden" name="show" id="" value="add">
-                        <button class="btn btn-light btn-block"> <i class="fa-regular fa-heart"></i> Thêm vào yêu
+                        <button class="btn btn-light btn-block"><i class="fa-regular fa-heart"></i> Thêm vào yêu
                             thích</button>
                     </form>
                 </div>
             </div>
 
-            <div class="row text-center product-policy mt-4" >
+            <div class="row text-center product-policy mt-4">
                 <div class="col-4 product-policy-item">
                     <i class="fa-solid fa-award"></i>
                     <p>Bảo hành keo vĩnh viễn</p>
@@ -141,5 +173,29 @@
                 alert('Vui lòng chọn kích thước trước khi mua sản phẩm!');
             }
         });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.13/dist/fancybox/fancybox.umd.js"></script>
+<script>
+    Fancybox.bind('[data-fancybox]', {
+        Images: {
+            content: (_ref, slide) => {
+                let rez = "<picture>";
+                const media = slide.media.split(";");
+
+                slide.sources.split(";").map((source, index) => {
+                    rez += `<source
+                        media="${media[index] || ""}"
+                        srcset="${source}"
+                        />`;
+                });
+
+                rez += `<img src="${slide.src}" alt="" />`;
+
+                rez += "</picture>";
+
+                return rez;
+            },
+        },
     });
 </script>

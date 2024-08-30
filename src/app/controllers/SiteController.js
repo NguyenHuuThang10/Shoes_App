@@ -44,7 +44,9 @@ class SiteController {
       ]);
 
       let wishlistItemIds = null;
+      // return res.send(res.locals.currentUser)
       if (res.locals.currentUser) {
+        // console.log('xin chao')
         const userId = res.locals.currentUser._id;
         const user = await User.findOne({ _id: userId }).populate("wishlistItems.shoe");
         wishlistItemIds = user.wishlistItems.map(item => item.shoe._id.toString());
