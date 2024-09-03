@@ -221,7 +221,7 @@ class SiteController {
       .catch((err) => {
         console.log("ERR: " + err);
         res.render("form/userForm", {
-          errLogin: "Đăng nhập thất bại!",
+          err: "Đăng nhập thất bại!",
           old: req.body
 
         });
@@ -455,6 +455,37 @@ class SiteController {
   search(req, res, next) {
     const keyWord = req.params.keyWord;
     res.render("search");
+  }
+
+  // [GET] /auth-provider
+  authProvider(req, res, next) {
+    if (req.user) {
+      const accountId = req.user.accountId;
+      if (accountId) {
+        User.findOne({ accountId: accountId, activeToken: null })
+          .then((data) => {
+            var token = jwt.sign({ _id: data._id, isAdmin: data.isAdmin }, "nht");
+            var checkCookie = res.cookie("token", token, { httpOnly: true });
+            if (checkCookie) {
+              res.redirect("/");
+            }
+          })
+          .catch((err) => {
+            console.log("ERR: " + err);
+            req.flash('err', "Đăng nhập thất bại")
+            res.redirect('/login');
+          })
+          .catch(next);
+      }
+    } else {
+      res.redirect('/login')
+    }
+
+  }
+
+  // [GET] /auth-provider
+  authFail(req, res, next) {
+    res.redirect('/login')
   }
 
 

@@ -22,7 +22,9 @@ const User = new Schema({
             },
         }
 
-    ]
+    ],
+    authProvider: { type: String, default: 'local' }, 
+    accountId: { type: String },
 }, {
     conllection: 'users',
     timestamps: true

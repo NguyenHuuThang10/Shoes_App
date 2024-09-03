@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser')
 const paypal = require('paypal-rest-sdk');
 const SortMiddleware = require('./app/middlewares/SortMiddleware')
 const moment = require('moment-timezone'); //format date
+const passport = require('passport');
+require('./util/auth');
 
 const app = express();
 const port = 3000;
@@ -17,9 +19,10 @@ const port = 3000;
 const flash = require('connect-flash');
 const session = require('express-session');
 
-app.use(session({ secret: '20112002', resave: true, saveUninitialized: true }));
+app.use(session({ secret: '20112002', resave: true, saveUninitialized: true , cookie: { secure: false }}));
 app.use(flash());
-
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 

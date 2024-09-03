@@ -4,9 +4,9 @@
         <div class="login">
             <form method="post" action="/login">
                 <h3>Đăng nhập</h3>
-                {{#if errLogin}}
+                {{#if err}}
                     <div class="alert alert-danger" role="alert">
-                        {{errLogin}}
+                        {{err}}
                     </div>
                 {{/if}}
                 <label for="email">Email</label>
@@ -17,6 +17,15 @@
                 <input type="submit" name="btn" id="" value="Đăng nhập">
                 <a href="/forgot">Quên mật khẩu?</a>
             </form>
+            <hr>
+            <div class="row">
+                <div class="col-6">
+                    <a href="/auth/google" class="btn btn-danger"><i class="fa-brands fa-google-plus-g"></i> Đăng nhập với Google</a>
+                </div>
+                <div class="col-6">
+                    <a href="/auth/facebook" class="btn btn-primary"><i class="fa-brands fa-facebook-f"></i> Đăng nhập với Facebook</a>
+                </div>
+            </div>
         </div>
         <div class="register" id="compareForm">
             <form action="/sign-up" method="post">
