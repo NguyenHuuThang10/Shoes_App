@@ -494,8 +494,65 @@ span#or-text {
   cursor: pointer;
 }
 
+.shopping-cart {
+  border: 1px solid #ccc;
+  padding: 0 20px;
+  border-radius: 8px;
+}
+
+.shopping-cart h1 {
+  font-size: 20px;
+  margin: 0;
+  padding: 10px 0;
+  margin-top: 15px;
+  border-bottom: 1px solid #ccc;
+  text-transform: uppercase;
+}
+
+.shopping-cart p {
+  padding: 10px 0;
+  margin-top: 0 0 15px;
+}
+
+.cart-list {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
 .cart-list .table-product {
   width: 400px;
+}
+
+.table-borderless>tbody>tr>td {
+  border: none;
+}
+
+.table-borderless>thead>tr>th {
+  border: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.note-orders {
+  background: #f3f4f4;
+  padding: 15px;
+  margin: 10px 15px 10px;
+}
+
+.note-orders textarea {
+  padding: 10px 15px;
+  width: 100%;
+  height: 35px;
+  resize: none;
+  border: 1px solid #dfe0e1;
+  box-shadow: none;
+}
+
+.note-label {
+  display: block;
+  margin: 0px 0 10px;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .quantity input {
@@ -508,12 +565,33 @@ span#or-text {
   border: 1px solid #cccccc7a;
 }
 
+.total {
+  font-weight: 400;
+  color: red;
+  font-size: 24px;
+}
+
 .cart-total ul {
   list-style-type: none;
 }
 
-.total {
-  color: red;
+.btn-order {
+  display: block;
+  margin: 0 auto; /* Giúp nút nằm giữa */
+  background-color: #ff0000; /* Màu đỏ cho nút */
+  color: white; /* Màu chữ trắng */
+  padding: 10px 20px; /* Khoảng cách bên trong nút */
+  border: none; /* Xóa đường viền */
+  border-radius: 5px; /* Bo tròn góc nút */
+  font-size: 16px; /* Kích thước chữ */
+  font-weight: bold; /* Chữ đậm */
+  cursor: pointer; /* Thay đổi con trỏ khi hover */
+  transition: background-color 0.3s ease; /* Hiệu ứng mượt khi hover */
+}
+
+/* Hiệu ứng khi hover */
+.btn-order:hover {
+  background-color: #cc0000; /* Đổi màu nút khi hover */
 }
 
 .cart-address p {
@@ -563,7 +641,15 @@ span#or-text {
 }
 
 .cart-address .cart-button {
-  width: 200px;
+  width: auto;
+  margin-top: 10px;
+  background-color: red;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cart-pay .cart-button {
+  width: auto;
   margin-top: 10px;
   background-color: red;
   color: #fff;
@@ -795,5 +881,101 @@ span#or-text {
 .thumb-img ul li img:hover {
   opacity: 0.7;
   /* Khi chạm vào, ảnh sẽ mờ đi */
+}
+
+.process-container {
+  width: 100%;
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.process-bar {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  position: relative;
+}
+
+.process-bar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: #ccc;
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
+.process-step {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  flex: 1;
+}
+
+.step-label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 60px;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.step-number::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 100%;
+  height: 4px;
+  background-color: #ccc;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.process-step:last-child .step-number::before {
+  display: none;
+}
+
+.process-step.active .step-number {
+  background-color: #007bff;
+  /* Màu xanh cho bước hiện tại */
+  color: white;
+}
+
+.process-step.completed .step-number {
+  background-color: #28a745;
+  /* Màu xanh lá khi hoàn thành */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.process-step.completed .step-number::before {
+  display: none;
 }
 

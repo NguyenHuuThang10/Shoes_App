@@ -6,136 +6,206 @@
         </ol>
     </nav>
 </div>
-<div class="container">
-
-    <div class="cart-list">
-
-        <table class="table mt-5">
-            <thead class="thead-light">
-                <tr>
-                    <th class="table-product">Sản Phẩm</th>
-                    <th>Đơn Giá</th>
-                    <th>Số Lượng</th>
-                    <th>Kích thước</th>
-                    <th>Thao Tác</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                {{#if order.orderItems}}
-                {{#each order.orderItems}}
-                <tr>
-                    <td>
-                        <div class="row">
-                            <div class="col-3">
-                                <img src="/uploads/{{this.image}}" alt="" width="100%">
-                            </div>
-                            <div class="col-9">
-                                <b>{{this.name}}</b> <br>
-                            </div>
-                        </div>
-
-                    </td>
-                    <td>{{this.price}}.000 đ</td>
-                    <td>
-                        <form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT" class="quantity">
-                            <button type="submit" class="btn-decrease" name="action" value="decrease"><i
-                                    class="fa-solid fa-minus"></i></button>
-                            <input type="text" class="tiny-size" value="{{this.amount}}" name="quantity"
-                                data-item-id="{{this._id}}">
-                            <button type="submit" class="btn-increase" name="action" value="increase"><i
-                                    class="fa-solid fa-plus"></i></button>
-
-                        </form>
-                    </td>
-                    <td>{{this.size}}</td>
-                    <td><a href="#" class="btn-delete-order" data-id="{{this._id}}">Xóa</a></td>
-                </tr>
-                {{/each}}
-
-                {{else}}
-                <tr class="text-center">
-                    <td colspan="7">
-                        <p>{{cartEmpty}}</p>.
-                    </td>
-                </tr>
-                {{/if}}
-
-
-            </tbody>
-        </table>
-    </div>
-    <div class="row border-top cart-total mt-5">
-        <div class="col "></div>
-        <div class="col">
-            <div class="row">
-                <div class="col mt-2">
-                    <ul>
-                        <li>Tổng Tiền Hàng</li>
-                        <li>Phí Vận Chuyển</li>
-                    </ul>
-                </div>
-                <div class="col text-right">
-                    <ul>
-                        <li>{{#if order.orderItems}} {{order.itemsPrice}}.000 đ {{else}} 0 đ {{/if}}</li>
-                        <li>{{#if order.orderItems}} {{order.shippingPrice}}.000 đ {{else}} 0 đ {{/if}}</li>
-                    </ul>
-                </div>
+<div class="row">
+    <div class="process-container">
+        <div class="process-bar">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-label">Giỏ Hàng</div>
             </div>
-            <div class="row border-top total">
-                <div class="col mt-2">
-                    <ul>
-                        <li>Tổng Tiền</li>
-                    </ul>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-label">Thông Tin Đặt Hàng</div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-label">Thanh Toán</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div id="content-step1" class="content-step shopping-cart">
+        <h1>GIỎ HÀNG CỦA BẠN</h1>
+
+        <p>Bạn đang có <b>1 sản phẩm</b> trong giỏ hàng.</p>
+
+        <div class="cart-list">
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <th class="table-product">Sản Phẩm</th>
+                        <th>Đơn Giá</th>
+                        <th>Số Lượng</th>
+                        <th>Kích thước</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#if order.orderItems}}
+                    {{#each order.orderItems}}
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-3">
+                                    <img src="/uploads/{{this.image}}" alt="" width="100%">
+                                </div>
+                                <div class="col-9">
+                                    <b>{{this.name}}</b> <br>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>{{this.price}}.000 đ</td>
+                        <td>
+                            <form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT" class="quantity">
+                                <button type="submit" class="btn-decrease" name="action" value="decrease"><i
+                                        class="fa-solid fa-minus"></i></button>
+                                <input type="text" class="tiny-size" value="{{this.amount}}" name="quantity"
+                                    data-item-id="{{this._id}}">
+                                <button type="submit" class="btn-increase" name="action" value="increase"><i
+                                        class="fa-solid fa-plus"></i></button>
+
+                            </form>
+                        </td>
+                        <td>{{this.size}}</td>
+                        <td><a href="#" class="btn-delete-order" data-id="{{this._id}}">Xóa</a></td>
+                    </tr>
+                    {{/each}}
+
+                    {{else}}
+                    <tr class="text-center">
+                        <td colspan="7">
+                            <p>{{cartEmpty}}</p>.
+                        </td>
+                    </tr>
+                    {{/if}}
+
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-7 note-orders" style="height: 120px;">
+                <label for="note" class="note-label">Ghi chú đơn hàng</label>
+                <textarea class="form-control" name="note" id="note" rows="3"></textarea>
+            </div>
+            <div class="col cart-total">
+                <div class="row">
+                    <div class="col mt-2">
+                        <ul>
+                            <li>Tổng Tiền Hàng</li>
+                            <li>Phí Vận Chuyển</li>
+                        </ul>
+                    </div>
+                    <div class="col mt-2 text-right">
+                        <ul>
+                            <li>{{#if order.orderItems}} {{formatCurrency order.itemsPrice}},000 đ {{else}} 0 đ {{/if}}
+                            </li>
+                            <li>{{#if order.orderItems}} {{order.shippingPrice}},000 đ {{else}} 0 đ {{/if}}</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col text-right">
-                    <ul>
-                        <li>{{#if order.orderItems}} {{order.totalPrice}}.000 đ {{else}} 0 đ {{/if}}</li>
-                    </ul>
+                <hr width="90%" align="right">
+                <div class="row">
+                    <div class="col">
+                        <ul>
+                            <li>Tổng Tiền</li>
+                        </ul>
+                    </div>
+                    <div class="col total text-right">
+                        <ul>
+                            <li>{{#if order.orderItems}} {{formatCurrency order.totalPrice}},000 đ {{else}} 0 đ {{/if}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <button type="submit" class="btn-order" id="btn-to-step2">ĐẶT HÀNG NGAY</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="cart-address">
-        <p>Thông tin đăt hàng</p>
-        <form method="post" action="/shoes/update-cart/{{order._id}}">
-            <input type="text" required id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
-            <input type="text" required id="phone" name="phone" value="{{currentUser.phone}}"
-                placeholder="Số điện thoại">
 
-            <textarea name="city" id="" class="form-control"
-                placeholder="Nhập tỉnh/thành phố" required></textarea>
+    <div id="content-step2" class="content-step" style="display:none;">
+        <div class="cart-address">
+            <p>Thông tin đặt hàng</p>
+            <form method="post" action="/shoes/update-cart/{{order._id}}">
+                <input type="text" required id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
+                <input type="text" required id="phone" name="phone" value="{{currentUser.phone}}"
+                    placeholder="Số điện thoại">
 
-            <textarea name="address" id="" class="form-control"
-                placeholder="Nhập số nhà, ấp/tên đường, xã/phường" required></textarea>
+                {{!-- <textarea name="city" id="" class="form-control" placeholder="Nhập tỉnh/thành phố"
+                    required></textarea>
 
-            <div class="box-pay">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod1"
-                        value="Thanh toán bằng tiền mặt" checked>
-                    <label class="form-check-label" for="paymentMethod1">
-                        Thanh toán bằng tiền mặt khi nhận hàng
-                    </label>
+                <textarea name="address" id="" class="form-control" placeholder="Nhập số nhà, ấp/tên đường, xã/phường"
+                    required></textarea> --}}
+
+                <div class="form-group mt-3">
+                    <select name="province" id="province" class="form-control" required>
+                        <option value="">Chọn Tỉnh/Thành</option>
+                        <!-- Dữ liệu sẽ được load từ API -->
+                    </select>
                 </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2"
-                        value="Thanh toán bằng Paypal">
-                    <label class="form-check-label" for="paymentMethod2">
-                        Thanh toán bằng Paypal
-                    </label>
+                <div class="form-group">
+                    <select name="district" id="district" class="form-control" required>
+                        <option value="">Chọn Quận/Huyện</option>
+                        <!-- Dữ liệu sẽ được load từ API sau khi chọn Tỉnh/Thành -->
+                    </select>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <select name="ward" id="ward" class="form-control" required>
+                        <option value="">Chọn Phường/Xã</option>
+                        <!-- Dữ liệu sẽ được load từ API sau khi chọn Quận/Huyện -->
+                    </select>
+                </div>
 
 
-            {{#if order.orderItems}}
-            <button type="submit" class="btn cart-button">Mua hàng</button>
-            <a href="/" class="btn cart-button">Quay lại</a>
-            {{else}}
-            <a href="/" class="btn btn-success cart-button">Quay lại</a>
-            {{/if}}
-        </form>
+                <button type="button" class="btn cart-button" id="btn-to-step3">Chọn phương thức thanh toán</button>
+                <button type="button" class="btn cart-button" id="btn-back-to-step1">Quay lại bước 1</button>
+            </form>
+        </div>
+
     </div>
+
+    <div id="content-step3" class="content-step" style="display:none;">
+        <div class="cart-pay">
+            <p>Chọn phương thức thanh toán</p>
+            <!-- Thêm action và method cho form -->
+            <form method="post" action="/shoes/update-cart/{{order._id}}">
+                <div class="box-pay mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod1"
+                            value="Thanh toán bằng tiền mặt" checked>
+                        <label class="form-check-label" for="paymentMethod1">
+                            Thanh toán bằng tiền mặt khi nhận hàng
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2"
+                            value="Thanh toán bằng Paypal">
+                        <label class="form-check-label" for="paymentMethod2">
+                            Thanh toán bằng Paypal
+                        </label>
+                    </div>
+                </div>
+                {{#if order.orderItems}}
+                <!-- Nút này giờ sẽ gửi form đi khi nhấn -->
+                <button type="submit" class="btn cart-button">Hoàn tất đơn hàng</button>
+                <button type="button" class="btn cart-button" id="btn-back-to-step2">Quay lại bước 2</button>
+                {{else}}
+                <a href="/" class="btn btn-success cart-button">Quay lại</a>
+                {{/if}}
+            </form>
+        </div>
+    </div>
+
+
 </div>
 
 <form name="delete-order-form" method="POST"></form>
@@ -154,5 +224,125 @@
             };
         });
     })
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var btnToStep2 = document.getElementById('btn-to-step2');
+        var btnBackToStep1 = document.getElementById('btn-back-to-step1');
+        var btnToStep3 = document.getElementById('btn-to-step3'); // Bước 2 tới bước 3
+        var contentStep1 = document.getElementById('content-step1');
+        var contentStep2 = document.getElementById('content-step2');
+        var contentStep3 = document.getElementById('content-step3');
+        var processSteps = document.querySelectorAll('.process-step');
+
+        // Chuyển từ bước 1 qua bước 2 khi nhấn nút "ĐẶT HÀNG NGAY"
+        btnToStep2.onclick = function () {
+            // Ẩn bước 1
+            contentStep1.style.display = 'none';
+
+            // Hiển thị bước 2
+            contentStep2.style.display = 'block';
+
+            // Cập nhật thanh tiến trình (đánh dấu bước 2)
+            processSteps[0].classList.add('completed'); // Bước 1 hoàn thành
+            processSteps[1].classList.add('active');    // Bước 2 đang thực hiện
+        };
+
+        // Quay lại từ bước 2 về bước 1 khi nhấn nút "Quay lại bước 1"
+        btnBackToStep1.onclick = function () {
+            // Ẩn bước 2
+            contentStep2.style.display = 'none';
+
+            // Hiển thị bước 1
+            contentStep1.style.display = 'block';
+
+            // Đảm bảo bước 1 vẫn giữ tích xanh (hoàn thành)
+            processSteps[0].classList.add('completed'); // Bước 1 vẫn hoàn thành
+            processSteps[1].classList.remove('active'); // Bỏ trạng thái đang thực hiện của bước 2
+        };
+
+        // Chuyển từ bước 2 qua bước 3 khi nhấn nút "Chọn phương thức thanh toán"
+        btnToStep3.onclick = function () {
+            // Ẩn bước 2
+            contentStep2.style.display = 'none';
+
+            // Hiển thị bước 3
+            contentStep3.style.display = 'block';
+
+            // Cập nhật thanh tiến trình (đánh dấu bước 3)
+            processSteps[1].classList.add('completed'); // Bước 2 hoàn thành
+            processSteps[2].classList.add('active');    // Bước 3 đang thực hiện
+        };
+
+        // Tạo khả năng quay lại bước 2 từ bước 3
+        var btnBackToStep2 = document.getElementById('btn-back-to-step2');
+        btnBackToStep2.onclick = function () {
+            // Ẩn bước 3
+            contentStep3.style.display = 'none';
+
+            // Hiển thị lại bước 2
+            contentStep2.style.display = 'block';
+
+            // Đảm bảo các bước trước vẫn giữ tích xanh
+            processSteps[1].classList.add('completed'); // Bước 2 vẫn hoàn thành
+            processSteps[2].classList.remove('active'); // Bỏ trạng thái đang thực hiện của bước 3
+        };
+    });
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Hàm để lấy dữ liệu từ API và cập nhật thẻ select
+    function fetchAndFillSelect(url, selectElement, defaultOptionText) {
+        fetch(url)
+            .then(response => response.json())  // Chuyển dữ liệu JSON
+            .then(data => {
+                // Làm rỗng thẻ select trước khi thêm option mới
+                selectElement.innerHTML = `<option value="">${defaultOptionText}</option>`;
+                // Duyệt qua dữ liệu và thêm các option mới vào thẻ select
+                data.forEach(item => {
+                    selectElement.innerHTML += `<option value="${item.code}">${item.name}</option>`;
+                });
+            })
+            .catch(error => console.error('Error:', error));  // Bắt lỗi nếu có
+    }
+
+    // Lấy danh sách Tỉnh/Thành ngay khi load trang
+    const provinceSelect = document.getElementById('province');
+    fetchAndFillSelect('https://provinces.open-api.vn/api/p/', provinceSelect, 'Chọn Tỉnh/Thành');
+
+    // Khi người dùng chọn Tỉnh/Thành
+    provinceSelect.addEventListener('change', function () {
+        const provinceCode = this.value.code;
+        const districtSelect = document.getElementById('district');
+        
+        if (provinceCode) {
+            // Lấy Quận/Huyện dựa trên Tỉnh/Thành đã chọn
+            fetchAndFillSelect(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`, districtSelect, 'Chọn Quận/Huyện');
+        } else {
+            // Nếu chưa chọn tỉnh, làm rỗng các thẻ select liên quan
+            districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+            document.getElementById('ward').innerHTML = '<option value="">Chọn Phường/Xã</option>';
+        }
+    });
+
+    // Khi người dùng chọn Quận/Huyện
+    const districtSelect = document.getElementById('district');
+    districtSelect.addEventListener('change', function () {
+        const districtCode = this.value;
+        const wardSelect = document.getElementById('ward');
+
+        if (districtCode) {
+            // Lấy Phường/Xã dựa trên Quận/Huyện đã chọn
+            fetchAndFillSelect(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`, wardSelect, 'Chọn Phường/Xã');
+        } else {
+            // Nếu chưa chọn Quận/Huyện, làm rỗng thẻ select Phường/Xã
+            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+        }
+    });
+});
 
 </script>

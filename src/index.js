@@ -60,6 +60,10 @@ app.engine(
   engine({
     extname: ".hbs",
     helpers: {
+      // Helper định dạng số tiền
+      formatCurrency: function (number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      },
       formatDate: function (date, timezone, format) {
         return moment(date).tz(timezone).format(format);
       },
