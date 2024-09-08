@@ -2,21 +2,17 @@
     <div class="row mt-top">
         <div class="col">
             <div class="wrapbox-img">
-                <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
-                    data-media="(max-width: 799px);(min-width: 800px)"
-                    data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
+                <a href="/uploads/{{shoe.image}}" data-fancybox="gallery">
                     <img src="/uploads/{{shoe.image}}" alt="{{shoe.name}}" width="100%" />
                 </a>
             </div>
             {{#if imageArr}}
             <div class="thumb-img">
                 <ul>
-                    
                     {{#each imageArr}}
                     <li class="w-30">
                         <a href="/uploads/{{this}}" data-fancybox="gallery"
-                            data-media="(max-width: 799px);(min-width: 800px)"
-                            data-sources="/uploads/{{this}}">
+                            data-media="(max-width: 799px);(min-width: 800px)" data-sources="/uploads/{{this}}">
                             <img src="/uploads/{{this}}" alt="Image 2" />
                         </a>
                     </li>
@@ -166,27 +162,37 @@
         });
     });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.13/dist/fancybox/fancybox.umd.js"></script>
+<script src="/fancybox/fancybox.umd.js"></script>
 <script>
-    Fancybox.bind('[data-fancybox]', {
-        Images: {
-            content: (_ref, slide) => {
-                let rez = "<picture>";
-                const media = slide.media.split(";");
-
-                slide.sources.split(";").map((source, index) => {
-                    rez += `<source
-                        media="${media[index] || ""}"
-                        srcset="${source}"
-                        />`;
-                });
-
-                rez += `<img src="${slide.src}" alt="" />`;
-
-                rez += "</picture>";
-
-                return rez;
-            },
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        Toolbar: {
+            display: {
+                zoom: true,
+                fullscreen: true,
+            }
         },
+        Image: {
+            zoom: false, // Tắt zoom mặc định của Fancybox
+            click: function (fancybox, slide) {
+                if (!slide.$image) return;
+
+                const isZoomed = slide.$image.classList.contains('is-zoomed');
+
+                if (isZoomed) {
+                    // Thu nhỏ lại ảnh về kích thước ban đầu
+                    slide.$image.style.transform = '';
+                    slide.$image.style.maxWidth = '';
+                    slide.$image.style.maxHeight = '';
+                    slide.$image.classList.remove('is-zoomed');
+                } else {
+                    // Phóng to ảnh
+                    const scale = 4; // Tỉ lệ phóng to
+                    slide.$image.style.transform = `scale(${scale})`;
+                    slide.$image.style.maxWidth = `${100 * scale}vw`;
+                    slide.$image.style.maxHeight = `${100 * scale}vh`;
+                    slide.$image.classList.add('is-zoomed');
+                }
+            }
+        }
     });
 </script>
