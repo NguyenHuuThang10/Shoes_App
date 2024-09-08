@@ -8,31 +8,22 @@
                     <img src="/uploads/{{shoe.image}}" alt="{{shoe.name}}" width="100%" />
                 </a>
             </div>
+            {{#if imageArr}}
             <div class="thumb-img">
                 <ul>
+                    
+                    {{#each imageArr}}
                     <li class="w-30">
-                        <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
+                        <a href="/uploads/{{this}}" data-fancybox="gallery"
                             data-media="(max-width: 799px);(min-width: 800px)"
-                            data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
-                            <img src="/uploads/{{shoe.image}}" alt="Image 2" />
+                            data-sources="/uploads/{{this}}">
+                            <img src="/uploads/{{this}}" alt="Image 2" />
                         </a>
                     </li>
-                    <li class="w-30">
-                        <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
-                            data-media="(max-width: 799px);(min-width: 800px)"
-                            data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
-                            <img src="/uploads/{{shoe.image}}" alt="Image 3" />
-                        </a>
-                    </li>
-                    <li class="w-30">
-                        <a href="/uploads/{{shoe.image}}" data-fancybox="gallery"
-                            data-media="(max-width: 799px);(min-width: 800px)"
-                            data-sources="/uploads/{{shoe.image}};/uploads/{{shoe.image}}">
-                            <img src="/uploads/{{shoe.image}}" alt="Image 4" />
-                        </a>
-                    </li>
+                    {{/each}}
                 </ul>
             </div>
+            {{/if}}
         </div>
 
         <div class="col ">

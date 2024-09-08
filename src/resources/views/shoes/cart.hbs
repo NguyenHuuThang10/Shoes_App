@@ -99,15 +99,17 @@
     <div class="cart-address">
         <p>Thông tin đăt hàng</p>
         <form method="post" action="/shoes/update-cart/{{order._id}}">
-            <input type="text" required id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
-            <input type="text" required id="phone" name="phone" value="{{currentUser.phone}}"
+            <input type="text" required id="name" name="fullName" value="{{#if currentUser.name}} {{currentUser.name}} {{/if}}" placeholder="Họ tên">
+            <input type="text" required id="phone" name="phone" value="{{#if currentUser.phone}} {{currentUser.phone}} {{/if}}"
                 placeholder="Số điện thoại">
 
-            <textarea name="city" id="" class="form-control"
-                placeholder="Nhập tỉnh/thành phố" required></textarea>
+            <textarea name="city" id="" class="form-control" placeholder="Nhập tỉnh/thành phố" required>{{#if currentUser.shippingAddress.city}} {{currentUser.shippingAddress.city}} {{/if}}</textarea>
 
-            <textarea name="address" id="" class="form-control"
-                placeholder="Nhập số nhà, ấp/tên đường, xã/phường" required></textarea>
+            <textarea name="district" id="" class="form-control" placeholder="Nhập quận/huyện" required>{{#if currentUser.shippingAddress.district}} {{currentUser.shippingAddress.district}} {{/if}}</textarea>
+
+            <textarea name="ward" id="" class="form-control" placeholder="Nhập phường/xã" required>{{#if currentUser.shippingAddress.ward}} {{currentUser.shippingAddress.ward}} {{/if}}</textarea>
+
+            <textarea name="address" id="" class="form-control" placeholder="Nhập địa chỉ" required>{{#if currentUser.shippingAddress.address}} {{currentUser.shippingAddress.address}} {{/if}}</textarea>
 
             <div class="box-pay">
                 <div class="form-check">

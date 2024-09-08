@@ -24,55 +24,67 @@
         </div>
 
         <div class="col-md-9 shadow p-3 mb-5 bg-white rounded box-profile" style="border: solid #e6e6e6 1px;">
-            <h2>Thông tin cá nhân</h2>
+            <h2>Thông tin cá nhân</h2> 
+            {{#if err}}
+                <div class="alert alert-danger" role="alert">
+                    {{err}}
+                </div>
+            {{/if}}
+            {{#if success}}
+                <div class="alert alert-success" role="alert">
+                    {{success}}
+                </div>
+            {{/if}}
             <p style="color: #666666;">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
             <hr>
-            <form>
+            <form method="post">
                 <div class="form-group row">
-                    <label for="ten" class="col-sm-2 col-form-label">Tên</label>
+                    <label for="name" class="col-sm-3 col-form-label">Tên</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="ten" value="{{user.name}}">
+                        <input type="text" class="form-control" id="name" value="{{user.name}}" name="name">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <label for="email" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="email" value="{{user.email}}">
+                        <input type="text" class="form-control" id="email" value="{{user.email}}" name="email">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="sdt" class="col-sm-2 col-form-label">Số điện
+                    <label for="sdt" class="col-sm-3 col-form-label">Số điện
                         thoại</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="sdt" value="{{user.phone}}">
+                        <input type="text" class="form-control" id="sdt" value="{{user.phone}}" name="phone">
                     </div>
                 </div>
                 <h2>Thông tin nhận hàng</h2>
                 <br>
                 <div class="form-group row">
-                    <label for="tp" class="col-sm-2 col-form-label">Tỉnh/Thành phố</label>
+                    <label for="tp" class="col-sm-3 col-form-label">Tỉnh/Thành phố</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="tp" value="{{shippingAddress.city}}">
+                        <input type="text" class="form-control" id="tp" value="{{user.shippingAddress.city}}" name="city">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="quan" class="col-sm-2 col-form-label">Quận/Huyện</label>
+                    <label for="quan" class="col-sm-3 col-form-label">Quận/Huyện</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="quan" value="{{shippingAddress.city}}">
+                        <input type="text" class="form-control" id="quan" value="{{user.shippingAddress.district}}" name="district">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="phuong" class="col-sm-2 col-form-label">Phường/Xã</label>
+                    <label for="phuong" class="col-sm-3 col-form-label">Phường/Xã</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="phuong">
+                        <input type="text" class="form-control" id="phuong" value="{{user.shippingAddress.ward}}" name="ward"> 
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="diachi" class="col-sm-2 col-form-label">Địa chỉ</label>
+                    <label for="diachi" class="col-sm-3 col-form-label">Địa chỉ</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="diachi" value="{{shippingAddress.address}}">
+                        <input type="text" class="form-control" id="diachi" value="{{user.shippingAddress.address}}" name="address">
                     </div>
                 </div>
+
+                <button class="btn btn-primary" type="submit">Cập nhật</button>
             </form>
         </div>
     </div>

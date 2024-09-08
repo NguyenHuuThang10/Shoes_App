@@ -38,9 +38,28 @@ class MeController {
   // [POST] /me/store/shoes
   async storeShoes(req, res, next) {
     try {
-      if (req.file) {
-        req.body.image = req.file.filename;
-      } else {
+      if (req.files) {
+        // Kiểm tra nếu req.files.image tồn tại
+        if (req.files.image && req.files.image.length > 0) {
+          req.body.image = req.files.image[0].filename;
+        }else {
+          req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
+          return res.redirect('back')
+        }
+
+        // Kiểm tra nếu req.files.images tồn tại và không rỗng
+        if (req.files.images && req.files.images.length > 0) {
+          let path = '';
+          req.files.images.forEach((file) => {
+            path += file.filename + ',';
+          });
+          path = path.substring(0, path.lastIndexOf(','));
+          req.body.images = path;
+        }else {
+          req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
+          return res.redirect('back')
+        }
+      }else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
         return res.redirect('back')
       }
@@ -172,9 +191,23 @@ class MeController {
         return res.redirect('back')
       }
 
-      if(req.file) {
-        req.body.image = req.file.filename;
+      if (req.files) {
+        // Kiểm tra nếu req.files.image tồn tại
+        if (req.files.image && req.files.image.length > 0) {
+          req.body.image = req.files.image[0].filename;
+        }
+
+        // Kiểm tra nếu req.files.images tồn tại và không rỗng
+        if (req.files.images && req.files.images.length > 0) {
+          let path = '';
+          req.files.images.forEach((file) => {
+            path += file.filename + ',';
+          });
+          path = path.substring(0, path.lastIndexOf(','));
+          req.body.images = path;
+        }
       }
+
       await Shoe.updateShoe(req.params.id, req.body);
       req.flash('success', 'Cập nhật sản phẩm thành công!')
       res.redirect("/me/stored/shoes");

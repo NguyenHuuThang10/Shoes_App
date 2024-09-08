@@ -25,6 +25,12 @@ const User = new Schema({
     ],
     authProvider: { type: String, default: 'local' }, 
     accountId: { type: String },
+    shippingAddress: {
+        address: { type: String },
+        city: { type: String },
+        district: { type: String },
+        ward: { type: String },
+    },
 }, {
     conllection: 'users',
     timestamps: true

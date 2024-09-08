@@ -18,6 +18,7 @@ const Shoe = new Schema(
     quantity: { type: String },
     status: { type: String, default: "0" },
     image: { type: String },
+    images: { type: String },
     slug: { type: String, slug: "name", unique: true },
     slugType: { type: String, slug: "typeDetail"},
   },

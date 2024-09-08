@@ -374,19 +374,54 @@ class SiteController {
     res.render('shoes/cart')
   }
 
+  // [GET] /profile
   async profile(req, res, next) {
     var userId = res.locals.currentUser._id
     var shippingAddress = await Order.findOne({ user: userId })
     if (shippingAddress) {
       res.render('form/profile', {
         user: res.locals.currentUser,
-        shippingAddress: mongooseToObject(shippingAddress.shippingAddress)
+        shippingAddress: mongooseToObject(shippingAddress.shippingAddress),
+        success: req.flash('success'),
+        err: req.flash('err')
       })
     } else {
       res.render('form/profile', {
         user: res.locals.currentUser,
+        success: req.flash('success'),
+        err: req.flash('err')
       })
     }
+  }
+
+  // [POST] /profile
+  updateProfile(req, res, next) {
+    try {
+      const { name, email, phone, city, district, ward, address } = req.body;
+      const userId = res.locals.currentUser
+
+      if (!name || !email || !phone) {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
+        res.redirect('back');
+      } else {
+        User.updateOne({ _id: userId }, {
+          name,
+          email,
+          phone,
+          shippingAddress: { address, city, district, ward }
+        })
+          .then(() => {
+            req.flash('success', 'Cập nhật thông tin thành công!')
+            res.redirect('back')
+          })
+          .catch(next)
+      }
+    } catch (error) {
+      console.log("ERR UPDATE PROFILE: ", error)
+      req.flash('err', 'Hệ thống gặp sự cố, vui lòng thử lại sau!')
+      res.redirect('back');
+    }
+
   }
 
   // [get] /password

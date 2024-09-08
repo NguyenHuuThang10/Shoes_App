@@ -25,9 +25,22 @@ class ShoesController {
   // [GET] /shoes/show
   show(req, res, next) {
     Shoe.findOne({ slug: req.params.slug }).then((shoe) => {
-      res.render("shoes/show", {
-        shoe: mongooseToObject(shoe),
-      });
+      if (shoe) {
+
+        if (shoe.images){
+          let imageArray = shoe.images.split(',');
+          res.render("shoes/show", {
+            shoe: mongooseToObject(shoe),
+            imageArr: imageArray
+          });
+        }else{
+          res.render("shoes/show", {
+            shoe: mongooseToObject(shoe)
+          });
+        }
+
+       
+      }
     });
   }
 
@@ -229,13 +242,13 @@ class ShoesController {
   // [POST] /shoes/update-cart/:id
   async updateShippingCart(req, res, next) {
     try {
-      var { fullName, phone, address, city, paymentMethod } = req.body;
+      var { fullName, phone, address, city, paymentMethod, district, ward } = req.body;
       var orderId = req.params.id;
 
       if (paymentMethod == "Thanh toán bằng tiền mặt") {
         Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, city }, paymentMethod }
+          { shippingAddress: { fullName, phone, address, city, district, ward }, paymentMethod }
         )
           .then((data) => {
             res.redirect("/shoes/my-order");
@@ -244,7 +257,7 @@ class ShoesController {
       } else {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, city }, paymentMethod }
+          { shippingAddress: { fullName, phone, address, city, district, ward }, paymentMethod }
         );
         if (orderUpdate) {
           var order = await Order.findOne({ _id: orderId });

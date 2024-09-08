@@ -31,9 +31,9 @@ router.get("/create/blogs", meController.checkLoginAdmin, meController.createBlo
 router.get("/stored/shoes", meController.checkLoginAdmin, meController.storedShoes);
 router.get("/trash/shoes", meController.checkLoginAdmin, meController.trashShoes);
 router.get("/create/shoes", meController.checkLoginAdmin, meController.createShoes);
-router.post("/store/shoes", meController.checkLoginAdmin, upload.single('image'), meController.storeShoes);
+router.post("/store/shoes", meController.checkLoginAdmin, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'images', maxCount: 10 } ]), meController.storeShoes);
 router.get("/:id/edit/shoes", meController.checkLoginAdmin, meController.editShoes);
-router.put("/:id/update/shoes", meController.checkLoginAdmin, upload.single('image'), meController.updateShoes);
+router.put("/:id/update/shoes", meController.checkLoginAdmin, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'images', maxCount: 10 } ]), meController.updateShoes);
 router.delete("/:id/delete/shoes", meController.checkLoginAdmin, meController.deleteShoes);
 router.delete("/:id/destroy/shoes", meController.checkLoginAdmin, meController.destroyShoes);
 router.patch("/:id/restore/shoes", meController.checkLoginAdmin, meController.restoreShoes);
