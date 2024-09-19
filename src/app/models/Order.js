@@ -21,10 +21,15 @@ const Order = new Schema({
     shippingAddress: {
         fullName: { type: String },
         address: { type: String },
-        city: { type: String },
-        district: { type: String },
-        ward: { type: String },
+        cityName: { type: String },
+        districtName: { type: String },
+        wardName: { type: String },
         phone: { type: String },
+        note: {
+            type: String, 
+            trim: true, // Loại bỏ khoảng trắng thừa
+            default: '', // Nếu không có ghi chú, mặc định là chuỗi rỗng
+        },
     },
     paymentMethod: { type: String },
     itemsPrice: { type: Number },
@@ -45,8 +50,8 @@ const Order = new Schema({
 
 //Add plugin
 mongoose.plugin(slug)
-Order.plugin(mongooseDelete,  { 
-    deletedAt : true, // Thêm thời gian xóa vào db
+Order.plugin(mongooseDelete, {
+    deletedAt: true, // Thêm thời gian xóa vào db
     overrideMethods: 'all' // Ghi đè chỉ hiện những dữ liệu ko có field deleteAt
 });
 

@@ -14,12 +14,16 @@
                     <p>Chỉnh sửa thông tin</p>
                 </div>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a class="text-dark" href="/profile">Tài khoản của tôi</a></li>
-                <li class="list-group-item"><a class="text-dark" href="/password">Đổi mật khẩu</a></li>
-                <li class="list-group-item"><a class="text-dark" href="/shoes/my-order">Đơn mua</a>
+            <ul class="list-group list-group-flush list-profile">
+                <li class="list-group-item"><a class="text-body" href="/profile"><i
+                            class="fa-regular fa-circle-user fa"></i>Tài khoản của tôi</a></li>
+                <li class="list-group-item"><a class="text-body" href="/password"><i class="fa-solid fa-key fa"></i>Đổi
+                        mật khẩu</a></li>
+                <li class="list-group-item"><a class="text-body" href="/shoes/my-order"><i
+                            class="fa-regular fa-rectangle-list fa"></i>Đơn mua</a>
                 </li>
-                <li class="list-group-item"><a class="text-dark" href="/log-out">Đăng xuất</a></li>
+                <li class="list-group-item"><a class="text-body" href="/log-out"><i
+                            class="fa-solid fa-right-from-bracket fa"></i>Đăng xuất</a></li>
             </ul>
         </div>
 
@@ -53,7 +57,7 @@
                             </div>
                             <div class="col-2 mt-3">
                                 <br><small>x{{this.amount}}</small>
-                                <p class="text-danger"><u>đ</u>{{this.price}}.000</p>
+                                <p class="text-danger"><u>đ</u>{{formatCurrency this.price}},000</p>
                             </div>
                         </div>
                         {{/each}}
@@ -65,7 +69,7 @@
                                 <p>Tiền ship: </p>
                             </div>
                             <div class="col-2">
-                                <p class="text-danger"><u>đ</u>30.000</p>
+                                <p class="text-danger"><u>đ</u>30,000</p>
                             </div>
                         </div>
                         <div class="row">
@@ -75,7 +79,7 @@
                                 <p>Tổng số tiền: </p>
                             </div>
                             <div class="col-2">
-                                <p class="text-danger"><u>đ</u>{{this.totalPrice}}.000</p>
+                                <p class="text-danger"><u>đ</u>{{formatCurrency this.totalPrice}},000</p>
                             </div>
                         </div>
                         <div class="row text-right">

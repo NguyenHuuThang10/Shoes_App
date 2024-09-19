@@ -242,13 +242,16 @@ class ShoesController {
   // [POST] /shoes/update-cart/:id
   async updateShippingCart(req, res, next) {
     try {
-      var { fullName, phone, address, city, paymentMethod, district, ward } = req.body;
+      // Kiểm tra dữ liệu gửi từ form
+      console.log(req.body);  // Log dữ liệu gửi đến
+      
+      var { fullName, phone, address, city, cityName, paymentMethod, district, districtName, ward, wardName, note } = req.body;
       var orderId = req.params.id;
 
       if (paymentMethod == "Thanh toán bằng tiền mặt") {
         Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, city, district, ward }, paymentMethod }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note }, paymentMethod }
         )
           .then((data) => {
             res.redirect("/shoes/my-order");
@@ -257,7 +260,7 @@ class ShoesController {
       } else {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, city, district, ward }, paymentMethod }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note }, paymentMethod }
         );
         if (orderUpdate) {
           var order = await Order.findOne({ _id: orderId });
