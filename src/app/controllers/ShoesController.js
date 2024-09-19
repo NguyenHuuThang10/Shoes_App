@@ -260,7 +260,7 @@ class ShoesController {
       if (paymentMethod == "cod") {
         Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note }, paymentMethod }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, paymentMethod, note }
         )
           .then((data) => {
             res.redirect("/shoes/my-order");
@@ -269,7 +269,7 @@ class ShoesController {
       } else if (paymentMethod == "paypal") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note } }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, note }
         );
         if (orderUpdate) {
           const order = await Order.findOne({ _id: orderId });
@@ -332,7 +332,7 @@ class ShoesController {
       } else if (paymentMethod == "zalopay") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note} }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName}, note }
         );
 
         const orderItem = await Order.findOne({ _id: orderId });
