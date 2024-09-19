@@ -84,50 +84,50 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="row">
-            <div class="col-7 note-orders">
-                <label for="note" class="note-label">Ghi chú đơn hàng</label>
-                <textarea name="note" id="note" class="form-control" rows="3"></textarea>
+        <form method="post" action="/shoes/update-cart/{{order._id}}">
+            <div class="row">
+                <div class="col-7 note-orders">
+                    <label for="note" class="note-label">Ghi chú đơn hàng</label>
+                    <textarea name="note" id="note" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col cart-total">
+                    <div class="row">
+                        <div class="col mt-2">
+                            <ul>
+                                <li>Tổng Tiền Hàng</li>
+                                <li>Phí Vận Chuyển</li>
+                            </ul>
+                        </div>
+                        <div class="col mt-2 text-right">
+                            <ul>
+                                <li>{{#if order.orderItems}} {{formatCurrency order.itemsPrice}},000 <u>đ</u> {{else}} 0
+                                    <u>đ</u> {{/if}}
+                                </li>
+                                <li>{{#if order.orderItems}} {{order.shippingPrice}},000 <u>đ</u> {{else}} 0 <u>đ</u>
+                                    {{/if}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr width="90%" align="right">
+                    <div class="row">
+                        <div class="col">
+                            <ul>
+                                <li>Tổng Tiền</li>
+                            </ul>
+                        </div>
+                        <div class="col total text-right">
+                            <ul>
+                                <li>{{#if order.orderItems}} {{formatCurrency order.totalPrice}},000 <u>đ</u> {{else}} 0
+                                    <u>đ</u> {{/if}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <button type="button" class="btn-order" id="btn-to-step2">ĐẶT HÀNG NGAY</button>
+                    </div>
+                </div>
             </div>
-            <div class="col cart-total">
-                <div class="row">
-                    <div class="col mt-2">
-                        <ul>
-                            <li>Tổng Tiền Hàng</li>
-                            <li>Phí Vận Chuyển</li>
-                        </ul>
-                    </div>
-                    <div class="col mt-2 text-right">
-                        <ul>
-                            <li>{{#if order.orderItems}} {{formatCurrency order.itemsPrice}},000 <u>đ</u> {{else}} 0
-                                <u>đ</u> {{/if}}
-                            </li>
-                            <li>{{#if order.orderItems}} {{order.shippingPrice}},000 <u>đ</u> {{else}} 0 <u>đ</u>
-                                {{/if}}</li>
-                        </ul>
-                    </div>
-                </div>
-                <hr width="90%" align="right">
-                <div class="row">
-                    <div class="col">
-                        <ul>
-                            <li>Tổng Tiền</li>
-                        </ul>
-                    </div>
-                    <div class="col total text-right">
-                        <ul>
-                            <li>{{#if order.orderItems}} {{formatCurrency order.totalPrice}},000 <u>đ</u> {{else}} 0
-                                <u>đ</u> {{/if}}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <button type="button" class="btn-order" id="btn-to-step2">ĐẶT HÀNG NGAY</button>
-                </div>
-            </div>
-        </div>
     </div>
 
     {{!-- <div class="cart-address">
@@ -153,251 +153,215 @@
             {{!--
     </div> --}}
 
-    <form method="post" action="/shoes/update-cart/{{order._id}}">
-        <div id="content-step2" class="content-step" style="display:none;">
-            <div class="row">
-                <div class="col">
-                    <div class="cart-address">
-                        <h1>Thông tin đặt hàng</h1>
-                        <div class="form-group">
-                            <input type="text" required id="name" name="fullName" value="{{currentUser.name}}"
-                                placeholder="Họ tên">
-                        </div>
 
-                        <div class="form-group">
-                            <input type="text" required id="phone" name="phone" value="{{currentUser.phone}}"
-                                placeholder="Số điện thoại">
-                        </div>
-
-                        <div class="form-group">
-                            <select name="city" id="city" class="form-control" required>
-                                <option value="">Chọn Tỉnh/Thành</option>
-                                <!-- Dữ liệu sẽ được load từ API -->
-                            </select>
-                            <input type="hidden" name="cityName" id="cityName" value="">
-                        </div>
-                        <div class="form-group">
-                            <select name="district" id="district" class="form-control" required>
-                                <option value="">Chọn Quận/Huyện</option>
-                                <!-- Dữ liệu sẽ được load từ API sau khi chọn Tỉnh/Thành -->
-                            </select>
-                            <input type="hidden" name="districtName" id="districtName" value="">
-                        </div>
-
-                        <div class="form-group">
-                            <select name="ward" id="ward" class="form-control" required>
-                                <option value="">Chọn Phường/Xã</option>
-                                <!-- Dữ liệu sẽ được load từ API sau khi chọn Quận/Huyện -->
-                            </select>
-                            <input type="hidden" name="wardName" id="wardName" value="">
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" name="address" id="address"
-                                placeholder="Địa chỉ cụ thể: Số nhà, Tên đường..." value="" required>
-                        </div>
-
-                        <button type="button" class="btn cart-button" id="btn-back-to-step1">Giỏ hàng</button>
-                        <button type="button" class="btn cart-button" id="btn-to-step3">Chọn phương thức thanh
-                            toán</button>
+    <div id="content-step2" class="content-step" style="display:none;">
+        <div class="row">
+            <div class="col">
+                <div class="cart-address">
+                    <h1>Thông tin đặt hàng</h1>
+                    <div class="form-group">
+                        <input type="text" required id="name" name="fullName" value="{{currentUser.name}}"
+                            placeholder="Họ tên">
                     </div>
-                </div>
-                <div class="col" style="border-left: 1px solid #ccc; padding-left: 50px;">
-                    <div class="cart-product-list">
-                        <h1>Thông tin đơn hàng</h1>
-                        {{#each order.orderItems}}
-                        <div class="cart-item mt-2">
-                            <div class="product-image-container">
-                                <img src="/uploads/{{this.image}}" alt="Product Image" class="product-image">
-                                <div class="product-quantity">{{this.amount}}</div>
-                            </div>
-                            <div class="cart-item-details">
-                                <h4>{{this.name}}</h4>
-                                <div class="row">
-                                    <div class="col" style="color: #969696;">Size: {{this.size}}</div>
-                                    <div class="col">{{formatCurrency this.price}},000 <u>đ</u></div>
-                                </div>
-                            </div>
-                        </div>
-                        {{/each}}
-                        <hr width="85%" align="left">
+
+                    <div class="form-group">
+                        <input type="text" required id="phone" name="phone" value="{{currentUser.phone}}"
+                            placeholder="Số điện thoại">
                     </div>
-                    <div class="cart-product-total">
-                        <div class="row">
-                            <div class="col-7" style="color: #969696;">Tổng tiền hàng:</div>
-                            <div class="col-5">{{#if order.orderItems}} {{formatCurrency
-                                order.itemsPrice}},000 <u>đ</u> {{else}} 0
-                                <u>đ</u> {{/if}}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-7" style="color: #969696;">Phí vận chuyển:</div>
-                            <div class="col-5">{{#if order.orderItems}} {{order.shippingPrice}},000
-                                <u>đ</u> {{else}} 0 <u>đ</u>
-                                {{/if}}
-                            </div>
-                        </div>
-                        <hr width="85%" align="left">
-                        <div class="row">
-                            <div class="col-7">Tổng cộng:</div>
-                            <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} {{formatCurrency
-                                order.totalPrice}},000 <u>đ</u>
-                                {{else}} 0 <u>đ</u>
-                                {{/if}}</div>
-                        </div>
+
+                    <div class="form-group">
+                        <select name="city" id="city" class="form-control" required>
+                            <option value="">Chọn Tỉnh/Thành</option>
+                            <!-- Dữ liệu sẽ được load từ API -->
+                        </select>
+                        <input type="hidden" name="cityName" id="cityName" value="">
                     </div>
+                    <div class="form-group">
+                        <select name="district" id="district" class="form-control" required>
+                            <option value="">Chọn Quận/Huyện</option>
+                            <!-- Dữ liệu sẽ được load từ API sau khi chọn Tỉnh/Thành -->
+                        </select>
+                        <input type="hidden" name="districtName" id="districtName" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <select name="ward" id="ward" class="form-control" required>
+                            <option value="">Chọn Phường/Xã</option>
+                            <!-- Dữ liệu sẽ được load từ API sau khi chọn Quận/Huyện -->
+                        </select>
+                        <input type="hidden" name="wardName" id="wardName" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" name="address" id="address"
+                            placeholder="Địa chỉ cụ thể: Số nhà, Tên đường..." value="" required>
+                    </div>
+
+                    <button type="button" class="btn cart-button" id="btn-back-to-step1">Giỏ hàng</button>
+                    <button type="button" class="btn cart-button" id="btn-to-step3">Chọn phương thức thanh
+                        toán</button>
                 </div>
-{{!-- =======
-                <div class="form-group mt-3">
-                    <select name="city" id="city" class="form-control">
-                        <option value="">Chọn Tỉnh/Thành</option>
-                        <!-- Dữ liệu sẽ được load từ API -->
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <select name="district" id="district" class="form-control">
-                        <option value="">Chọn Quận/Huyện</option>
-                        <!-- Dữ liệu sẽ được load từ API sau khi chọn Tỉnh/Thành -->
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <select name="ward" id="ward" class="form-control">
-                        <option value="">Chọn Phường/Xã</option>
-                        <!-- Dữ liệu sẽ được load từ API sau khi chọn Quận/Huyện -->
-                    </select>
-                </div>
-
-
-                <button type="button" class="btn cart-button" id="btn-to-step3">Chọn phương thức thanh
-                    toán</button>
-                <button type="button" class="btn cart-button" id="btn-back-to-step1">Quay lại bước 1</button>
-
->>>>>>> thangtuan5-6 --}}
             </div>
-
-        </div>
-
-        <div id="content-step3" class="content-step" style="display:none;">
-            <div class="row">
-                <div class="col">
-                    <div class="cart-pay">
-                        <h1>Phương thức thanh toán</h1>
-                        <!-- Thêm action và method cho form -->
-                        {{!-- <form method="post" action="/shoes/update-cart/{{order._id}}"> --}}
-                            <div class="box-pay mb-2">
-                                <div class="payment-option form-check">
-                                    <input class="form-check-input" type="radio" name="paymentMethod"
-                                        id="paymentMethod1" value="Thanh toán bằng tiền mặt" checked>
-                                    <label class="form-check-label" for="paymentMethod1">
-                                        <img src="/img/iconCOD.png" alt="">
-                                        Thanh toán bằng tiền mặt khi nhận hàng (COD)
-                                    </label>
-                                </div>
-
-                                <div class="payment-option form-check">
-                                    <input class="form-check-input" type="radio" name="paymentMethod"
-                                        id="paymentMethod2" value="Thanh toán bằng Paypal">
-                                    <label class="form-check-label" for="paymentMethod2">
-                                        <img src="/img/iconPaypal.png" alt="">
-                                        Thanh toán bằng Paypal
-                                    </label>
-                                </div>
-
-                                <div class="payment-option form-check">
-                                    <input class="form-check-input" type="radio" name="paymentMethod"
-                                        id="paymentMethod3" value="Thanh toán bằng ZaloPay">
-                                    <label class="form-check-label" for="paymentMethod3">
-                                        <img src="/img/iconZaloPay.png" alt="">
-                                        Thanh toán bằng ZaloPay
-                                    </label>
-                                </div>
-
-                                <div class="payment-option form-check">
-                                    <input class="form-check-input" type="radio" name="paymentMethod"
-                                        id="paymentMethod4" value="Thanh toán bằng ZaloPay">
-                                    <label class="form-check-label" for="paymentMethod4">
-                                        <img src="/img/iconVietQR.png" alt="">
-                                        Thanh toán bằng VietQR
-                                    </label>
-                                </div>
-
-                                <div class="payment-option form-check">
-                                    <input class="form-check-input" type="radio" name="paymentMethod"
-                                        id="paymentMethod5" value="Thanh toán bằng ZaloPay">
-                                    <label class="form-check-label" for="paymentMethod5">
-                                        <img src="/img/iconVNPay.png" alt="">
-                                        Thanh toán bằng VNPay
-                                    </label>
-                                </div>
+            <div class="col" style="border-left: 1px solid #ccc; padding-left: 50px;">
+                <div class="cart-product-list">
+                    <h1>Thông tin đơn hàng</h1>
+                    {{#each order.orderItems}}
+                    <div class="cart-item mt-2">
+                        <div class="product-image-container">
+                            <img src="/uploads/{{this.image}}" alt="Product Image" class="product-image">
+                            <div class="product-quantity">{{this.amount}}</div>
+                        </div>
+                        <div class="cart-item-details">
+                            <h4>{{this.name}}</h4>
+                            <div class="row">
+                                <div class="col" style="color: #969696;">Size: {{this.size}}</div>
+                                <div class="col">{{formatCurrency this.price}},000 <u>đ</u></div>
                             </div>
-                            {{#if order.orderItems}}
-                            <!-- Nút này giờ sẽ gửi form đi khi nhấn -->
-                            <button type="button" class="btn cart-button" id="btn-back-to-step2">Thông tin đặt
-                                hàng</button>
-                            <button type="submit" class="btn cart-button" id="btn-complete-order">Hoàn tất đơn
-                                hàng</button>
-                            {{else}}
-                            <a href="/" class="btn btn-success cart-button">Quay lại</a>
+                        </div>
+                    </div>
+                    {{/each}}
+                    <hr width="85%" align="left">
+                </div>
+                <div class="cart-product-total">
+                    <div class="row">
+                        <div class="col-7" style="color: #969696;">Tổng tiền hàng:</div>
+                        <div class="col-5">{{#if order.orderItems}} {{formatCurrency
+                            order.itemsPrice}},000 <u>đ</u> {{else}} 0
+                            <u>đ</u> {{/if}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7" style="color: #969696;">Phí vận chuyển:</div>
+                        <div class="col-5">{{#if order.orderItems}} {{order.shippingPrice}},000
+                            <u>đ</u> {{else}} 0 <u>đ</u>
                             {{/if}}
+                        </div>
                     </div>
-                </div>
-                <div class="col" style="border-left: 1px solid #ccc; padding-left: 50px;">
-                    <div class="cart-product-list">
-                        <h1>Thông tin đơn hàng</h1>
-                        {{#each order.orderItems}}
-                        <div class="cart-item mt-2">
-                            <div class="product-image-container">
-                                <img src="/uploads/{{this.image}}" alt="Product Image" class="product-image">
-                                <div class="product-quantity">{{this.amount}}</div>
-                            </div>
-                            <div class="cart-item-details">
-                                <h4>{{this.name}}</h4>
-                                <div class="row">
-                                    <div class="col" style="color: #969696;">Size: {{this.size}}</div>
-                                    <div class="col">{{formatCurrency this.price}},000 <u>đ</u></div>
-                                </div>
-                            </div>
-                        </div>
-                        {{/each}}
-                        <hr width="80%" align="left">
-                    </div>
-                    <div class="cart-product-total">
-                        <div class="row">
-                            <div class="col-7" style="color: #969696;">Tổng tiền hàng:</div>
-                            <div class="col-5">{{#if order.orderItems}} {{formatCurrency
-                                order.itemsPrice}},000 <u>đ</u> {{else}} 0
-                                <u>đ</u> {{/if}}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-7" style="color: #969696;">Phí vận chuyển:</div>
-                            <div class="col-5">{{#if order.orderItems}} {{order.shippingPrice}},000
-                                <u>đ</u> {{else}} 0 <u>đ</u>
-                                {{/if}}
-                            </div>
-                        </div>
-                        <hr width="80%" align="left">
-                        <div class="row">
-                            <div class="col-7">Tổng cộng:</div>
-                            <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} {{formatCurrency
-                                order.totalPrice}},000 <u>đ</u>
-                                {{else}} 0 <u>đ</u>
-                                {{/if}}</div>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod3"
-                                value="zalopay">
-                            <label class="form-check-label" for="paymentMethod3">
-                                Thanh toán bằng ZaloPay
-                            </label>
-                        </div>
+                    <hr width="85%" align="left">
+                    <div class="row">
+                        <div class="col-7">Tổng cộng:</div>
+                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} {{formatCurrency
+                            order.totalPrice}},000 <u>đ</u>
+                            {{else}} 0 <u>đ</u>
+                            {{/if}}</div>
                     </div>
                 </div>
             </div>
         </div>
+
+    </div>
+
+    <div id="content-step3" class="content-step" style="display:none;">
+        <div class="row">
+            <div class="col">
+                <div class="cart-pay">
+                    <h1>Phương thức thanh toán</h1>
+                    <!-- Thêm action và method cho form -->
+                    {{!-- <form method="post" action="/shoes/update-cart/{{order._id}}"> --}}
+                        <div class="box-pay mb-2">
+                            <div class="payment-option form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod1"
+                                    value="cod" checked>
+                                <label class="form-check-label" for="paymentMethod1">
+                                    <img src="/img/iconCOD.png" alt="">
+                                    Thanh toán bằng tiền mặt khi nhận hàng (COD)
+                                </label>
+                            </div>
+
+                            <div class="payment-option form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2"
+                                    value="paypal">
+                                <label class="form-check-label" for="paymentMethod2">
+                                    <img src="/img/iconPaypal.png" alt="">
+                                    Thanh toán bằng Paypal
+                                </label>
+                            </div>
+
+                            <div class="payment-option form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod3"
+                                    value="zalopay">
+                                <label class="form-check-label" for="paymentMethod3">
+                                    <img src="/img/iconZaloPay.png" alt="">
+                                    Thanh toán bằng ZaloPay
+                                </label>
+                            </div>
+
+                            <div class="payment-option form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod4"
+                                    value="Thanh toán bằng ZaloPay">
+                                <label class="form-check-label" for="paymentMethod4">
+                                    <img src="/img/iconVietQR.png" alt="">
+                                    Thanh toán bằng VietQR
+                                </label>
+                            </div>
+
+                            <div class="payment-option form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod5"
+                                    value="Thanh toán bằng ZaloPay">
+                                <label class="form-check-label" for="paymentMethod5">
+                                    <img src="/img/iconVNPay.png" alt="">
+                                    Thanh toán bằng VNPay
+                                </label>
+                            </div>
+                        </div>
+                        {{#if order.orderItems}}
+                        <!-- Nút này giờ sẽ gửi form đi khi nhấn -->
+                        <button type="button" class="btn cart-button" id="btn-back-to-step2">Thông tin đặt
+                            hàng</button>
+                        <button type="submit" class="btn cart-button" id="btn-complete-order">Hoàn tất đơn
+                            hàng</button>
+                        {{else}}
+                        <a href="/" class="btn btn-success cart-button">Quay lại</a>
+                        {{/if}}
+                </div>
+            </div>
+            <div class="col" style="border-left: 1px solid #ccc; padding-left: 50px;">
+                <div class="cart-product-list">
+                    <h1>Thông tin đơn hàng</h1>
+                    {{#each order.orderItems}}
+                    <div class="cart-item mt-2">
+                        <div class="product-image-container">
+                            <img src="/uploads/{{this.image}}" alt="Product Image" class="product-image">
+                            <div class="product-quantity">{{this.amount}}</div>
+                        </div>
+                        <div class="cart-item-details">
+                            <h4>{{this.name}}</h4>
+                            <div class="row">
+                                <div class="col" style="color: #969696;">Size: {{this.size}}</div>
+                                <div class="col">{{formatCurrency this.price}},000 <u>đ</u></div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    <hr width="80%" align="left">
+                </div>
+                <div class="cart-product-total">
+                    <div class="row">
+                        <div class="col-7" style="color: #969696;">Tổng tiền hàng:</div>
+                        <div class="col-5">{{#if order.orderItems}} {{formatCurrency
+                            order.itemsPrice}},000 <u>đ</u> {{else}} 0
+                            <u>đ</u> {{/if}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7" style="color: #969696;">Phí vận chuyển:</div>
+                        <div class="col-5">{{#if order.orderItems}} {{order.shippingPrice}},000
+                            <u>đ</u> {{else}} 0 <u>đ</u>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <hr width="80%" align="left">
+                    <div class="row">
+                        <div class="col-7">Tổng cộng:</div>
+                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} {{formatCurrency
+                            order.totalPrice}},000 <u>đ</u>
+                            {{else}} 0 <u>đ</u>
+                            {{/if}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </form>
 
     <form name="delete-order-form" method="POST"></form>

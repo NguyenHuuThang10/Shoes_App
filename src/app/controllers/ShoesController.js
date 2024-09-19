@@ -257,7 +257,7 @@ class ShoesController {
       var { fullName, phone, address, city, cityName, paymentMethod, district, districtName, ward, wardName, note } = req.body;
       var orderId = req.params.id;
 
-      if (paymentMethod == "Thanh toán bằng tiền mặt") {
+      if (paymentMethod == "cod") {
         Order.updateOne(
           { _id: orderId },
           { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note }, paymentMethod }
@@ -266,10 +266,10 @@ class ShoesController {
             res.redirect("/shoes/my-order");
           })
           .catch(next);
-      } else if (paymentMethod == "Thanh toán bằng Paypal") {
+      } else if (paymentMethod == "paypal") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, city, district, ward, note } }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note } }
         );
         if (orderUpdate) {
           const order = await Order.findOne({ _id: orderId });
@@ -332,7 +332,7 @@ class ShoesController {
       } else if (paymentMethod == "zalopay") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, city, district, ward } }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName, note} }
         );
 
         const orderItem = await Order.findOne({ _id: orderId });
@@ -355,7 +355,7 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://d0a7-115-78-13-97.ngrok-free.app/shoes/callback?id=" + orderId
+          callback_url: "https://cbdb-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
