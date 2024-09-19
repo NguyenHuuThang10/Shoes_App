@@ -146,13 +146,7 @@
   margin: 5px;
 }
 
-.icon-cart i {
-  font-size: 20px;
-  padding: 10px;
-  margin: 5px;
-}
-
-.icon-heart {
+.icon-head {
   font-size: 20px;
   padding: 5px;
   margin: 5px;
@@ -897,6 +891,22 @@ span#or-text {
   background-color: #333;
 }
 
+.notification {
+  position: relative;
+  // display: inline-block;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -2px;
+  right: -9px;
+  padding: 3px 6px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+
+
 //BLOGS
 .blog-size {
   padding: 20px 0;
@@ -1071,6 +1081,8 @@ span#or-text {
 .process-step.completed .step-number::before {
   display: none;
 }
+
+
 
 .category-link {
   text-decoration: none;

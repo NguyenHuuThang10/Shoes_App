@@ -94,9 +94,17 @@
               <a href="/login" class="icon-user"><i class="fa-regular fa-user"></i></a>
               {{/if}}
             </li>
-            <li><a href="/wishlist" class="icon-heart"><i class="fa-regular fa-heart"></i></a></li>
+             <li>
+              <a href="/wishlist" class="icon-head notification">
+                <span><i class="fa-regular fa-heart"></i></span>
+                <span class="badge">{{#if countWishlist}} {{countWishlist}} {{else}}0{{/if}}</span>
+              </a>
+            </li>
             <li class="cart-dropdown">
-              <a href="/shoes/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a>
+              <a href="/shoes/cart" class="icon-head notification">
+              <span><i class="fa-solid fa-cart-shopping"></i></span>
+                <span class="badge">{{#if countOrder}} {{countOrder}} {{else}}0{{/if}}</span>
+                </a>
               <div class="cart-dropdown-content">
                 <p class="boxtitle">GIỎ HÀNG</p>
                 <div class="table-scroll">
@@ -165,6 +173,7 @@
                   </tbody>
                 </table>
               </div>
+
             </li>
           </ul>
 
@@ -225,6 +234,7 @@
       }
     });
   });
+<<<<<<< HEAD
 </script>
 
 <script>
@@ -248,4 +258,6 @@
         });
     });
   });
+=======
+>>>>>>> thangtuan5-6
 </script>

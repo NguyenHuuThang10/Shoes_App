@@ -4,9 +4,9 @@
         <div class="login">
             <form method="post" action="/login">
                 <h3>Đăng nhập</h3>
-                {{#if err}}
+                {{#if errLogin}}
                     <div class="alert alert-danger" role="alert">
-                        {{err}}
+                        {{errLogin}}
                     </div>
                 {{/if}}
                 <label for="email">Email</label>

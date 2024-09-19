@@ -229,14 +229,23 @@ class SiteController {
       .catch(next);
   }
 
-  checkLogin(req, res, next) {
+  async checkLogin(req, res, next) {
     try {
       var token = req.cookies.token;
       if (token) {
         var decodeToken = jwt.verify(token, "nht");
+
+        const order = await Order.findOne({ user: decodeToken._id, paymentMethod: null});
+        if(order){
+          const countOrder = order.orderItems.length;
+          res.locals.countOrder = countOrder;
+        }
+
         User.findOne({ _id: decodeToken._id })
           .then((data) => {
+            const countWishlist = data.wishlistItems.length;
             data = mongooseToObject(data);
+            res.locals.countWishlist = countWishlist;
             res.locals.currentUser = data;
             next();
           })
