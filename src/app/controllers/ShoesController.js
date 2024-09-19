@@ -3,6 +3,15 @@ const Shoe = require("../models/Shoe");
 const Order = require("../models/Order");
 const paypal = require("paypal-rest-sdk");
 const PAGE_SIZE = 12;
+const axios = require('axios').default; // npm install axios
+const CryptoJS = require('crypto-js'); // npm install crypto-js
+const moment = require('moment'); // npm install moment
+const config = {
+  app_id: "2554",
+  key1: "sdngKKJmqEMzvh5QQcdD2A9XBSKUNaYn",
+  key2: "trMrHtvjo6myautxDUiAcYsVtaeQ8nhf",
+  endpoint: "https://sb-openapi.zalopay.vn/v2/create"
+};
 
 const {
   mongooseToObject,
@@ -27,19 +36,19 @@ class ShoesController {
     Shoe.findOne({ slug: req.params.slug }).then((shoe) => {
       if (shoe) {
 
-        if (shoe.images){
+        if (shoe.images) {
           let imageArray = shoe.images.split(',');
           res.render("shoes/show", {
             shoe: mongooseToObject(shoe),
             imageArr: imageArray
           });
-        }else{
+        } else {
           res.render("shoes/show", {
             shoe: mongooseToObject(shoe)
           });
         }
 
-       
+
       }
     });
   }
@@ -254,14 +263,13 @@ class ShoesController {
             res.redirect("/shoes/my-order");
           })
           .catch(next);
-      } else {
+      } else if (paymentMethod == "Thanh toán bằng Paypal") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, city, district, ward }, paymentMethod }
+          { shippingAddress: { fullName, phone, address, city, district, ward } }
         );
         if (orderUpdate) {
-          var order = await Order.findOne({ _id: orderId });
-
+          const order = await Order.findOne({ _id: orderId });
           var items = order.orderItems.map((item) => {
             return {
               name: item.name,
@@ -284,8 +292,8 @@ class ShoesController {
               payment_method: "paypal",
             },
             redirect_urls: {
-              return_url: `https://topshoes.onrender.com/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
-              cancel_url: "https://topshoes.onrender.com/cancel",
+              return_url: `http://localhost:3000/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
+              cancel_url: "http://localhost:3000/cancel",
             },
             transactions: [
               {
@@ -318,7 +326,60 @@ class ShoesController {
             }
           });
         }
+      } else if (paymentMethod == "zalopay") {
+        var orderUpdate = await Order.updateOne(
+          { _id: orderId },
+          { shippingAddress: { fullName, phone, address, city, district, ward } }
+        );
+
+        const orderItem = await Order.findOne({ _id: orderId });
+        const totalPrice = orderItem.totalPrice * 1000;
+
+        const embed_data = {
+          "preferred_payment_method": [],
+          "redirecturl": "http://localhost:3000/shoes/my-order"
+        };
+
+        const items = [{}];
+        const transID = Math.floor(Math.random() * 1000000);
+        const order = {
+          app_id: config.app_id,
+          app_trans_id: `${moment().format('YYMMDD')}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+          app_user: "user123",
+          app_time: Date.now(), // miliseconds
+          item: JSON.stringify(items),
+          embed_data: JSON.stringify(embed_data),
+          amount: totalPrice,
+          description: `Thanh toán đơn hàng #${transID}`,
+          bank_code: "",
+          callback_url: "https://d0a7-115-78-13-97.ngrok-free.app/shoes/callback?id=" + orderId
+        };
+
+        // appid|app_trans_id|appuser|amount|apptime|embeddata|item
+        const data = config.app_id + "|" + order.app_trans_id + "|" + order.app_user + "|" + order.amount + "|" + order.app_time + "|" + order.embed_data + "|" + order.item;
+        order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
+
+        try {
+          const result = await axios.post(config.endpoint, null, { params: order });
+          const responseData = result.data;
+
+          if (responseData.return_code === 1 && responseData.sub_return_code === 1) {
+            // Giao dịch thành công, redirect tới order_url
+            return res.redirect(responseData.order_url);
+          } else {
+            // Nếu giao dịch không thành công, trả về lỗi
+            return res.status(400).json({
+              message: "Giao dịch không thành công",
+              detail: responseData
+            });
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
       }
+
+
+
     } catch (error) {
       console.log("ERR: " + error)
 
@@ -346,7 +407,9 @@ class ShoesController {
 
     Order.findOne({ _id: orderId, paymentMethod: "Thanh toán bằng tiền mặc" })
       .then(data => {
-        return res.redirect("/shoes/my-order");
+        if (!data) {
+          throw new Error("Order not found");
+        }
       })
       .catch(err => {
         console.log("ERR: " + err)
@@ -356,22 +419,71 @@ class ShoesController {
     paypal.payment.execute(
       paymentId,
       execute_payment_json,
-      function (error, payment) {
+      async function (error, payment) {
         if (error) {
           res.render("cancle");
         } else {
-          Order.updateOne(
-            { _id: orderId },
-            { paymentMethod: "Thanh toán bằng Paypal", isPaid: true, paidAt: Date.now() }
-          )
-            .then((data) => {
-              res.redirect("/shoes/my-order");
-            })
-            .catch(next);
+          try {
+
+            await Order.updateOne(
+              { _id: orderId },
+              { paymentMethod: "Thanh toán bằng Paypal", isPaid: true, paidAt: Date.now() }
+            )
+            return res.redirect("/shoes/my-order");
+
+          } catch (error) {
+            console.log("ERR: ", error)
+            return next(updateError);
+          }
+
         }
       }
     );
   }
+
+  // /callbakck
+  async callback(req, res, next) {
+    let result = {};
+
+    try {
+      let dataStr = req.body.data;
+      let reqMac = req.body.mac;
+      const orderId = req.query.id
+
+      let mac = CryptoJS.HmacSHA256(dataStr, config.key2).toString();
+      console.log("mac =", mac);
+
+
+      // kiểm tra callback hợp lệ (đến từ ZaloPay server)
+      if (reqMac !== mac) {
+        // callback không hợp lệ
+        result.return_code = -1;
+        result.return_message = "mac not equal";
+      }
+      else {
+        // thanh toán thành công
+        // merchant cập nhật trạng thái cho đơn hàng
+        let dataJson = JSON.parse(dataStr, config.key2);
+        console.log("update order's status = success where app_trans_id =", dataJson["app_trans_id"]);
+        
+        await Order.updateOne(
+          { _id: orderId },
+          { paymentMethod: "zalopay", isPaid: true, paidAt: Date.now() }
+        )
+
+        result.return_code = 1;
+        result.return_message = "success";
+
+      }
+    } catch (ex) {
+      result.return_code = 0; // ZaloPay server sẽ callback lại (tối đa 3 lần)
+      result.return_message = ex.message;
+    }
+
+    // thông báo kết quả cho ZaloPay server
+    res.json(result);
+  }
+
 
   // [get] /shoes/my-order
   myOrder(req, res, next) {

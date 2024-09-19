@@ -94,8 +94,18 @@
               <a href="/login" class="icon-user"><i class="fa-regular fa-user"></i></a>
               {{/if}}
             </li>
-            <li><a href="/wishlist" class="icon-heart"><i class="fa-regular fa-heart"></i></a></li>
-            <li><a href="/shoes/cart" class="icon-cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            <li>
+              <a href="/wishlist" class="icon-head notification">
+                <span><i class="fa-regular fa-heart"></i></span>
+                <span class="badge">{{#if countWishlist}} {{countWishlist}} {{else}}0{{/if}}</span>
+              </a>
+            </li>
+            <li>
+              <a href="/shoes/cart" class="icon-head notification">
+                <span><i class="fa-solid fa-cart-shopping"></i></span>
+                <span class="badge">{{#if countOrder}} {{countOrder}} {{else}}0{{/if}}</span>
+              </a>
+            </li>
           </ul>
 
         </div>
@@ -108,51 +118,51 @@
 </div>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-  var searchInput = document.getElementById('search-input');
-  var suggestionsBox = document.getElementById('suggestions');
+    var searchInput = document.getElementById('search-input');
+    var suggestionsBox = document.getElementById('suggestions');
 
-  searchInput.addEventListener('input', function () {
-    var query = searchInput.value.trim();
+    searchInput.addEventListener('input', function () {
+      var query = searchInput.value.trim();
 
-    if (query.length > 0) {
-      // Giả sử chúng ta có một danh sách các từ khóa gợi ý (thực tế bạn sẽ lấy dữ liệu từ server)
-      var suggestions = [
-        { name: 'Giày Nữ', image: '/img/logo.jpg', price: '500,000 VND' },
-        { name: 'Giày Cao Gót', image: '/img/logo.jpg', price: '750,000 VND' },
-        { name: 'Giày Thể Thao', image: '/img/logo.jpg', price: '900,000 VND' },
-        { name: 'Boot Nam', image: '/img/logo.jpg', price: '1,200,000 VND' },
-        { name: 'Dép Nữ', image: '/img/logo.jpg', price: '300,000 VND' },
-        { name: 'Giày Tây', image: '/img/logo.jpg', price: '850,000 VND' }
-      ];
+      if (query.length > 0) {
+        // Giả sử chúng ta có một danh sách các từ khóa gợi ý (thực tế bạn sẽ lấy dữ liệu từ server)
+        var suggestions = [
+          { name: 'Giày Nữ', image: '/img/logo.jpg', price: '500,000 VND' },
+          { name: 'Giày Cao Gót', image: '/img/logo.jpg', price: '750,000 VND' },
+          { name: 'Giày Thể Thao', image: '/img/logo.jpg', price: '900,000 VND' },
+          { name: 'Boot Nam', image: '/img/logo.jpg', price: '1,200,000 VND' },
+          { name: 'Dép Nữ', image: '/img/logo.jpg', price: '300,000 VND' },
+          { name: 'Giày Tây', image: '/img/logo.jpg', price: '850,000 VND' }
+        ];
 
-      // Lọc danh sách gợi ý theo từ khóa
-      var filteredSuggestions = suggestions.filter(function (suggestion) {
-        return suggestion.name.toLowerCase().includes(query.toLowerCase());
-      });
+        // Lọc danh sách gợi ý theo từ khóa
+        var filteredSuggestions = suggestions.filter(function (suggestion) {
+          return suggestion.name.toLowerCase().includes(query.toLowerCase());
+        });
 
-      // Hiển thị các gợi ý
-      var suggestionsHtml = filteredSuggestions.map(function (suggestion) {
-        return '<div class="suggestion-item">' +
-                 '<img src="' + suggestion.image + '" alt="' + suggestion.name + '">' +
-                 '<div class="suggestion-info">' +
-                   '<a href="/search?query=' + suggestion.name + '">' + suggestion.name + '</a>' +
-                   '<p>' + suggestion.price + '</p>' +
-                 '</div>' +
-               '</div>';
-      }).join('');
+        // Hiển thị các gợi ý
+        var suggestionsHtml = filteredSuggestions.map(function (suggestion) {
+          return '<div class="suggestion-item">' +
+            '<img src="' + suggestion.image + '" alt="' + suggestion.name + '">' +
+            '<div class="suggestion-info">' +
+            '<a href="/search?query=' + suggestion.name + '">' + suggestion.name + '</a>' +
+            '<p>' + suggestion.price + '</p>' +
+            '</div>' +
+            '</div>';
+        }).join('');
 
-      suggestionsBox.innerHTML = suggestionsHtml;
-      suggestionsBox.style.display = 'block';
-    } else {
-      suggestionsBox.style.display = 'none';
-    }
+        suggestionsBox.innerHTML = suggestionsHtml;
+        suggestionsBox.style.display = 'block';
+      } else {
+        suggestionsBox.style.display = 'none';
+      }
+    });
+
+    // Đóng danh sách gợi ý khi người dùng click ra ngoài
+    document.addEventListener('click', function (event) {
+      if (!searchInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
+        suggestionsBox.style.display = 'none';
+      }
+    });
   });
-
-  // Đóng danh sách gợi ý khi người dùng click ra ngoài
-  document.addEventListener('click', function (event) {
-    if (!searchInput.contains(event.target) && !suggestionsBox.contains(event.target)) {
-      suggestionsBox.style.display = 'none';
-    }
-  });
-});
 </script>

@@ -167,21 +167,21 @@
                     required></textarea> --}}
 
                 <div class="form-group mt-3">
-                    <select name="city" id="city" class="form-control" >
+                    <select name="city" id="city" class="form-control">
                         <option value="">Chọn Tỉnh/Thành</option>
                         <!-- Dữ liệu sẽ được load từ API -->
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <select name="district" id="district" class="form-control" >
+                    <select name="district" id="district" class="form-control">
                         <option value="">Chọn Quận/Huyện</option>
                         <!-- Dữ liệu sẽ được load từ API sau khi chọn Tỉnh/Thành -->
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <select name="ward" id="ward" class="form-control" >
+                    <select name="ward" id="ward" class="form-control">
                         <option value="">Chọn Phường/Xã</option>
                         <!-- Dữ liệu sẽ được load từ API sau khi chọn Quận/Huyện -->
                     </select>
@@ -215,6 +215,14 @@
                                 value="Thanh toán bằng Paypal">
                             <label class="form-check-label" for="paymentMethod2">
                                 Thanh toán bằng Paypal
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod3"
+                                value="zalopay">
+                            <label class="form-check-label" for="paymentMethod3">
+                                Thanh toán bằng ZaloPay
                             </label>
                         </div>
                     </div>
