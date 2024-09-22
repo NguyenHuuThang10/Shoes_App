@@ -32,6 +32,11 @@
             {{#each shoes}}
             <div class="col-md-2 mt-4">
                 <div class="img box-shoes">
+                    {{#if this.priceDiscount}}
+                    <div class="shoes-percent">
+                        <span class="pro-sale">SALE<br> OFF </span>
+                    </div>
+                    {{/if}}
                     <a href="/shoes/{{this.slug}}">
                         <img loading="lazy" class="img-fluid box-img-shoes" src="/uploads/{{this.image}}" alt=""
                             width="100%">
@@ -70,7 +75,7 @@
                                         <p>{{this.price}}.000 đ</p>
                                     </del></div>
                                 <div class="col">
-                                    <p style="color: red;">{{this.priceDiscount}}.000 đ</p>
+                                    <p style="color: red; font-weight: 500;">{{this.priceDiscount}}.000 đ</p>
                                 </div>
                                 {{else}}
                                 <div class="col">

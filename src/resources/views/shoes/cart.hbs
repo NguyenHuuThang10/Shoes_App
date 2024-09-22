@@ -28,7 +28,7 @@
     <div id="content-step1" class="content-step shopping-cart">
         <h1>GIỎ HÀNG CỦA BẠN</h1>
 
-        <p>Bạn đang có <b>1 sản phẩm</b> trong giỏ hàng.</p>
+        <p>Bạn đang có <b>{{#if totalAmount}} {{totalAmount}} {{else}}0{{/if}} sản phẩm</b> trong giỏ hàng.</p>
 
         <div class="cart-list">
             <table class="table table-borderless">
@@ -366,6 +366,7 @@
 
     <form name="delete-order-form" method="POST"></form>
 </div>
+{{!-- Chức năng xóa --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var btnDeleteOrders = document.querySelectorAll('.btn-delete-order');
@@ -382,7 +383,7 @@
     })
 
 </script>
-
+{{!-- Chuyển sang các bước --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var btnToStep2 = document.getElementById('btn-to-step2');
@@ -448,7 +449,7 @@
     });
 
 </script>
-
+{{!-- Lấy API địa chỉ --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Hàm để lấy dữ liệu từ API và cập nhật thẻ select

@@ -1182,25 +1182,38 @@ span#or-text {
   margin: 0;
   font-size: 14px;
 }
-
+// Hover giỏ hàng trang header
 .cart-dropdown {
   position: relative;
   display: inline-block;
 }
 
+// có sản phẩm
 .cart-dropdown-content {
   display: none;
   position: absolute;
   right: 0;
   background-color: #f8f8f8;
   width: 450px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3.125rem 0 rgba(0, 0, 0, 0.2);
   z-index: 1;
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 20px;
   transition: all 0.3s ease;
   max-height: 420px;
-  margin-top: 12px;
+  top: calc(100% + 10px);
+  animation: fadeIn ease-in 0.2s;
+}
+
+.cart-dropdown-content::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  top: -28px;
+  border-width: 16px ;
+  border-style: solid;
+  border-color: transparent transparent #f8f8f8 transparent; //trên dưới trái phải
+  cursor: pointer;
 }
 
 .cart-dropdown:hover .cart-dropdown-content {
@@ -1249,16 +1262,9 @@ span#or-text {
   border-radius: 10px;
 }
 
-.cart-item-inf>tbody>tr>td {
-  border: none;
-  padding: 10px 0;
-}
-
-.cart-item-inf>tbody>tr {
-  border-top: 1px solid #ccc;
-}
-
-.cart-item-total>tbody>tr>td {
+.cart-item-inf>tbody>tr>td,
+.cart-item-total>tbody>tr>td,
+.cart-item-inf-no-shoe>tbody>tr>td {
   border: none;
   padding: 10px 0;
 }
@@ -1274,6 +1280,18 @@ span#or-text {
 .cart-item-inf img {
   width: 80px;
   height: 80px;
+}
+
+.cart-item-inf-no-shoe img {
+  width: 50%;
+}
+
+.cart-item-inf-no-shoe span {
+  display: block;
+}
+
+.table-price {
+  border-top: 1px solid #ccc;
 }
 
 .item-price {
@@ -1303,7 +1321,6 @@ span#or-text {
   background-color: #33CCFF;
   border-radius: 5px;
   text-decoration: none;
-  margin-top: 15px;
   font-weight: 600;
   width: 100%;
   text-transform: uppercase;

@@ -239,6 +239,9 @@ class SiteController {
         if(order){
           const countOrder = order.orderItems.length;
           res.locals.countOrder = countOrder;
+          // Tính tổng số lượng sản phẩm bằng cách sử dụng phương thức reduce
+          const totalAmount = order.orderItems.reduce((total, item) => total + item.amount, 0);
+          res.locals.totalAmount = totalAmount;
         }
 
         User.findOne({ _id: decodeToken._id })

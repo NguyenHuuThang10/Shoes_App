@@ -25,11 +25,6 @@ const Order = new Schema({
         districtName: { type: String },
         wardName: { type: String },
         phone: { type: String },
-        note: {
-            type: String, 
-            trim: true, // Loại bỏ khoảng trắng thừa
-            default: '', // Nếu không có ghi chú, mặc định là chuỗi rỗng
-        },
     },
     paymentMethod: { type: String },
     note: { type: String },

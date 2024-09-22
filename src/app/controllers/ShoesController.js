@@ -250,10 +250,7 @@ class ShoesController {
 
   // [POST] /shoes/update-cart/:id
   async updateShippingCart(req, res, next) {
-    try {
-      // Kiểm tra dữ liệu gửi từ form
-      console.log(req.body);  // Log dữ liệu gửi đến
-      
+    try {      
       var { fullName, phone, address, city, cityName, paymentMethod, district, districtName, ward, wardName, note } = req.body;
       var orderId = req.params.id;
 
