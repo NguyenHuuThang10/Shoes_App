@@ -124,7 +124,9 @@
                         </div>
                     </div>
                     <div class="row mb-2">
-                        <button type="button" class="btn-order" id="btn-to-step2">ĐẶT HÀNG NGAY</button>
+                        {{#if order.orderItems}}
+                            <button type="button" class="btn-order" id="btn-to-step2">ĐẶT HÀNG NGAY</button>
+                        {{/if}}
                     </div>
                 </div>
             </div>

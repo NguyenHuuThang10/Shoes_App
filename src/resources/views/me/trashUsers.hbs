@@ -3,6 +3,10 @@
         <div class="content-header">
             <h1>Thùng rác người dùng:</h1>
             <a class="btn btn-info mt-2" href="/me/stored/users">Danh sách người dùng</a>   
+
+            <form class="form-search mt-3">
+                <input type="text" placeholder="Tìm kiếm tài khoản" class="form-control" style="width: 25%;" />
+            </form> 
         </div>
         <table class="table table-stored">
             <thead>
@@ -18,7 +22,7 @@
             </thead>
             <tbody>
                 {{#each users}}
-                <tr>
+                <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.email}}</td>
@@ -67,13 +71,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Xóa vĩnh viễn sản phẩm?</h5>
+                <h5 class="modal-title">Xóa vĩnh viễn tài khoản?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Hành động không thể khôi phục. Bạn có chắc chắn muốn xóa sản phẩm vĩnh viễn?</p>
+                <p>Hành động không thể khôi phục. Bạn có chắc chắn muốn xóa tài khoản vĩnh viễn?</p>
             </div>
             <div class="modal-footer">
                 <button id="btn-delete-user" type="button" class="btn btn-danger">Xóa bỏ</button>

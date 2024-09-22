@@ -1,7 +1,7 @@
 <div class="content-wrapper" style="min-height: 650px;">
     <div class="container-fluid ">
         <div class="content-header">
-            <h1 class="mb-2">Quản lý bài viết:</h1>
+            <h1 class="mb-3">Quản lý bài viết:</h1>
             {{#if success}}
             <div class="alert alert-success mt-3" role="alert">
                 {{success}}
@@ -17,6 +17,10 @@
             <a class="btn btn-secondary" href="/me/trash/blogs"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
                 {{deletedCount}} )</a>
             {{/if}}
+
+            <form class="form-search mt-3">
+                <input type="text" placeholder="Tìm kiếm bài viết" class="form-control" style="width: 25%;" />
+            </form>
         </div>
         <table class="table table-stored">
             <thead>
@@ -39,7 +43,7 @@
             </thead>
             <tbody>
                 {{#each blogs}}
-                <tr>
+                <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.title}}</td>
                     <td>{{this.category}}</td>
@@ -55,7 +59,7 @@
                 </tr>
                 {{else}}
                 <tr class="text-center">
-                    <td colspan="7">Không có sản phẩm nào. <a href="/me/create/blogs">Thêm bài viết ngay</a></td>
+                    <td colspan="7">Không có bài viết nào. <a href="/me/create/blogs">Thêm bài viết ngay</a></td>
                 </tr>
                 {{/each}}
             </tbody>
