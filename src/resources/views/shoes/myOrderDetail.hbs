@@ -14,12 +14,16 @@
                     <p>Chỉnh sửa thông tin</p>
                 </div>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a class="text-dark" href="/profile">Tài khoản của tôi</a></li>
-                <li class="list-group-item"><a class="text-dark" href="/password">Đổi mật khẩu</a></li>
-                <li class="list-group-item"><a class="text-dark" href="/shoes/my-order">Đơn mua</a>
+            <ul class="list-group list-group-flush list-profile">
+                <li class="list-group-item"><a class="text-body" href="/profile"><i
+                            class="fa-regular fa-circle-user fa"></i>Tài khoản của tôi</a></li>
+                <li class="list-group-item"><a class="text-body" href="/password"><i class="fa-solid fa-key fa"></i>Đổi
+                        mật khẩu</a></li>
+                <li class="list-group-item"><a class="text-body" href="/shoes/my-order"><i
+                            class="fa-regular fa-rectangle-list fa"></i>Đơn mua</a>
                 </li>
-                <li class="list-group-item"><a class="text-dark" href="/log-out">Đăng xuất</a></li>
+                <li class="list-group-item"><a class="text-body" href="/log-out"><i
+                            class="fa-solid fa-right-from-bracket fa"></i>Đăng xuất</a></li>
             </ul>
         </div>
 
@@ -31,7 +35,10 @@
                     <h5 class="card-title">Thông tin người nhận</h5>
                     <p class="card-text">Tên người nhận: {{order.shippingAddress.fullName}}</p>
                     <p class="card-text">Số điện thoại: {{order.shippingAddress.phone}}</p>
-                    <p class="card-text">Địa chỉ nhận hàng: {{order.shippingAddress.address}}, {{order.shippingAddress.wardName}}, {{order.shippingAddress.districtName}}, {{order.shippingAddress.cityName}}</p>
+                    <p class="card-text">Địa chỉ nhận hàng: {{order.shippingAddress.address}},
+                        {{order.shippingAddress.wardName}}, {{order.shippingAddress.districtName}},
+                        {{order.shippingAddress.cityName}}</p>
+                    <p class="card-text">Ghi chú đơn hàng: {{order.note}}</p>
                 </div>
             </div>
 
