@@ -2,7 +2,11 @@
     <div class="container-fluid">
         <div class="content-header">
             <h1>Thùng rác đơn hàng:</h1>
-            <a class="btn btn-info mt-2" href="/me/stored/orders">Danh sách đơn hàng</a>   
+            <a class="btn btn-info mt-3" href="/me/stored/orders">Danh sách đơn hàng</a>   
+        
+            <form class="form-search mt-3">
+                <input type="text" placeholder="Tìm kiếm đơn hàng" class="form-control" style="width: 25%;" />
+            </form> 
         </div>
         <table class="table table-stored">
             <thead>
@@ -21,10 +25,10 @@
             </thead>
             <tbody>
                 {{#each orders}}
-                <tr>
+                <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
-                    <td>{{this.user.name}}</td>
-                    <td>{{this.user.phone}}</td>
+                    <td>{{this.shippingAddress.fullName}}</td>
+                    <td>{{this.shippingAddress.phone}}</td>
                     <td>{{this.shippingAddress.city}}</td>
                     <td>{{this.isPaid}}</td>
                     <td>{{this.isDelivered}}</td>

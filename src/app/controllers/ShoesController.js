@@ -172,7 +172,7 @@ class ShoesController {
             .catch(next);
         } else {
           const existingOrderItem = order.orderItems.find(
-            (item) => item.shoe.toString() === shoeId
+            (item) => item.shoe.toString() === shoeId && item.size === Number(size)
           );
 
           if (existingOrderItem) {

@@ -1,12 +1,19 @@
 <div class="content-wrapper" style="min-height: 650px;">
     <div class="container-fluid ">
         <div class="content-header">
-            <h1 class="mb-2">Quản lý đơn hàng:</h1>
+            <h1 class="mb-3">Quản lý đơn hàng:</h1>
+
+            {{#if deletedCount}}
+            <a class="btn btn-secondary" href="/me/trash/orders"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
+                {{deletedCount}} )</a>
+            {{/if}}
+
+            <form class="form-search mt-3">
+                <input type="text" placeholder="Tìm kiếm đơn hàng" class="form-control" style="width: 25%;" />
+            </form>
+
         </div>
-        {{#if deletedCount}}
-        <a class="btn btn-secondary" href="/me/trash/orders"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
-            {{deletedCount}} )</a>
-        {{/if}}
+
         <table class="table table-stored">
             <thead>
                 <tr>
@@ -24,7 +31,7 @@
             </thead>
             <tbody>
                 {{#each orders}}
-                <tr>
+                <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.shippingAddress.fullName}}</td>
                     <td>{{this.shippingAddress.phone}}</td>
@@ -35,7 +42,8 @@
                     <td>{{this.totalPrice}}</td>
                     <td><a class="btn btn-info" href="/me/stored/order-detail/{{this._id}}"> Xem chi tiết </a></td>
                     <td>
-                        <a href="/me/{{this._id}}/edit/order    " class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a href="/me/{{this._id}}/edit/order    " class="btn btn-link"><i
+                                class="fa-regular fa-pen-to-square"></i></a>
 
                         <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
                             data-target="#delete_order_model"><i class="fa-regular fa-trash-can"></i></a>

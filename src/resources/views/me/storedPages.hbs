@@ -17,6 +17,10 @@
             <a class="btn btn-secondary" href="/me/trash/pages"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
                 {{deletedCount}} )</a>
             {{/if}}
+
+            <form class="form-search mt-3">
+                <input type="text" placeholder="Tìm kiếm trang" class="form-control" style="width: 25%;" />
+            </form>
         </div>
         <table class="table table-stored">
             <thead>
@@ -39,7 +43,7 @@
             </thead>
             <tbody>
                 {{#each pages}}
-                <tr>
+                <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.title}}</td>
                     <td>{{this.category}}</td>

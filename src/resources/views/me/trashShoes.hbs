@@ -3,6 +3,10 @@
         <div class="content-header">
             <h1>Thùng rác sản phẩm:</h1>
             <a class="btn btn-info mt-2" href="/me/stored/shoes">Danh sách sản phẩm</a>   
+        
+            <form class="form-search mt-3">
+                <input type="text" placeholder="Tìm kiếm sản phẩm" class="form-control" style="width: 25%;" />
+            </form> 
         </div>
         <table class="table table-stored">
             <thead>
@@ -18,7 +22,7 @@
             </thead>
             <tbody>
                 {{#each shoes}}
-                <tr>
+                <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.type}}</td>

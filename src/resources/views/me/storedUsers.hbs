@@ -1,14 +1,19 @@
 <div class="content-wrapper" style="min-height: 650px;">
     <div class="container-fluid">
         <div class="content-header">
-            <h1 class="mb-2">Quản lý người dùng:</h1>
+            <h1 class="mb-3">Quản lý người dùng:</h1>
             {{#if deletedCount}}
-                <a class="btn btn-secondary" href="/me/trash/users"> <i class="fa-solid fa-trash-can"></i> Thùng rác ( {{deletedCount}} )</a>
+            <a class="btn btn-secondary" href="/me/trash/users"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
+                {{deletedCount}} )</a>
             {{/if}}
+
+            <form class="form-search mt-3">
+                <input type="text" placeholder="Tìm kiếm tài khoản" class="form-control" style="width: 25%;" />
+            </form>
         </div>
         <table class="table table-stored">
             <thead>
-                <tr >
+                <tr>
                     <th scope="col">#</th>
                     <th scope="col" style="width: 15%;">Tên
                         {{{sortable 'name' _sort}}}
@@ -31,30 +36,31 @@
             </thead>
             <tbody>
                 {{#each users}}
-                <tr>
+                <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
-                    <td >{{this.name}}</td>
+                    <td>{{this.name}}</td>
                     <td>{{this.email}}</td>
                     <td>{{this.phone}}</td>
                     <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
                     {{#ifEquals this.activeToken null}}
-                        <td class="text-center"><button type="button" class="btn btn-success">Kích hoạt</button></td>
+                    <td class="text-center"><button type="button" class="btn btn-success">Kích hoạt</button></td>
                     {{else}}
-                        <td class="text-center"><button type="button" class="btn btn-danger">Chưa kích hoạt</button></td>
+                    <td class="text-center"><button type="button" class="btn btn-danger">Chưa kích hoạt</button></td>
                     {{/ifEquals}}
 
                     {{#if this.isAdmin}}
-                        <td class="text-center"><button type="button" class="btn btn-warning">Admin</button></td>
+                    <td class="text-center"><button type="button" class="btn btn-warning">Admin</button></td>
                     {{else}}
-                        <td class="text-center"><button type="button" class="btn btn-success">Client</button></td>
+                    <td class="text-center"><button type="button" class="btn btn-success">Client</button></td>
                     {{/if}}
 
-                    
+
                     <td>
-                        <a href="/me/{{this._id}}/edit/users    " class="btn btn-link"><i class="fa-regular fa-pen-to-square"></i></a>
-                    
+                        <a href="/me/{{this._id}}/edit/users    " class="btn btn-link"><i
+                                class="fa-regular fa-pen-to-square"></i></a>
+
                         <a href="#" class="btn btn-link delete-user-button" data-id="{{this._id}}" data-toggle="modal"
-                        data-target="#delete_user_model"><i class="fa-regular fa-trash-can"></i></a>
+                            data-target="#delete_user_model"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
                 {{else}}
@@ -68,15 +74,15 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 {{#backPage page newUrl}}
-                    {{this}}
+                {{this}}
                 {{/backPage}}
 
                 {{#eachPage page maxPage newUrl}}
-                    {{this}}
+                {{this}}
                 {{/eachPage}}
-                
+
                 {{#nextPage page maxPage newUrl}}
-                    {{this}}
+                {{this}}
                 {{/nextPage}}
             </ul>
         </nav>
@@ -105,7 +111,7 @@
 </div>
 
 {{!-- Delete Hidden form --}}
-    <form name="delete-user-form" method="POST" ></form>
+<form name="delete-user-form" method="POST"></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -116,12 +122,12 @@
 
         var currentUserID = "{{currentUser._id}}";
         var deleteButtons = document.querySelectorAll('.delete-user-button');
-        
+
         // When dialog confirm clicked
         $('#delete_user_model').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             userId = button.data('id')
-            
+
         })
 
         btnDeleteUser.onclick = function () {
@@ -129,7 +135,7 @@
             deleteUserForm.submit()
         }
 
-        deleteButtons.forEach(function(button) {
+        deleteButtons.forEach(function (button) {
             if (button.dataset.id === currentUserID) {
                 button.style.display = 'none';
             }
