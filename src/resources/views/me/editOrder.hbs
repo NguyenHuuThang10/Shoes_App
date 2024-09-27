@@ -32,13 +32,11 @@
 
                     <div class="form-group">
                         <label for="phone">Địa chỉ</label>
-                        <input type="text" class="form-control" id="city" name="city" placeholder="Nhập số điện thoại"
-                            {{#if order}} value="{{order.shippingAddress.city }}" {{else}} value="{{old.city  }}"
-                            {{/if}}>
+                        <input type="text" class="form-control" id="cityName" name="cityName"
+                            placeholder="Nhập số điện thoại" {{#if order}} value="{{order.shippingAddress.cityName }}"
+                            {{else}} value="{{old.cityName  }}" {{/if}}>
                     </div>
-                </div>
 
-                <div class="col mx-sm-3">
                     <div class="form-group">
                         <label for="paymentMethod">Phương thức thanh toán</label>
                         <select class="form-control" id="paymentMethod" name="paymentMethod">
@@ -48,14 +46,20 @@
                                 {{#ifEquals old.paymentMethod 'Thanh toán bằng tiền mặt' }}selected{{/ifEquals}}
                                 {{/if}}>Thanh toán bằng
                                 tiền mặt</option>
-                            <option value="Thanh toán bằng Paypal" {{#if order}} {{#ifEquals
-                                order.paymentMethod 'Thanh toán bằng Paypal' }}selected{{/ifEquals}} {{else}}
-                                {{#ifEquals old.paymentMethod 'Thanh toán bằng Paypal' }}selected{{/ifEquals}} {{/if}}>
+                            <option value="paypal" {{#if order}} {{#ifEquals order.paymentMethod 'paypal'
+                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'paypal'
+                                }}selected{{/ifEquals}} {{/if}}>
                                 Thanh toán bằng
                                 Paypal</option>
+
+                            <option value="zalopay" {{#if order}} {{#ifEquals order.paymentMethod 'zalopay'
+                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'zalopay'
+                                }}selected{{/ifEquals}} {{/if}}> Thanh toán bằng Zalopay</option>
                         </select>
                     </div>
+                </div>
 
+                <div class="col mx-sm-3">
                     <div class="form-group">
                         <label for="isPaid">Tình trạng thanh toán</label>
                         <select class="form-control" id="isPaid" name="isPaid">

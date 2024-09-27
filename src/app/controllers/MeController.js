@@ -42,7 +42,7 @@ class MeController {
         // Kiểm tra nếu req.files.image tồn tại
         if (req.files.image && req.files.image.length > 0) {
           req.body.image = req.files.image[0].filename;
-        }else {
+        } else {
           req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
           return res.redirect('back')
         }
@@ -55,11 +55,11 @@ class MeController {
           });
           path = path.substring(0, path.lastIndexOf(','));
           req.body.images = path;
-        }else {
+        } else {
           req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
           return res.redirect('back')
         }
-      }else {
+      } else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
         return res.redirect('back')
       }
@@ -88,16 +88,6 @@ class MeController {
       urlParams.delete('page');
 
       const newUrl = "?" + urlParams.toString();
-
-
-      // const parsedUrl = url.parse(currenUrl, true);
-      // const query = parsedUrl.search;
-
-      // const urlParams = new URLSearchParams(query);
-      // urlParams.delete('page');
-      // queryString = urlParams.toString()
-
-
 
       let shoeQuery = Shoe.find({});
 
@@ -142,6 +132,24 @@ class MeController {
   // [GET] /me/trash/shoes
   async trashShoes(req, res, next) {
     try {
+
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+      let shoeQuery = Shoe.findWithDeleted({ deleted: true });
+
+      if (req.query.hasOwnProperty('_sort')) {
+        shoeQuery = shoeQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
       var page = parseInt(req.query.page) || 1;
       var allShoe = await Shoe.findWithDeleted({
         deleted: true,
@@ -154,17 +162,32 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      Shoe.findWithDeleted({ deleted: true })
-        .skip(offset)
-        .limit(PAGE_SIZE)
-        .then((shoes) => {
-          res.render("me/trashShoes", {
-            page,
-            maxPage,
-            shoes: mutipleMongooseToObject(shoes),
-          });
-        })
-        .catch(next);
+      Promise.all([
+        shoeQuery,
+      ]).then(([shoes]) => {
+        shoes = shoes.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/trashShoes", {
+          success: req.flash('success'),
+          err: req.flash('err'),
+          page,
+          maxPage,
+          newUrl: newUrl,
+          shoes: mutipleMongooseToObject(shoes),
+        });
+      });
+
+      // Shoe.findWithDeleted({ deleted: true })
+      //   .skip(offset)
+      //   .limit(PAGE_SIZE)
+      //   .then((shoes) => {
+      //     res.render("me/trashShoes", {
+      //       page,
+      //       maxPage,
+      //       shoes: mutipleMongooseToObject(shoes),
+      //     });
+      //   })
+      //   .catch(next);
     } catch (error) {
       console.log("ERR: " + error);
     }
@@ -317,6 +340,24 @@ class MeController {
   // [GET] /me/trash/users
   async trashUsers(req, res, next) {
     try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+
+      let userQuery = User.findWithDeleted({ deleted: true });
+
+      if (req.query.hasOwnProperty('_sort')) {
+        userQuery = userQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
       var page = parseInt(req.query.page) || 1;
       var allUser = await User.findWithDeleted({
         deleted: true,
@@ -329,17 +370,30 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      User.findWithDeleted({ deleted: true })
-        .skip(offset)
-        .limit(PAGE_SIZE)
-        .then((users) => {
-          res.render("me/trashUsers", {
-            page,
-            maxPage,
-            users: mutipleMongooseToObject(users),
-          });
-        })
-        .catch(next);
+      Promise.all([
+        userQuery,
+      ]).then(([users]) => {
+        users = users.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/trashUsers", {
+          page,
+          maxPage,
+          newUrl: newUrl,
+          users: mutipleMongooseToObject(users),
+        });
+      });
+
+      // User.findWithDeleted({ deleted: true })
+      //   .skip(offset)
+      //   .limit(PAGE_SIZE)
+      //   .then((users) => {
+      //     res.render("me/trashUsers", {
+      //       page,
+      //       maxPage,
+      //       users: mutipleMongooseToObject(users),
+      //     });
+      //   })
+      //   .catch(next);
     } catch (error) {
       console.log("ERR: " + error);
     }
@@ -402,6 +456,22 @@ class MeController {
   // [GET] me/stored/orders
   async storedOrders(req, res, next) {
     try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+      var orderQuery = Order.find({}).populate({ path: "user", model: "User", })
+
+      if (req.query.hasOwnProperty('_sort')) {
+        orderQuery = orderQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
 
       var page = parseInt(req.query.page) || 1;
       var allOrder = await Order.find({}).countDocuments();
@@ -413,7 +483,7 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      var orderQuery = Order.find({}).populate({ path: "user", model: "User", })
+
 
       Promise.all([
         orderQuery,
@@ -425,6 +495,7 @@ class MeController {
           page,
           maxPage,
           deletedCount,
+          newUrl: newUrl,
           orders: mutipleMongooseToObject(orders),
         });
       });
@@ -464,7 +535,7 @@ class MeController {
   updateOrder(req, res, next) {
     try {
       const orderId = req.params.id;
-      let { fullName, phone, city, paymentMethod, isPaid, isDelivered, status } = req.body
+      let { fullName, phone, cityName, paymentMethod, isPaid, isDelivered, status } = req.body
       const regPhone = /^0\d{9}$/;
       isDelivered = isDelivered === "Đã giao hàng"
       isPaid = isPaid === 'Đã thanh toán'
@@ -472,19 +543,19 @@ class MeController {
       const isCheckPhone = regPhone.test(phone);
 
 
-      if (!fullName || !phone || !city || !paymentMethod || !status) {
+      if (!fullName || !phone || !cityName || !paymentMethod || !status) {
         return res.render("me/editOrder", {
           err: "Vui lòng nhập đầy đủ thông tin!",
-          old: { fullName, phone, city, paymentMethod, isPaid, isDelivered, status }
+          old: { fullName, phone, cityName, paymentMethod, isPaid, isDelivered, status }
         })
       } else if (!isCheckPhone) {
         return res.render("me/editOrder", {
           err: "Số điện thoại không đúng định dạng!",
-          old: { fullName, phone, city, paymentMethod, isPaid, isDelivered, status }
+          old: { fullName, phone, cityName, paymentMethod, isPaid, isDelivered, status }
         })
       }
       Order.updateOne({ _id: orderId }, {
-        shippingAddress: { fullName, phone, city },
+        shippingAddress: { fullName, phone, cityName },
         paymentMethod,
         isPaid,
         isDelivered,
@@ -505,6 +576,23 @@ class MeController {
   // [GET] /me/trash/orders
   async trashOrders(req, res, next) {
     try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+      var orderQuery = Order.findWithDeleted({ deleted: true }).populate({ path: "user", model: "User", })
+
+      if (req.query.hasOwnProperty('_sort')) {
+        orderQuery = orderQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
       var page = parseInt(req.query.page) || 1;
       var allOrder = await Order.findWithDeleted({
         deleted: true,
@@ -517,18 +605,18 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      Order.findWithDeleted({ deleted: true })
-        .populate({ path: "user", model: "User", })
-        .skip(offset)
-        .limit(PAGE_SIZE)
-        .then((orders) => {
-          res.render("me/trashOrders", {
-            page,
-            maxPage,
-            orders: mutipleMongooseToObject(orders),
-          });
-        })
-        .catch(next);
+      Promise.all([
+        orderQuery
+      ]).then(([orders]) => {
+        orders = orders.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/trashOrders", {
+          page,
+          maxPage,
+          newUrl: newUrl,
+          orders: mutipleMongooseToObject(orders),
+        });
+      });
     } catch (error) {
       console.log("ERR: " + error);
     }
@@ -661,6 +749,23 @@ class MeController {
   // [Get] /me/trash/blogs
   async trashBlogs(req, res, next) {
     try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+      let blogQuery = Blog.findWithDeleted({ deleted: true })
+
+      if (req.query.hasOwnProperty('_sort')) {
+        blogQuery = blogQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
       var page = parseInt(req.query.page) || 1;
       var allBlog = await Blog.findWithDeleted({
         deleted: true,
@@ -673,18 +778,20 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      Blog.findWithDeleted({ deleted: true })
-        .skip(offset)
-        .limit(PAGE_SIZE)
-        .then((blogs) => {
-          res.render("me/trashBlogs", {
-            page,
-            maxPage,
-            blogs: mutipleMongooseToObject(blogs),
-            success: req.flash('success')
-          });
-        })
-        .catch(next);
+      Promise.all([
+        blogQuery
+      ]).then(([blogs]) => {
+        blogs = blogs.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/trashBlogs", {
+          success: req.flash('success'),
+          err: req.flash('err'),
+          page,
+          maxPage,
+          newUrl: newUrl,
+          blogs: mutipleMongooseToObject(blogs),
+        });
+      });
     } catch (error) {
       console.log("ERR: " + error);
     }
@@ -858,6 +965,23 @@ class MeController {
   // [Get] /me/trash/pages
   async trashPages(req, res, next) {
     try {
+      // Lấy đường dẫn URL hiện tại
+      var urlString = req.originalUrl;
+
+      const myURL = url.parse(urlString, true);
+      const urlParams = new URLSearchParams(myURL.search);
+      urlParams.delete('page');
+
+      const newUrl = "?" + urlParams.toString();
+
+      let pageQuery = Page.findWithDeleted({ deleted: true });
+
+      if (req.query.hasOwnProperty('_sort')) {
+        pageQuery = pageQuery.sort({
+          [req.query.column]: req.query.type
+        })
+      }
+
       var page = parseInt(req.query.page) || 1;
       var allPage = await Blog.findWithDeleted({
         deleted: true,
@@ -870,18 +994,21 @@ class MeController {
 
       var offset = (page - 1) * PAGE_SIZE;
 
-      Page.findWithDeleted({ deleted: true })
-        .skip(offset)
-        .limit(PAGE_SIZE)
-        .then((pages) => {
-          res.render("me/trashPages", {
-            page,
-            maxPage,
-            pages: mutipleMongooseToObject(pages),
-            success: req.flash('success')
-          });
-        })
-        .catch(next);
+
+      Promise.all([
+        pageQuery,
+      ]).then(([pages]) => {
+        pages = pages.slice(offset, offset + PAGE_SIZE);
+
+        res.render("me/trashPages", {
+          success: req.flash('success'),
+          err: req.flash('err'),
+          page,
+          maxPage,
+          newUrl: newUrl,
+          pages: mutipleMongooseToObject(pages),
+        });
+      });
     } catch (error) {
       console.log("ERR: " + error);
     }

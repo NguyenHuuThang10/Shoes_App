@@ -3,9 +3,9 @@
         <div class="content-header">
             <h1>Thêm người dùng:</h1>
             {{#if err}}
-                <div class="alert alert-danger" role="alert">
-                    {{err}}
-                </div>
+            <div class="alert alert-danger" role="alert">
+                {{err}}
+            </div>
             {{/if}}
         </div>
         <form method="post">
@@ -13,44 +13,59 @@
                 <div class="col mx-sm-3">
                     <div class="form-group">
                         <label for="name">Tên người dùng</label>
-                        <input type="text" class="form-control" id="name" name="name"  placeholder="Nhập tên người dùng" value="{{old.name}}">
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên người dùng"
+                            value="{{old.name}}">
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email"  placeholder="Nhập email" value="{{old.email}}">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Nhập email"
+                            value="{{old.email}}">
 
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="phone">Số điện thoại</label>
-                        <input type="text" class="form-control" id="phone" name="phone"  placeholder="Nhập số điện thoại" value="{{old.phone}}">
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại"
+                            value="{{old.phone}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Trạng thái</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="" selected>-- Trạng thái --</option>
+                            <option value="1" {{#ifEquals old.status 1 }}selected{{/ifEquals}}>Kích hoạt</option>
+                            <option value="0" {{#ifEquals old.status 0 }}selected{{/ifEquals}}>Chưa kích hoạt</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="col mx-sm-3">
                     <div class="form-group">
                         <label for="password">Mật khẩu</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Nhập mật khẩu">
                     </div>
+
                     <div class="form-group">
                         <label for="confirm_password">Nhập lại mật khẩu</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Nhập lại mật khẩu">
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+                            placeholder="Nhập lại mật khẩu">
                     </div>
+                    
                     <div class="form-group">
                         <label for="isAdmin">Phân quyền</label>
                         <select class="form-control" id="isAdmin" name="isAdmin">
                             <option value="" selected>-- Phân quyền --</option>
                             <option value="Admin" {{#ifEquals old.isAdmin "Admin" }}selected{{/ifEquals}}>Admin</option>
-                            <option value="Client" {{#ifEquals old.isAdmin "Client" }}selected{{/ifEquals}}>Client</option>
+                            <option value="Client" {{#ifEquals old.isAdmin "Client" }}selected{{/ifEquals}}>Client
+                            </option>
                         </select>
                     </div>
 
                 </div>
             </div>
             <button type="submit" class="btn btn-primary mx-sm-3">Thêm người dùng</button>
+            <a href="/me/stored/users" class="btn btn-success mx-sm-3">Quay lại</a>
         </form>
     </div>
 </div>
-
-
-

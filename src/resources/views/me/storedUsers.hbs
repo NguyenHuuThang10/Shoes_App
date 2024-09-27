@@ -24,13 +24,18 @@
                     <th scope="col">Số điện thoại
                         {{{sortable 'phone' _sort}}}
                     </th>
-                    <th style="width: 22%;" scope="col">Thời gian tạo
+                    <th scope="col">Xác thực
+                        {{{sortable 'authProvider' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian tạo
                         {{{sortable 'createdAt' _sort}}}
                     </th>
                     <th scope="col">Trạng thái
-                        {{{sortable 'activeToken' _sort}}}
+                        {{{sortable 'status' _sort}}}
                     </th>
-                    <th scope="col" class="text-center">Phân quyền</th>
+                    <th scope="col" class="text-center">Phân quyền
+                        {{{sortable 'isAdmin' _sort}}}
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -41,8 +46,9 @@
                     <td>{{this.name}}</td>
                     <td>{{this.email}}</td>
                     <td>{{this.phone}}</td>
-                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
-                    {{#ifEquals this.activeToken null}}
+                    <td>{{this.authProvider}}</td>
+                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
+                    {{#ifEquals this.status 1}}
                     <td class="text-center"><button type="button" class="btn btn-success">Kích hoạt</button></td>
                     {{else}}
                     <td class="text-center"><button type="button" class="btn btn-danger">Chưa kích hoạt</button></td>

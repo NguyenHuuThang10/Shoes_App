@@ -155,7 +155,7 @@ class SiteController {
       var token = req.query.token
       var checkToken = await User.findOneAndUpdate(
         { activeToken: token },
-        { activeToken: null },
+        { activeToken: null, status: 1 },
         { new: true }
       );
       if (checkToken) {
@@ -192,7 +192,7 @@ class SiteController {
 
     }
 
-    User.findOne({ email: req.body.email, activeToken: null })
+    User.findOne({ email: req.body.email, status: 1 })
       .then((data) => {
         if (data) {
           const comparePassword = bcrypt.compareSync(password, data.password);
@@ -236,8 +236,13 @@ class SiteController {
         var decodeToken = jwt.verify(token, "nht");
 
         const order = await Order.findOne({ user: decodeToken._id, paymentMethod: null});
+        let countOrder = 0;
         if(order){
-          const countOrder = order.orderItems.length;
+          order.orderItems.forEach(data => {
+            countOrder += data.amount;
+          });
+          const orderData = mongooseToObject(order)
+          res.locals.orderData = orderData;
           res.locals.countOrder = countOrder;
           // Tính tổng số lượng sản phẩm bằng cách sử dụng phương thức reduce
           const totalAmount = order.orderItems.reduce((total, item) => total + item.amount, 0);

@@ -35,10 +35,10 @@
                     <th scope="col">Giá
                         {{{sortable 'price' _sort}}}
                     </th>
-                    <th style="width: 22%;" scope="col">Thời gian tạo
+                    <th style="width: 15%;" scope="col">Thời gian tạo
                         {{{sortable 'createdAt' _sort}}}
                     </th>
-                    <th style="width: 22%;" scope="col">Thời gian sửa
+                    <th style="width: 15%;" scope="col">Thời gian sửa
                         {{{sortable 'updatedAt' _sort}}}
                     </th>
                     <th></th>
@@ -50,9 +50,9 @@
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.typeDetail}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
-                    <td>{{formatDate this.updatedAt "Asia/Ho_Chi_Minh" "H:m:s DD-MM-YYYY"}}</td>
+                    <td>{{this.price}}.000 <u>đ</u></td>
+                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
+                    <td>{{formatDate this.updatedAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
                     <td>
                         <a href="/me/{{this._id}}/edit/shoes" class="btn btn-link"><i
                                 class="fa-regular fa-pen-to-square"></i></a>

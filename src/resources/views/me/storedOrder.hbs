@@ -18,13 +18,27 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" style="width: 20%;">Tên khách hàng</th>
-                    <th scope="col">Số điện thoại</th>
-                    <th scope="col">Địa chỉ</th>
-                    <th scope="col">Paided</th>
-                    <th scope="col">Shipped</th>
-                    <th scope="col">PT thanh toán</th>
-                    <th scope="col">Tổng giá</th>
+                    <th scope="col" style="width: 12%;">Tên khách hàng
+                        {{{sortable 'shippingAddress.fullName' _sort}}}
+                    </th>
+                    <th scope="col">Số điện thoại
+                        {{{sortable 'shippingAddress.phone' _sort}}}
+                    </th>
+                    <th scope="col">Địa chỉ
+                        {{{sortable 'shippingAddress.cityName' _sort}}}
+                    </th>
+                    <th scope="col">TT thanh toán
+                        {{{sortable 'isPaid' _sort}}}
+                    </th>
+                    <th scope="col">TT giao hàng
+                        {{{sortable 'isDelivered' _sort}}}
+                    </th>
+                    <th scope="col">Tổng giá
+                        {{{sortable 'totalPrice' _sort}}}
+                    </th>
+                    <th scope="col">Ngày mua
+                        {{{sortable 'createdAt' _sort}}}
+                    </th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -35,11 +49,11 @@
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.shippingAddress.fullName}}</td>
                     <td>{{this.shippingAddress.phone}}</td>
-                    <td>{{this.shippingAddress.city}}</td>
-                    <td>{{this.isPaid}}</td>
-                    <td>{{this.isDelivered}}</td>
-                    <td>{{this.paymentMethod}}</td>
-                    <td>{{this.totalPrice}}</td>
+                    <td>{{this.shippingAddress.cityName}}</td>
+                    <td>{{#ifEquals this.isPaid false}} Chưa thanh toán {{else}} Đã thanh toán {{/ifEquals}}</td>
+                    <td>{{#ifEquals this.isDelivered false}} Chưa giao hàng {{else}} Đã giao hàng {{/ifEquals}}</td>
+                    <td>{{formatCurrency this.totalPrice}},000 <u>đ</u></td>
+                    <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
                     <td><a class="btn btn-info" href="/me/stored/order-detail/{{this._id}}"> Xem chi tiết </a></td>
                     <td>
                         <a href="/me/{{this._id}}/edit/order    " class="btn btn-link"><i

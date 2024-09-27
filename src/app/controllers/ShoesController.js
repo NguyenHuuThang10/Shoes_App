@@ -352,7 +352,7 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://cbdb-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId
+          callback_url: "https://aeba-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
@@ -427,7 +427,7 @@ class ShoesController {
 
             await Order.updateOne(
               { _id: orderId },
-              { paymentMethod: "Thanh toán bằng Paypal", isPaid: true, paidAt: Date.now() }
+              { paymentMethod: "paypal", isPaid: true, paidAt: Date.now() }
             )
             return res.redirect("/shoes/my-order");
 

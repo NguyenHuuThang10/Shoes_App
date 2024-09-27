@@ -11,6 +11,7 @@ const User = new Schema({
     phone: { type: String },
     resetToken: { type: String },
     activeToken: { type: String },
+    status: { type: Number, default: 0 },
     isAdmin: { type: Boolean, default: false },
     wishlistItems: [
         {
@@ -47,7 +48,7 @@ User.plugin(mongooseDelete, {
 // Business Logic
 User.statics.createUser = async function (userData) {
     try {
-        const { name, email, phone, password, confirm_password, isAdmin } = userData;
+        const { name, email, phone, password, confirm_password, isAdmin, status } = userData;
         const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         const regPhone = /^0\d{9}$/;
         const isCheckEmail = regEmail.test(email);
@@ -74,6 +75,7 @@ User.statics.createUser = async function (userData) {
             name,
             email,
             phone,
+            status,
             password: hashedPassword,
             isAdmin: isAdmin === "Admin"
         });
@@ -88,7 +90,7 @@ User.statics.createUser = async function (userData) {
 
 User.statics.upadteUser = async function (userData, userId) {
     try {
-        const { name, email, phone, password, confirm_password, isAdmin } = userData;
+        const { name, email, phone, password, confirm_password, isAdmin, status } = userData;
         const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         const regPhone = /^0\d{9}$/;
         const isCheckEmail = regEmail.test(email);
@@ -102,8 +104,13 @@ User.statics.upadteUser = async function (userData, userId) {
             throw new Error('Số điện thoại không đúng định dạng!');
         }
 
-
-        const existingUser = await this.findOne({ email, _id: { $ne: userId } });
+        const myUser = await this.findOne({ _id: userId });    
+        if (!myUser) {
+            throw new Error('Người dùng không tồn tại!');
+        }
+        const authPro = String(myUser.authProvider);
+        const existingUser = await this.findOne({ email, _id: { $ne: userId }, authProvider: authPro});
+        console.log(existingUser);
         if (existingUser) {
             throw new Error('Email đã tồn tại trong hệ thống!');
         }
@@ -118,6 +125,7 @@ User.statics.upadteUser = async function (userData, userId) {
                 name,
                 email,
                 phone,
+                status,
                 password: hashedPassword,
                 isAdmin: isAdmin === "Admin"
             })
@@ -127,6 +135,7 @@ User.statics.upadteUser = async function (userData, userId) {
                 name,
                 email,
                 phone,
+                status,
                 isAdmin: isAdmin === "Admin"
             })
         }

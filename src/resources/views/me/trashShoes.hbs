@@ -2,21 +2,31 @@
     <div class="container-fluid">
         <div class="content-header">
             <h1>Thùng rác sản phẩm:</h1>
-            <a class="btn btn-info mt-2" href="/me/stored/shoes">Danh sách sản phẩm</a>   
-        
+            <a class="btn btn-info mt-2" href="/me/stored/shoes">Danh sách sản phẩm</a>
+
             <form class="form-search mt-3">
                 <input type="text" placeholder="Tìm kiếm sản phẩm" class="form-control" style="width: 25%;" />
-            </form> 
+            </form>
         </div>
         <table class="table table-stored">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" style="width: 20%;">Tên</th>
-                    <th scope="col">Kiểu giày</th>
-                    <th scope="col">Giá</th>
-                    <th style="width: 22%;"  scope="col">Thời gian xóa</th>
-                    <th style="width: 22%;" scope="col">Thời gian sửa</th>
+                    <th scope="col" style="width: 20%;">Tên
+                        {{{sortable 'name' _sort}}}
+                    </th>
+                    <th scope="col">Kiểu dáng
+                        {{{sortable 'typeDetail' _sort}}}
+                    </th>
+                    <th scope="col">Giá
+                        {{{sortable 'price' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian xóa
+                        {{{sortable 'deletedAt' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian sửa
+                        {{{sortable 'updatedAt' _sort}}}
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -25,15 +35,16 @@
                 <tr class="box-items">
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
-                    <td>{{this.type}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.deletedAt}}</td>
-                    <td>{{this.updatedAt}}</td>
+                    <td>{{this.typeDetail}}</td>
+                    <td>{{this.price}}.000 <u>đ</u></td>
+                    <td>{{formatDate this.deletedAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
+                    <td>{{formatDate this.updatedAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
                     <td>
-                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i class="fa-solid fa-arrow-rotate-left"></i></a>
-                        
+                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i
+                                class="fa-solid fa-arrow-rotate-left"></i></a>
+
                         <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
-                        data-target="#delete_shoe_model"><i class="fa-regular fa-trash-can"></i></a>
+                            data-target="#delete_shoe_model"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
                 {{else}}
@@ -47,15 +58,15 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 {{#backPage page newUrl}}
-                    {{this}}
+                {{this}}
                 {{/backPage}}
 
                 {{#eachPage page maxPage newUrl}}
-                    {{this}}
+                {{this}}
                 {{/eachPage}}
-                
+
                 {{#nextPage page maxPage newUrl}}
-                    {{this}}
+                {{this}}
                 {{/nextPage}}
             </ul>
         </nav>
@@ -84,8 +95,8 @@
 </div>
 
 {{!-- Delete Hidden form --}}
-    <form name="delete-shoe-form" method="POST" ></form>
-    <form name="restore-shoe-form" method="POST" ></form>
+<form name="delete-shoe-form" method="POST"></form>
+<form name="restore-shoe-form" method="POST"></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -93,14 +104,14 @@
         var btnDeleteShoe = document.getElementById('btn-delete-shoe')
         var shoeId
         var deleteShoeForm = document.forms['delete-shoe-form']
-        var btnRestore = $('.btn-restore')  
+        var btnRestore = $('.btn-restore')
         var restoreShoeForm = document.forms['restore-shoe-form']
-        
+
         // When dialog confirm clicked
         $('#delete_shoe_model').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             shoeId = button.data('id')
-            
+
         })
 
         btnDeleteShoe.onclick = function () {
@@ -108,7 +119,7 @@
             deleteShoeForm.submit()
         }
 
-        btnRestore.click(function(e) {
+        btnRestore.click(function (e) {
             e.preventDefault()
             var shoeId = $(this).data('id')
 

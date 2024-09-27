@@ -2,21 +2,37 @@
     <div class="container-fluid">
         <div class="content-header">
             <h1>Thùng rác người dùng:</h1>
-            <a class="btn btn-info mt-2" href="/me/stored/users">Danh sách người dùng</a>   
+            <a class="btn btn-info mt-2" href="/me/stored/users">Danh sách người dùng</a>
 
             <form class="form-search mt-3">
                 <input type="text" placeholder="Tìm kiếm tài khoản" class="form-control" style="width: 25%;" />
-            </form> 
+            </form>
         </div>
         <table class="table table-stored">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" style="width: 20%;">Tên</th>
-                    <th scope="col">email</th>
-                    <th scope="col">Số điện thoại</th>
-                    <th scope="col"  style="width: 20%;">Thời gian xóa</th>
-                    <th scope="col" class="text-center">Phân quyền</th>
+                    <th scope="col" style="width: 15%;">Tên
+                        {{{sortable 'name' _sort}}}
+                    </th>
+                    <th scope="col">email
+                        {{{sortable 'email' _sort}}}
+                    </th>
+                    <th scope="col">Số điện thoại
+                        {{{sortable 'phone' _sort}}}
+                    </th>
+                    <th scope="col">Xác thực
+                        {{{sortable 'authProvider' _sort}}}
+                    </th>
+                    <th style="width: 15%;" scope="col">Thời gian xóa
+                        {{{sortable 'deletedAt' _sort}}}
+                    </th>
+                    <th scope="col">Trạng thái
+                        {{{sortable 'status' _sort}}}
+                    </th>
+                    <th scope="col" class="text-center">Phân quyền
+                        {{{sortable 'isAdmin' _sort}}}
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -27,17 +43,24 @@
                     <td>{{this.name}}</td>
                     <td>{{this.email}}</td>
                     <td>{{this.phone}}</td>
-                    <td>{{this.deletedAt}}</td>
-                    {{#if this.isAdmin}}
-                        <td class="text-center"><button type="button" class="btn btn-warning">Admin</button></td>
+                    <td>{{this.authProvider}}</td>
+                    <td>{{formatDate this.deletedAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
+                    {{#ifEquals this.status 1}}
+                    <td class="text-center"><button type="button" class="btn btn-success">Kích hoạt</button></td>
                     {{else}}
-                        <td class="text-center"><button type="button" class="btn btn-success">Client</button></td>
+                    <td class="text-center"><button type="button" class="btn btn-danger">Chưa kích hoạt</button></td>
+                    {{/ifEquals}}
+                    {{#if this.isAdmin}}
+                    <td class="text-center"><button type="button" class="btn btn-warning">Admin</button></td>
+                    {{else}}
+                    <td class="text-center"><button type="button" class="btn btn-success">Client</button></td>
                     {{/if}}
                     <td>
-                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i class="fa-solid fa-arrow-rotate-left"></i></a>
-                        
+                        <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}"><i
+                                class="fa-solid fa-arrow-rotate-left"></i></a>
+
                         <a href="#" class="btn btn-link" data-id="{{this._id}}" data-toggle="modal"
-                        data-target="#delete_user_model"><i class="fa-regular fa-trash-can"></i></a>
+                            data-target="#delete_user_model"><i class="fa-regular fa-trash-can"></i></a>
                     </td>
                 </tr>
                 {{else}}
@@ -51,15 +74,15 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination">
                 {{#backPage page newUrl}}
-                    {{this}}
+                {{this}}
                 {{/backPage}}
 
                 {{#eachPage page maxPage newUrl}}
-                    {{this}}
+                {{this}}
                 {{/eachPage}}
-                
+
                 {{#nextPage page maxPage newUrl}}
-                    {{this}}
+                {{this}}
                 {{/nextPage}}
             </ul>
         </nav>
@@ -88,8 +111,8 @@
 </div>
 
 {{!-- Delete Hidden form --}}
-    <form name="delete-user-form" method="POST" ></form>
-    <form name="restore-user-form" method="POST" ></form>
+<form name="delete-user-form" method="POST"></form>
+<form name="restore-user-form" method="POST"></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -97,14 +120,14 @@
         var btnDeleteUser = document.getElementById('btn-delete-user')
         var userId
         var deleteUserForm = document.forms['delete-user-form']
-        var btnRestore = $('.btn-restore')  
+        var btnRestore = $('.btn-restore')
         var restoreUserForm = document.forms['restore-user-form']
-        
+
         // When dialog confirm clicked
         $('#delete_user_model').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             userId = button.data('id')
-            
+
         })
 
         btnDeleteUser.onclick = function () {
@@ -112,7 +135,7 @@
             deleteUserForm.submit()
         }
 
-        btnRestore.click(function(e) {
+        btnRestore.click(function (e) {
             e.preventDefault()
             var userId = $(this).data('id')
 

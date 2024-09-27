@@ -15,14 +15,18 @@
   <div class="main-content" id="navbar">
     <nav class="navbar navbar-expand-sm  navbar-light header-client">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/"><img class="logo-header" src="/img/image-Photoroom.png" alt=""></a>
+        <a class="navbar-brand" style="margin: 0;" href="/">
+          <div class="sparkle u-hover--sparkle">
+            <img class="logo-header" src="/img/image-Photoroom.png" alt="">
+          </div>
+        </a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 " id="nav">
           <li>
             <a class="nav-header nav-link" href="/shoes/shoe-type/giay-cao-got">
               Giày Nữ
             </a>
             <ul class="subnav">
-              <li><a href="/shoes/shoe-type/giay-cao-got">Giày Cao Gót</a></li>
+              <li class=""><a href="/shoes/shoe-type/giay-cao-got">Giày Cao Gót</a></li>
               <li><a href="/shoes/shoe-type/giay-bup-be">Giày Búp Bê</a></li>
               <li><a href="/shoes/shoe-type/dep-nu">Dép Nữ</a></li>
               <li><a href="/shoes/shoe-type/boot-nu">Boot Nữ</a></li>
@@ -105,6 +109,34 @@
               <div class="cart-dropdown-content">
                 <p class="boxtitle">GIỎ HÀNG</p>
                 <div class="table-scroll">
+                  {{#if orderData}}
+
+                  {{!-- Giỏ hàng có sản phẩm --}}
+                  <table class="table cart-item-inf">
+                    <tbody>
+
+                      {{#each orderData.orderItems}}
+                      <tr>
+                        <td><img src="/uploads/{{this.image}}" alt="{{this.name}}"></td>
+                        <td colspan="3">
+                          <p>{{this.name}}</p>
+                          <span style="font-size: 12px;">Kích thước: {{this.size}}</span>
+                          <div class="row">
+                            <div class="col">
+                              <p style="font-size: 12px;">Số lượng: {{this.amount}}</p>
+                            </div>
+                            <div class="col">
+                              <p class="item-price">{{this.price}},000 <u>đ</u></p>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      {{/each}}
+
+
+                    </tbody>
+                  </table>
+                  {{else}}
                   {{!-- Giỏ hàng chưa có sản phẩm --}}
                   <table class="table cart-item-inf-no-shoe">
                     <tbody>
@@ -116,58 +148,9 @@
                       </tr>
                     </tbody>
                   </table>
-                  {{!-- Giỏ hàng có sản phẩm --}}
-                  {{!-- <table class="table cart-item-inf">
-                    <tbody>
-                      <tr>
-                        <td><img src="/img/NUCG- G018.jpg" alt="Giày Búp Bê"></td>
-                        <td colspan="3">
-                          <p>Giày Búp Bê Nữ Biti's BBW002888</p>
-                          <span style="font-size: 12px;">Kích thước: 37</span>
-                          <div class="row">
-                            <div class="col">
-                              <p style="font-size: 12px;">Số lượng: 2</p>
-                            </div>
-                            <div class="col">
-                              <p class="item-price">391,000 đ</p>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
 
-                      <tr>
-                        <td><img src="/img/NUCG- G018.jpg" alt="Giày Búp Bê"></td>
-                        <td colspan="3">
-                          <p>Giày Búp Bê Nữ Biti's BBW002888</p>
-                          <span style="font-size: 12px;">Kích thước: 37</span>
-                          <div class="row">
-                            <div class="col">
-                              <p style="font-size: 12px;">Số lượng: 2</p>
-                            </div>
-                            <div class="col">
-                              <p class="item-price">391,000 đ</p>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+                  {{/if}}
 
-                      <tr>
-                        <td><img src="/img/NUCG- G018.jpg" alt="Giày Búp Bê"></td>
-                        <td colspan="3">
-                          <p>Giày Búp Bê Nữ Biti's BBW002888</p>
-                          <span style="font-size: 12px;">Kích thước: 37</span>
-                          <div class="row">
-                            <div class="col">
-                              <p style="font-size: 12px;">Số lượng: 2</p>
-                            </div>
-                            <div class="col">
-                              <p class="item-price">391,000 đ</p>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table> --}}
                 </div>
 
                 <div class="table-price">
@@ -175,7 +158,8 @@
                     <tbody>
                       <tr>
                         <td class="total-lable">TỔNG TIỀN: </td>
-                        <td class="total-price">3,854,000 đ</td>
+                        <td class="total-price">{{#if orderData}} {{formatCurrency orderData.itemsPrice}},000 <u>đ</u>
+                          {{else}} 0<u>đ</u> {{/if}}</td>
                       </tr>
                       <tr>
                         <td colspan="2"><a href="/shoes/cart" class="btn-view-cart">Xem giỏ hàng</a></td>

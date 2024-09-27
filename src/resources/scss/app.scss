@@ -1325,3 +1325,51 @@ span#or-text {
   width: 100%;
   text-transform: uppercase;
 }
+
+$c-border: #fea2a5;
+$c-background: #E3E4DB;
+$c-text: #441151;
+
+.sparkle {
+  max-width: 10em;
+  color: $c-text;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.u-hover--sparkle {
+ 
+  box-sizing: border-box;
+  position: relative;
+  padding: 2px;
+  &::before,
+  &::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: center;
+  }
+
+  &::before {
+    border-top: 0.2em solid $c-border;
+    border-bottom: 0.2em solid $c-border;
+    transform: scale3d(0,1,1);
+  }
+
+  &::after {
+    border-left: 0.2em solid $c-border;
+    border-right: 0.2em solid $c-border;
+    transform: scale3d(1,0,1);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    transform: scale3d(1,1,1);
+    transition: transform 900ms;
+  }
+}
