@@ -1,5 +1,14 @@
+@font-face {
+  font-family: 'SFUFuturaRegular';
+  src: url('/font/typeface/SFUFuturaRegular.woff2') format('woff2'), /* Ưu tiên woff2 cho web */
+       url('/font/typeface/SFUFuturaRegular.woff') format('woff'),   /* Woff là định dạng phổ biến cho web */
+       url('/font/typeface/SFUFuturaRegular.TTF') format('truetype'); /* Định dạng ttf */
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'SFUFuturaRegular', sans-serif;
 }
 
 .ml-2 {
