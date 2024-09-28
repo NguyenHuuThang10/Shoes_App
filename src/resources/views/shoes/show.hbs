@@ -2,6 +2,11 @@
     <div class="row mt-top">
         <div class="col">
             <div class="wrapbox-img">
+                {{#if shoe.priceDiscount}}
+                <div class="shoes-percent">
+                    <span class="pro-sale">SALE<br> OFF </span>
+                </div>
+                {{/if}}
                 <a href="/uploads/{{shoe.image}}" data-fancybox="gallery">
                     <img src="/uploads/{{shoe.image}}" alt="{{shoe.name}}" width="100%" />
                 </a>

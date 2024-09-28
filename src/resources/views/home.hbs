@@ -95,6 +95,11 @@
                 </div>
                 {{/if}}
                 <div class="img box-shoes">
+                    {{#if this.priceDiscount}}
+                    <div class="shoes-percent">
+                        <span class="pro-sale">SALE<br> OFF </span>
+                    </div>
+                    {{/if}}
                     <a href="shoes/{{this.slug}}">
                         <img loading="lazy" class="img-fluid box-img-shoes" src="/uploads/{{this.image}}" alt=""
                             width="100%">
