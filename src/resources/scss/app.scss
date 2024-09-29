@@ -1,8 +1,11 @@
 @font-face {
   font-family: 'SFUFuturaRegular';
-  src: url('/font/typeface/SFUFuturaRegular.woff2') format('woff2'), /* Ưu tiên woff2 cho web */
-       url('/font/typeface/SFUFuturaRegular.woff') format('woff'),   /* Woff là định dạng phổ biến cho web */
-       url('/font/typeface/SFUFuturaRegular.TTF') format('truetype'); /* Định dạng ttf */
+  src: url('/font/typeface/SFUFuturaRegular.woff2') format('woff2'),
+    /* Ưu tiên woff2 cho web */
+    url('/font/typeface/SFUFuturaRegular.woff') format('woff'),
+    /* Woff là định dạng phổ biến cho web */
+    url('/font/typeface/SFUFuturaRegular.TTF') format('truetype');
+  /* Định dạng ttf */
   font-weight: normal;
   font-style: normal;
 }
@@ -1195,6 +1198,7 @@ span#or-text {
   margin: 0;
   font-size: 14px;
 }
+
 // Hover giỏ hàng trang header
 .cart-dropdown {
   position: relative;
@@ -1214,7 +1218,7 @@ span#or-text {
   padding: 20px;
   transition: all 0.3s ease;
   max-height: 420px;
-  top: calc(100% + 10px);
+  top: calc(100% + 15px);
   animation: fadeIn ease-in 0.2s;
 }
 
@@ -1223,7 +1227,7 @@ span#or-text {
   position: absolute;
   right: 3px;
   top: -28px;
-  border-width: 16px ;
+  border-width: 16px;
   border-style: solid;
   border-color: transparent transparent #f8f8f8 transparent; //trên dưới trái phải
   cursor: pointer;
@@ -1346,16 +1350,18 @@ $c-text: #441151;
 .sparkle {
   max-width: 10em;
   color: $c-text;
+
   &:hover {
     cursor: pointer;
   }
 }
 
 .u-hover--sparkle {
- 
+
   box-sizing: border-box;
   position: relative;
   padding: 2px;
+
   &::before,
   &::after {
     content: '';
@@ -1371,18 +1377,61 @@ $c-text: #441151;
   &::before {
     border-top: 0.2em solid $c-border;
     border-bottom: 0.2em solid $c-border;
-    transform: scale3d(0,1,1);
+    transform: scale3d(0, 1, 1);
   }
 
   &::after {
     border-left: 0.2em solid $c-border;
     border-right: 0.2em solid $c-border;
-    transform: scale3d(1,0,1);
+    transform: scale3d(1, 0, 1);
   }
 
   &:hover::before,
   &:hover::after {
-    transform: scale3d(1,1,1);
+    transform: scale3d(1, 1, 1);
     transition: transform 900ms;
   }
+}
+
+// Trang lỗi 404
+.error {
+  text-align: center;
+}
+
+.error h1 {
+  font-size: 10rem;
+  color: #ff6b6b;
+  margin-bottom: 0.5rem;
+}
+
+.error h2 {
+  font-size: 2rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.error p {
+  font-size: 1.2rem;
+  color: #777;
+  margin-bottom: 2rem;
+}
+
+.error a {
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.error a:hover {
+  background-color: #0056b3;
+}
+
+.error .image-404 {
+  width: 300px;
+  height: auto;
+  margin-bottom: 15px;
 }

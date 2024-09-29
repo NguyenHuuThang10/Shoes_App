@@ -110,20 +110,18 @@
                 <p class="boxtitle">GIỎ HÀNG</p>
                 <div class="table-scroll">
                   {{#if orderData}}
-
                   {{!-- Giỏ hàng có sản phẩm --}}
                   <table class="table cart-item-inf">
                     <tbody>
-
                       {{#each orderData.orderItems}}
                       <tr>
-                        <td><img src="/uploads/{{this.image}}" alt="{{this.name}}"></td>
+                        <td style="width: 23%;"><img src="/uploads/{{this.image}}" alt="{{this.name}}"></td>
                         <td colspan="3">
                           <p>{{this.name}}</p>
-                          <span style="font-size: 12px;">Kích thước: {{this.size}}</span>
+                          <span style="font-size: 13px;">Kích thước: {{this.size}}</span>
                           <div class="row">
                             <div class="col">
-                              <p style="font-size: 12px;">Số lượng: {{this.amount}}</p>
+                              <p style="font-size: 13px;">Số lượng: {{this.amount}}</p>
                             </div>
                             <div class="col">
                               <p class="item-price">{{this.price}},000 <u>đ</u></p>
@@ -132,8 +130,6 @@
                         </td>
                       </tr>
                       {{/each}}
-
-
                     </tbody>
                   </table>
                   {{else}}
@@ -148,9 +144,7 @@
                       </tr>
                     </tbody>
                   </table>
-
                   {{/if}}
-
                 </div>
 
                 <div class="table-price">

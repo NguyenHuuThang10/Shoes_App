@@ -206,4 +206,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const searchTerm = this.querySelector('input').value.trim();
         filterShoes(searchTerm);
     });
+
+    
 });

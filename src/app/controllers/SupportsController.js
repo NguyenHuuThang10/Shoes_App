@@ -144,6 +144,11 @@ class SupportsController {
         res.render("supports/help");
     }
 
+    //[GET] /error
+    error(req, res, next) {
+        res.render("supports/error", { isErrorPage: true });
+    }
+
     //[GET] /pages/:slugCategory
     pageDetail (req, res, next) {
         let slugCategory = req.params.slugCategory

@@ -36,6 +36,7 @@ router.post('/add-wishlist', siteController.checkLoginClient, supportsController
 router.get('/wishlist', siteController.checkLoginClient, supportsController.wishlist)
 
 router.get('/help', supportsController.help)
+router.get('/error', supportsController.error)
 
 // Change password
 router.get('/forgot', siteController.checkClient, siteController.forgotPassword)

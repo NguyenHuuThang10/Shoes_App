@@ -254,7 +254,7 @@ class ShoesController {
       var { fullName, phone, address, city, cityName, paymentMethod, district, districtName, ward, wardName, note } = req.body;
       var orderId = req.params.id;
 
-      if (paymentMethod == "cod") {
+      if (paymentMethod == "COD") {
         Order.updateOne(
           { _id: orderId },
           { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, paymentMethod, note }
@@ -263,7 +263,7 @@ class ShoesController {
             res.redirect("/shoes/my-order");
           })
           .catch(next);
-      } else if (paymentMethod == "paypal") {
+      } else if (paymentMethod == "PayPal") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
           { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, note }
@@ -289,7 +289,7 @@ class ShoesController {
           var create_payment_json = {
             intent: "sale",
             payer: {
-              payment_method: "paypal",
+              payment_method: "PayPal",
             },
             redirect_urls: {
               return_url: `http://localhost:3000/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
@@ -326,7 +326,7 @@ class ShoesController {
             }
           });
         }
-      } else if (paymentMethod == "zalopay") {
+      } else if (paymentMethod == "ZaloPay") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
           { shippingAddress: { fullName, phone, address, cityName, districtName, wardName}, note }
