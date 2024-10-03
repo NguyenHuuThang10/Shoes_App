@@ -112,7 +112,7 @@ class SupportsController {
                             });
                         })
                 } else {
-                    res.send("Trang không tồn tại");
+                    res.render('supports/error')
                 }
 
             })
@@ -132,7 +132,7 @@ class SupportsController {
                         blog: mongooseToObject(blog)
                     })
                 } else {
-                    res.send("Trang không tồn tại!")
+                    res.render('supports/error')
                 }
             })
             .catch(next)
@@ -160,7 +160,7 @@ class SupportsController {
                         page: mongooseToObject(page)
                     })
                 } else {
-                    res.send("Trang không tồn tại!")
+                    res.render('supports/error')
                 }
             })
             .catch(next)

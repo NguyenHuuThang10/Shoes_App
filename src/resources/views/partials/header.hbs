@@ -102,11 +102,12 @@
               </a>
             </li>
             <li class="cart-dropdown">
-              <a href="/shoes/cart" class="icon-head notification">
+              <a class="icon-head notification js-btn-cart">
                 <span><i class="fa-solid fa-cart-shopping"></i></span>
                 <span class="badge">{{#if countOrder}} {{countOrder}} {{else}}0{{/if}}</span>
               </a>
-              <div class="cart-dropdown-content">
+
+              <div class="cart-dropdown-content {{#if openCart}} {{openCart}} {{/if}}">
                 <p class="boxtitle">GIỎ HÀNG</p>
                 <div class="table-scroll">
                   {{#if orderData}}
@@ -228,6 +229,25 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const cartDropdown = document.querySelector('.cart-dropdown');
+    const btnCart = document.querySelector('.js-btn-cart');
+    const dropdownCart = document.querySelector('.cart-dropdown-content');
+
+    // Toggle class open khi người dùng bấm vào nút giỏ hàng
+    btnCart.addEventListener('click', function () {
+      dropdownCart.classList.toggle('open');
+    });
+
+    // Đóng dropdown khi click ra ngoài
+    document.addEventListener('click', function (event) {
+      if (!cartDropdown.contains(event.target)) {
+        dropdownCart.classList.remove('open');
+      }
+    });
+
+    // Dừng sự kiện click bên trong dropdown để không đóng khi click vào nội dung bên trong
+    dropdownCart.addEventListener('click', function (event) {
+      event.stopPropagation();
+    });
 
     cartDropdown.addEventListener('mouseover', function () {
       // Giả sử bạn có API /api/cart để lấy sản phẩm trong giỏ
