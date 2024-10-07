@@ -31,19 +31,17 @@
   color: white;
   width: 100%;
   line-height: 3em;
-  font-size: small;
-  margin-left: 50px;
-  font-weight: 500;
+  font-size: 13px;
+  margin-left: 35px;
 }
 
 .col-nav2 {
   color: white;
   width: 100%;
   line-height: 3em;
-  font-size: small;
+  font-size: 13px;
   text-align: right;
-  margin-right: 50px;
-  font-weight: 500;
+  margin-right: 35px;
 }
 
 #a-nav {
@@ -86,6 +84,7 @@
 
 #nav {
   display: inline-block;
+  margin-left: 15px;
 }
 
 #nav>li {
@@ -288,7 +287,7 @@
   color: white;
   text-align: center;
   padding: 5px 10px;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 13px;
   border-radius: 0 0 10px 10px;
 }
@@ -355,7 +354,7 @@
 }
 
 .title-product p {
-  font-weight: 700;
+  font-weight: bold;
   margin-top: 50px;
   line-height: 50px;
   font-size: 30px;
@@ -790,11 +789,14 @@ span#or-text {
 }
 
 .product-name {
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  margin: 10px 0 15px;
 }
 
 .price {
-  color: red;
+  font-size: 25px;
+  font-weight: 500;
+  color: #e50000;
 }
 
 .detail-product {
@@ -805,9 +807,13 @@ span#or-text {
 
 .detail-product h4 {
   line-height: 50px;
+  font-size: 24px;
+  margin-left: 10px;
+  font-weight: 600;
 }
 
 .list-profile a {
+  text-decoration: none;
   color: black;
 }
 
@@ -914,12 +920,16 @@ span#or-text {
 
 .notification .badge {
   position: absolute;
-  top: -2px;
-  right: -9px;
-  padding: 3px 6px;
+  top: -1px;
+  right: -7px;
+  padding: 0px 3px;
   border-radius: 50%;
   background: red;
   color: white;
+  font-size: 11px;
+  min-width: 20px;
+  height: 20px;
+  line-height: 19px;
 }
 
 
@@ -949,7 +959,7 @@ span#or-text {
 }
 
 .product-policy p {
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 5px;
 }
 
@@ -1144,6 +1154,10 @@ span#or-text {
   display: block;
 }
 
+.faq-content a:hover {
+  text-decoration: none;
+  color: #444444;
+}
 
 .cart-product-list h1 {
   font-size: 25px;
@@ -1337,10 +1351,14 @@ span#or-text {
   padding: 10px 0;
   background-color: #33CCFF;
   border-radius: 5px;
-  text-decoration: none;
   font-weight: 600;
   width: 100%;
   text-transform: uppercase;
+  color: #000;
+}
+
+.btn-view-cart:hover {
+  text-decoration: none;
 }
 
 $c-border: #fea2a5;
@@ -1434,4 +1452,62 @@ $c-text: #441151;
   width: 300px;
   height: auto;
   margin-bottom: 15px;
+}
+
+.list-group-help a:hover {
+  text-decoration: none;
+  color: rgb(32, 178, 170);
+}
+
+.btn-update {
+  display: block;
+  margin: 0 auto;
+  /* Giúp nút nằm giữa */
+  background-color: rgb(30, 144, 255);
+  /* Màu  cho nút */
+  color: white;
+  /* Màu chữ trắng */
+  padding: 10px 20px;
+  /* Khoảng cách bên trong nút */
+  border: none;
+  /* Xóa đường viền */
+  border-radius: 5px;
+  /* Bo tròn góc nút */
+  font-size: 16px;
+  /* Kích thước chữ */
+  font-weight: bold;
+  /* Chữ đậm */
+  cursor: pointer;
+  /* Thay đổi con trỏ khi hover */
+  transition: background-color 0.3s ease;
+  /* Hiệu ứng mượt khi hover */
+}
+
+.btn-update:hover {
+  background-color: #6633FF;
+}
+
+.btn-accept {
+  background-color: #00BB00;
+  /* Màu  cho nút */
+  color: white;
+  /* Màu chữ trắng */
+  padding: 10px 20px;
+  /* Khoảng cách bên trong nút */
+  border: none;
+  /* Xóa đường viền */
+  border-radius: 5px;
+  /* Bo tròn góc nút */
+  font-size: 16px;
+  /* Kích thước chữ */
+  font-weight: bold;
+  /* Chữ đậm */
+  cursor: pointer;
+  /* Thay đổi con trỏ khi hover */
+  transition: background-color 0.3s ease;
+  /* Hiệu ứng mượt khi hover */
+}
+
+.btn-accept:hover {
+  background-color: #00AA00;
 }

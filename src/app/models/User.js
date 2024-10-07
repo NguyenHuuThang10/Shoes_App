@@ -31,6 +31,9 @@ const User = new Schema({
         city: { type: String },
         district: { type: String },
         ward: { type: String },
+        cityName: { type: String },
+        districtName: { type: String },
+        wardName: { type: String },
     },
 }, {
     conllection: 'users',

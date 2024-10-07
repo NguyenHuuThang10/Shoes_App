@@ -11,7 +11,7 @@
                 <img src="/img/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
                 <div class="media-body">
                     <h4>{{user.name}}</h4>
-                    <p>Chỉnh sửa thông tin</p>
+                    <p style="color: #666666;">Chỉnh sửa thông tin</p>
                 </div>
             </div>
             <ul class="list-group list-group-flush list-profile">
@@ -60,7 +60,7 @@
                 <h2>Thông tin nhận hàng</h2>
                 <br>
                 <div class="form-group row">
-                    <label for="tp" class="col-sm-3 col-form-label">Tỉnh/Thành phố</label>
+                    <label for="cityName" class="col-sm-3 col-form-label">Tỉnh/Thành phố</label>
                     <div class="col-sm-9">
                         <select name="city" id="city" class="form-control" required>
                             <option value="">Chọn Tỉnh/Thành</option>
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="quan" class="col-sm-3 col-form-label">Quận/Huyện</label>
+                    <label for="districtName" class="col-sm-3 col-form-label">Quận/Huyện</label>
                     <div class="col-sm-9">
                         <select name="district" id="district" class="form-control" required>
                             <option value="">Chọn Quận/Huyện</option>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="phuong" class="col-sm-3 col-form-label">Phường/Xã</label>
+                    <label for="wardName" class="col-sm-3 col-form-label">Phường/Xã</label>
                     <div class="col-sm-9">
                         <select name="ward" id="ward" class="form-control" required>
                             <option value="">Chọn Phường/Xã</option>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" type="submit">Cập nhật</button>
+                <button class="btn btn-update" type="submit">Cập nhật</button>
             </form>
         </div>
     </div>

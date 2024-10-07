@@ -414,7 +414,7 @@ class SiteController {
   // [POST] /profile
   updateProfile(req, res, next) {
     try {
-      const { name, email, phone, city, district, ward, address } = req.body;
+      const { name, email, phone, city, district, ward, address, cityName, districtName, wardName } = req.body;
       const userId = res.locals.currentUser
 
       if (!name || !email || !phone) {
@@ -425,7 +425,7 @@ class SiteController {
           name,
           email,
           phone,
-          shippingAddress: { address, city, district, ward }
+          shippingAddress: { address, city, district, ward, cityName, districtName, wardName }
         })
           .then(() => {
             req.flash('success', 'Cập nhật thông tin thành công!')

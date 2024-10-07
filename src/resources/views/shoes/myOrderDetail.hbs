@@ -11,7 +11,7 @@
                 <img src="/img/img_avatar3.png" alt="John Doe" class="mr-3 mt-3 rounded-circle" style="width:60px;">
                 <div class="media-body">
                     <h4>{{user.name}}</h4>
-                    <p>Chỉnh sửa thông tin</p>
+                    <p style="color: #666666;">Chỉnh sửa thông tin</p>
                 </div>
             </div>
             <ul class="list-group list-group-flush list-profile">
@@ -32,7 +32,7 @@
             <hr>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Thông tin người nhận</h5>
+                    <h5 class="card-title"><b>Thông tin người nhận</b></h5>
                     <p class="card-text">Tên người nhận: {{order.shippingAddress.fullName}}</p>
                     <p class="card-text">Số điện thoại: {{order.shippingAddress.phone}}</p>
                     <p class="card-text">Địa chỉ nhận hàng: {{order.shippingAddress.address}},
@@ -44,7 +44,7 @@
 
             <div class="card mt-2">
                 <div class="card-body">
-                    <h5 class="card-title">Thông tin đơn hàng</h5>
+                    <h5 class="card-title"><b>Thông tin đơn hàng</b></h5>
                     <div class="row ml-1 float-left">
                         <div class="col-12">
                             <p class="text-info">Mã đơn hàng: {{order._id}}</p>
@@ -58,12 +58,12 @@
                                     <br><small>Phân loại hàng - size: {{this.size}} </small>
                                 </div>
                                 <div class="col-2 mt-3">
-                                    <i>Số lượng</i>
+                                    Số lượng
                                     <br><small>x{{this.amount}}</small>
                                 </div>
                                 <div class="col-3 mt-3">
-                                    <i>Giá tiền:</i>
-                                    <br><small>{{formatCurrency this.price}},000 VND</small>
+                                    Giá tiền
+                                    <br><small>{{formatCurrency this.price}},000 <u>đ</u></small>
                                 </div>
                             </div>
                             {{/each}}
@@ -71,12 +71,12 @@
                                 <div class="col-9 mt-3">
                                     <p class="text-secondary">Tổng tiền hàng</p>
                                     <p class="text-secondary">Phí vận chuyển</p>
-                                    <h6>Thành tiền</h6>
+                                    <h5>Thành tiền</h5>
                                 </div>
                                 <div class="col-3 mt-3">
-                                    <p class="text-secondary">{{formatCurrency order.itemsPrice}},000 VND</p>
-                                    <p class="text-secondary">{{order.shippingPrice}},000 VND</p>
-                                    <h6>{{formatCurrency order.totalPrice}},000 VND</h6>
+                                    <p class="text-secondary">{{formatCurrency order.itemsPrice}},000 <u>đ</u></p>
+                                    <p class="text-secondary">{{order.shippingPrice}},000 <u>đ</u></p>
+                                    <h5 class="price">{{formatCurrency order.totalPrice}},000 <u>đ</u></h5>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
 
             <div class="card mt-2">
                 <div class="card-body">
-                    <h5 class="card-title">Phương thức thanh toán</h5>
+                    <h5 class="card-title"><b>Phương thức thanh toán</b></h5>
                     <p class="card-text">Thanh toán bằng {{order.paymentMethod}}</p>
                 </div>
             </div>

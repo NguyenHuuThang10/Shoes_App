@@ -518,7 +518,7 @@ class MeController {
 
   // [GET] /me/:id/edit/order
   editOrder(req, res, next) {
-    Order.findById(req.params.id)
+    Order.findById(req.params.id).populate({ path: "user", model: "User", })
       .then(order => {
         res.render('me/editOrder', {
           order: mongooseToObject(order),
@@ -535,7 +535,7 @@ class MeController {
   updateOrder(req, res, next) {
     try {
       const orderId = req.params.id;
-      let { fullName, phone, cityName, paymentMethod, isPaid, isDelivered, status } = req.body
+      let { fullName, phone, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status } = req.body
       const regPhone = /^0\d{9}$/;
       isDelivered = isDelivered === "Đã giao hàng"
       isPaid = isPaid === 'Đã thanh toán'
@@ -543,19 +543,19 @@ class MeController {
       const isCheckPhone = regPhone.test(phone);
 
 
-      if (!fullName || !phone || !cityName || !paymentMethod || !status) {
+      if (!fullName || !phone || !cityName || !districtName || !wardName || !address || !paymentMethod || !status ) {
         return res.render("me/editOrder", {
           err: "Vui lòng nhập đầy đủ thông tin!",
-          old: { fullName, phone, cityName, paymentMethod, isPaid, isDelivered, status }
+          old: { fullName, phone, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status }
         })
       } else if (!isCheckPhone) {
         return res.render("me/editOrder", {
           err: "Số điện thoại không đúng định dạng!",
-          old: { fullName, phone, cityName, paymentMethod, isPaid, isDelivered, status }
+          old: { fullName, phone, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status }
         })
       }
       Order.updateOne({ _id: orderId }, {
-        shippingAddress: { fullName, phone, cityName },
+        shippingAddress: { fullName, phone, cityName, districtName, wardName, address },
         paymentMethod,
         isPaid,
         isDelivered,

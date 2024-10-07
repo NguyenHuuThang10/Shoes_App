@@ -257,7 +257,7 @@ class ShoesController {
       if (paymentMethod == "COD") {
         Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, paymentMethod, note }
+          { shippingAddress: { fullName, phone, address, city, cityName, district, districtName, ward, wardName }, paymentMethod, note }
         )
           .then((data) => {
             res.redirect("/shoes/my-order");
@@ -266,7 +266,7 @@ class ShoesController {
       } else if (paymentMethod == "PayPal") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, note }
+          { shippingAddress: { fullName, phone, address, city, cityName, district, districtName, ward, wardName }, note }
         );
         if (orderUpdate) {
           const order = await Order.findOne({ _id: orderId });

@@ -72,14 +72,14 @@
                             <div class="row">
                                 {{#if this.priceDiscount}}
                                 <div class="col"><del>
-                                        <p>{{this.price}}.000 đ</p>
+                                        <p>{{this.price}}.000 <u>đ</u></p>
                                     </del></div>
                                 <div class="col">
-                                    <p style="color: red; font-weight: 500;">{{this.priceDiscount}}.000 đ</p>
+                                    <p style="color: red; font-weight: bold;">{{this.priceDiscount}}.000 <u>đ</u></p>
                                 </div>
                                 {{else}}
                                 <div class="col">
-                                    <p>{{this.price}}.000 đ</p>
+                                    <p>{{this.price}}.000 <u>đ</u></p>
                                 </div>
                                 {{/if}}
                             </div>

@@ -125,7 +125,7 @@
                     </div>
                     <div class="row mb-2">
                         {{#if order.orderItems}}
-                            <button type="button" class="btn-order" id="btn-to-step2">ĐẶT HÀNG NGAY</button>
+                        <button type="button" class="btn-order" id="btn-to-step2">ĐẶT HÀNG NGAY</button>
                         {{/if}}
                     </div>
                 </div>
@@ -175,28 +175,44 @@
                         <select name="city" id="city" class="form-control" required>
                             <option value="">Chọn Tỉnh/Thành</option>
                             <!-- Dữ liệu sẽ được load từ API -->
+                            {{#if currentUser.shippingAddress.cityName}}
+                            <option value="" selected>{{currentUser.shippingAddress.cityName}}</option>
+                            {{/if}}
                         </select>
-                        <input type="hidden" name="cityName" id="cityName" value="">
+                        <input type="hidden" name="cityName" id="cityName"
+                            value="{{#if currentUser.shippingAddress.cityName}}{{currentUser.shippingAddress.cityName}}{{/if}}">
                     </div>
                     <div class="form-group">
                         <select name="district" id="district" class="form-control" required>
                             <option value="">Chọn Quận/Huyện</option>
                             <!-- Dữ liệu sẽ được load từ API sau khi chọn Tỉnh/Thành -->
+                            {{#if currentUser.shippingAddress.districtName}}
+                            <option value="" selected>
+                                {{currentUser.shippingAddress.districtName}}</option>
+                            {{/if}}
                         </select>
-                        <input type="hidden" name="districtName" id="districtName" value="">
+                        <input type="hidden" name="districtName" id="districtName"
+                            value="{{#if currentUser.shippingAddress.districtName}}{{currentUser.shippingAddress.districtName}}{{/if}}">
                     </div>
 
                     <div class="form-group">
                         <select name="ward" id="ward" class="form-control" required>
                             <option value="">Chọn Phường/Xã</option>
                             <!-- Dữ liệu sẽ được load từ API sau khi chọn Quận/Huyện -->
+                            {{#if currentUser.shippingAddress.wardName}}
+                            <option value="" selected>
+                                {{currentUser.shippingAddress.wardName}}</option>
+                            {{/if}}
                         </select>
-                        <input type="hidden" name="wardName" id="wardName" value="">
+                        <input type="hidden" name="wardName" id="wardName"
+                            value="{{#if currentUser.shippingAddress.wardName}}{{currentUser.shippingAddress.wardName}}{{/if}}">
                     </div>
 
                     <div class="form-group">
                         <input type="text" name="address" id="address"
-                            placeholder="Địa chỉ cụ thể: Số nhà, Tên đường..." value="" required>
+                            placeholder="Địa chỉ cụ thể: Số nhà, Tên đường..."
+                            value="{{#if currentUser.shippingAddress.address}}{{currentUser.shippingAddress.address}}{{/if}}"
+                            required>
                     </div>
 
                     <button type="button" class="btn cart-button" id="btn-back-to-step1">Giỏ hàng</button>
@@ -451,12 +467,18 @@
     });
 
 </script>
+{{!-- Truyền các mã địa chỉ đã chọn từ server đến client --}}
+<script>
+    const selectedCityCode = "{{currentUser.shippingAddress.city}}"; // Mã Tỉnh/Thành phố đã chọn
+    const selectedDistrictCode = "{{currentUser.shippingAddress.district}}"; // Mã Quận/Huyện đã chọn
+    const selectedWardCode = "{{currentUser.shippingAddress.ward}}"; // Mã Phường/Xã đã chọn
+</script>
 {{!-- Lấy API địa chỉ --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Hàm để lấy dữ liệu từ API và cập nhật thẻ select
         function fetchAndFillSelect(url, selectElement, defaultOptionText) {
-            fetch(url)
+            return fetch(url)
                 .then(response => response.json())  // Chuyển dữ liệu JSON
                 .then(data => {
                     // Làm rỗng thẻ select trước khi thêm option mới
@@ -469,11 +491,65 @@
                 .catch(error => console.error('Error:', error));  // Bắt lỗi nếu có
         }
 
-        // Lấy danh sách Tỉnh/Thành ngay khi load trang
-        const provinceSelect = document.getElementById('city');
-        fetchAndFillSelect('https://provinces.open-api.vn/api/p/', provinceSelect, 'Chọn Tỉnh/Thành');
+        // Các biến đã được truyền từ server
+        const selectedCity = selectedCityCode; // Từ script đã nhúng ở trên
+        const selectedDistrict = selectedDistrictCode;
+        const selectedWard = selectedWardCode;
 
-        // Khi người dùng chọn Tỉnh/Thành
+        const provinceSelect = document.getElementById('city');
+        const districtSelect = document.getElementById('district');
+        const wardSelect = document.getElementById('ward');
+
+        // Tải danh sách Tỉnh/Thành và thiết lập giá trị đã chọn
+        fetchAndFillSelect('https://provinces.open-api.vn/api/p/', provinceSelect, 'Chọn Tỉnh/Thành')
+            .then(() => {
+                if (selectedCity) {
+                    provinceSelect.value = selectedCity;
+                    // Lấy Tên Tỉnh/Thành đã chọn
+                    const selectedCityName = provinceSelect.options[provinceSelect.selectedIndex].text;
+                    document.getElementById('cityName').value = selectedCityName;
+
+                    // Tải danh sách Quận/Huyện dựa trên Tỉnh/Thành đã chọn
+                    return fetch(`https://provinces.open-api.vn/api/p/${selectedCity}?depth=2`)
+                        .then(response => response.json())
+                        .then(data => {
+                            districtSelect.innerHTML = `<option value="">Chọn Quận/Huyện</option>`;
+                            data.districts.forEach(district => {
+                                districtSelect.innerHTML += `<option value="${district.code}">${district.name}</option>`;
+                            });
+                        });
+                }
+            })
+            .then(() => {
+                if (selectedDistrict) {
+                    districtSelect.value = selectedDistrict;
+                    // Lấy Tên Quận/Huyện đã chọn
+                    const selectedDistrictName = districtSelect.options[districtSelect.selectedIndex].text;
+                    document.getElementById('districtName').value = selectedDistrictName;
+
+                    // Tải danh sách Phường/Xã dựa trên Quận/Huyện đã chọn
+                    return fetch(`https://provinces.open-api.vn/api/d/${selectedDistrict}?depth=2`)
+                        .then(response => response.json())
+                        .then(data => {
+                            wardSelect.innerHTML = `<option value="">Chọn Phường/Xã</option>`;
+                            if (data.wards && data.wards.length > 0) {
+                                data.wards.forEach(ward => {
+                                    wardSelect.innerHTML += `<option value="${ward.code}">${ward.name}</option>`;
+                                });
+                            }
+                        });
+                }
+            })
+            .then(() => {
+                if (selectedWard) {
+                    wardSelect.value = selectedWard;
+                    // Lấy Tên Phường/Xã đã chọn
+                    const selectedWardName = wardSelect.options[wardSelect.selectedIndex].text;
+                    document.getElementById('wardName').value = selectedWardName;
+                }
+            });
+
+        // Khi người dùng thay đổi Tỉnh/Thành
         provinceSelect.addEventListener('change', function () {
             const provinceCode = this.value;
             const provinceName = this.options[this.selectedIndex].text; // Lấy tên Tỉnh/Thành
@@ -490,18 +566,24 @@
                         data.districts.forEach(district => {
                             districtSelect.innerHTML += `<option value="${district.code}">${district.name}</option>`;
                         });
+                        // Reset Phường/Xã
+                        wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                        document.getElementById('districtName').value = '';
+                        document.getElementById('wardName').value = '';
                     })
                     .catch(error => console.error('Error fetching districts:', error));
             } else {
                 districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
-                document.getElementById('ward').innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                document.getElementById('districtName').value = '';
+                document.getElementById('wardName').value = '';
             }
         });
 
-        // Khi người dùng chọn Quận/Huyện
-        document.getElementById('district').addEventListener('change', function () {
+        // Khi người dùng thay đổi Quận/Huyện
+        districtSelect.addEventListener('change', function () {
             const districtCode = this.value;  // Lấy mã của Quận/Huyện đã chọn
-            const districtName = this.options[this.selectedIndex].text; //Lấy tên Quận/Huyện
+            const districtName = this.options[this.selectedIndex].text; // Lấy tên Quận/Huyện
             document.getElementById('districtName').value = districtName; // Gán vào input hidden
             const wardSelect = document.getElementById('ward');  // Lấy element Phường/Xã
 
@@ -510,7 +592,6 @@
                 fetch(`https://provinces.open-api.vn/api/d/${districtCode}?depth=2`)
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);  // Kiểm tra dữ liệu Phường/Xã nhận được từ API
                         wardSelect.innerHTML = `<option value="">Chọn Phường/Xã</option>`;
                         if (data.wards && data.wards.length > 0) {
                             data.wards.forEach(ward => {
@@ -519,14 +600,17 @@
                         } else {
                             console.log('Không có dữ liệu Phường/Xã.');
                         }
+                        document.getElementById('wardName').value = '';
                     })
                     .catch(error => console.error('Error fetching wards:', error));
             } else {
                 wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                document.getElementById('wardName').value = '';
             }
         });
-        // Khi người dùng chọn Phường/Xã
-        document.getElementById('ward').addEventListener('change', function () {
+
+        // Khi người dùng thay đổi Phường/Xã
+        wardSelect.addEventListener('change', function () {
             const wardName = this.options[this.selectedIndex].text; // Lấy tên Phường/Xã
             document.getElementById('wardName').value = wardName; // Gán vào input hidden
         });
