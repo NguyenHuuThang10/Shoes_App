@@ -22,6 +22,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 class ShoesController {
 
+  error(req, res, next) {
+    res.render('supports/error')
+  }
+
   checkLoginClient(req, res, next) {
     var checkLogin = res.locals.currentUser;
     if (checkLogin) {
@@ -40,15 +44,19 @@ class ShoesController {
           let imageArray = shoe.images.split(',');
           res.render("shoes/show", {
             shoe: mongooseToObject(shoe),
-            imageArr: imageArray
+            imageArr: imageArray,
+            openCart: req.flash('openCart')
           });
         } else {
           res.render("shoes/show", {
-            shoe: mongooseToObject(shoe)
+            shoe: mongooseToObject(shoe),
+            openCart: req.flash('openCart')
           });
         }
 
 
+      } else {
+        res.render("supports/error");
       }
     });
   }
@@ -166,7 +174,9 @@ class ShoesController {
                 newOrder.itemsPrice + newOrder.shippingPrice;
 
               newOrder.save().then(() => {
-                res.redirect("/shoes/cart");
+                req.flash("openCart", "open")
+                res.redirect("back");
+                // res.redirect("/shoes/cart");
               });
             })
             .catch(next);
@@ -194,7 +204,9 @@ class ShoesController {
           );
           order.totalPrice = order.itemsPrice + order.shippingPrice;
           await order.save();
-          return res.redirect("/shoes/cart");
+          req.flash("openCart", "open")
+          return res.redirect("back");
+          // return res.redirect("/shoes/cart");
         }
       } else {
         res.redirect("/login");
@@ -239,7 +251,8 @@ class ShoesController {
       order.totalPrice = order.itemsPrice + order.shippingPrice;
       await order.save();
 
-      res.redirect("back");
+      // res.redirect("back");
+      return res.json({ success: true, updatedOrder: order });
     } catch (error) {
       console.error(error);
       return res
@@ -250,7 +263,7 @@ class ShoesController {
 
   // [POST] /shoes/update-cart/:id
   async updateShippingCart(req, res, next) {
-    try {      
+    try {
       var { fullName, phone, address, city, cityName, paymentMethod, district, districtName, ward, wardName, note } = req.body;
       var orderId = req.params.id;
 
@@ -326,17 +339,17 @@ class ShoesController {
             }
           });
         }
-      } else if (paymentMethod == "ZaloPay") {
+      } else if (paymentMethod == "ATM") {
         var orderUpdate = await Order.updateOne(
           { _id: orderId },
-          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName}, note }
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, note }
         );
 
         const orderItem = await Order.findOne({ _id: orderId });
         const totalPrice = orderItem.totalPrice * 1000;
 
         const embed_data = {
-          "preferred_payment_method": [],
+          "preferred_payment_method": ["domestic_card", "account"],
           "redirecturl": "http://localhost:3000/shoes/my-order"
         };
 
@@ -352,7 +365,159 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://aeba-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId
+          callback_url: "https://d8a4-14-224-219-210.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+        };
+
+        // appid|app_trans_id|appuser|amount|apptime|embeddata|item
+        const data = config.app_id + "|" + order.app_trans_id + "|" + order.app_user + "|" + order.amount + "|" + order.app_time + "|" + order.embed_data + "|" + order.item;
+        order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
+
+        try {
+          const result = await axios.post(config.endpoint, null, { params: order });
+          const responseData = result.data;
+
+          if (responseData.return_code === 1 && responseData.sub_return_code === 1) {
+            // Giao dịch thành công, redirect tới order_url
+            return res.redirect(responseData.order_url);
+          } else {
+            // Nếu giao dịch không thành công, trả về lỗi
+            return res.status(400).json({
+              message: "Giao dịch không thành công",
+              detail: responseData
+            });
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else if (paymentMethod == "VietQR") {
+        var orderUpdate = await Order.updateOne(
+          { _id: orderId },
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, note }
+        );
+
+        const orderItem = await Order.findOne({ _id: orderId });
+        const totalPrice = orderItem.totalPrice * 1000;
+
+        const embed_data = {
+          "preferred_payment_method": ["vietqr"],
+          "redirecturl": "http://localhost:3000/shoes/my-order",
+          "promotioninfo": "",
+          "merchantinfo": "embeddata123"
+        };
+
+        const items = [{}];
+        const transID = Math.floor(Math.random() * 1000000);
+        const order = {
+          app_id: config.app_id,
+          app_trans_id: `${moment().format('YYMMDD')}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+          app_user: "user123",
+          app_time: Date.now(), // miliseconds
+          item: JSON.stringify(items),
+          embed_data: JSON.stringify(embed_data),
+          amount: totalPrice,
+          description: `Thanh toán đơn hàng #${transID}`,
+          bank_code: "",
+          callback_url: "https://d8a4-14-224-219-210.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+        };
+
+        // appid|app_trans_id|appuser|amount|apptime|embeddata|item
+        const data = config.app_id + "|" + order.app_trans_id + "|" + order.app_user + "|" + order.amount + "|" + order.app_time + "|" + order.embed_data + "|" + order.item;
+        order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
+
+        try {
+          const result = await axios.post(config.endpoint, null, { params: order });
+          const responseData = result.data;
+
+          if (responseData.return_code === 1 && responseData.sub_return_code === 1) {
+            // Giao dịch thành công, redirect tới order_url
+            return res.redirect(responseData.order_url);
+          } else {
+            // Nếu giao dịch không thành công, trả về lỗi
+            return res.status(400).json({
+              message: "Giao dịch không thành công",
+              detail: responseData
+            });
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else if (paymentMethod == "ZaloPayQR") {
+        var orderUpdate = await Order.updateOne(
+          { _id: orderId },
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, note }
+        );
+
+        const orderItem = await Order.findOne({ _id: orderId });
+        const totalPrice = orderItem.totalPrice * 1000;
+
+        const embed_data = {
+          "preferred_payment_method": ["zalopay_wallet"],
+          "redirecturl": "http://localhost:3000/shoes/my-order"
+        };
+
+        const items = [{}];
+        const transID = Math.floor(Math.random() * 1000000);
+        const order = {
+          app_id: config.app_id,
+          app_trans_id: `${moment().format('YYMMDD')}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+          app_user: "user123",
+          app_time: Date.now(), // miliseconds
+          item: JSON.stringify(items),
+          embed_data: JSON.stringify(embed_data),
+          amount: totalPrice,
+          description: `Thanh toán đơn hàng #${transID}`,
+          bank_code: "",
+          callback_url: "https://d8a4-14-224-219-210.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+        };
+
+        // appid|app_trans_id|appuser|amount|apptime|embeddata|item
+        const data = config.app_id + "|" + order.app_trans_id + "|" + order.app_user + "|" + order.amount + "|" + order.app_time + "|" + order.embed_data + "|" + order.item;
+        order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
+
+        try {
+          const result = await axios.post(config.endpoint, null, { params: order });
+          const responseData = result.data;
+
+          if (responseData.return_code === 1 && responseData.sub_return_code === 1) {
+            // Giao dịch thành công, redirect tới order_url
+            return res.redirect(responseData.order_url);
+          } else {
+            // Nếu giao dịch không thành công, trả về lỗi
+            return res.status(400).json({
+              message: "Giao dịch không thành công",
+              detail: responseData
+            });
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      } else if (paymentMethod == "Visa") {
+        var orderUpdate = await Order.updateOne(
+          { _id: orderId },
+          { shippingAddress: { fullName, phone, address, cityName, districtName, wardName }, note }
+        );
+
+        const orderItem = await Order.findOne({ _id: orderId });
+        const totalPrice = orderItem.totalPrice * 1000;
+
+        const embed_data = {
+          "preferred_payment_method": ["international_card"],
+          "redirecturl": "http://localhost:3000/shoes/my-order"
+        };
+
+        const items = [{}];
+        const transID = Math.floor(Math.random() * 1000000);
+        const order = {
+          app_id: config.app_id,
+          app_trans_id: `${moment().format('YYMMDD')}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+          app_user: "user123",
+          app_time: Date.now(), // miliseconds
+          item: JSON.stringify(items),
+          embed_data: JSON.stringify(embed_data),
+          amount: totalPrice,
+          description: `Thanh toán đơn hàng #${transID}`,
+          bank_code: "",
+          callback_url: "https://d8a4-14-224-219-210.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
@@ -377,6 +542,7 @@ class ShoesController {
           console.log(error.message);
         }
       }
+
 
 
 
@@ -427,7 +593,7 @@ class ShoesController {
 
             await Order.updateOne(
               { _id: orderId },
-              { paymentMethod: "paypal", isPaid: true, paidAt: Date.now() }
+              { paymentMethod: "PayPal", isPaid: true, paidAt: Date.now() }
             )
             return res.redirect("/shoes/my-order");
 
@@ -449,6 +615,7 @@ class ShoesController {
       let dataStr = req.body.data;
       let reqMac = req.body.mac;
       const orderId = req.query.id
+      const paymentMethod = req.query.paymethod
 
       let mac = CryptoJS.HmacSHA256(dataStr, config.key2).toString();
       console.log("mac =", mac);
@@ -465,10 +632,10 @@ class ShoesController {
         // merchant cập nhật trạng thái cho đơn hàng
         let dataJson = JSON.parse(dataStr, config.key2);
         console.log("update order's status = success where app_trans_id =", dataJson["app_trans_id"]);
-        
+
         await Order.updateOne(
           { _id: orderId },
-          { paymentMethod: "zalopay", isPaid: true, paidAt: Date.now() }
+          { paymentMethod: paymentMethod, isPaid: true, paidAt: Date.now() }
         )
 
         result.return_code = 1;
@@ -525,11 +692,12 @@ class ShoesController {
           })
 
         } else {
-          res.redirect('back')
+          res.render('supports/error')
         }
       })
       .catch(err => {
         console.log("ERR: " + err)
+        res.render('supports/error')
       })
       .catch(next)
   }
@@ -592,6 +760,16 @@ class ShoesController {
   // [GET] /shoes/sale
   async sale(req, res, next) {
 
+    var page = parseInt(req.query.page) || 1;
+    var allShoe = await Shoe.find({ priceDiscount: { $ne: null } }).countDocuments();
+    var maxPage = Math.ceil(allShoe / PAGE_SIZE);
+
+    if (page > maxPage) {
+      page = 1;
+    }
+
+    var offset = (page - 1) * PAGE_SIZE;
+
     let wishlistItemIds = null;
     if (res.locals.currentUser) {
       const userId = res.locals.currentUser._id;
@@ -600,8 +778,12 @@ class ShoesController {
     }
 
     Shoe.find({ priceDiscount: { $ne: null } })
+      .skip(offset)
+      .limit(PAGE_SIZE)
       .then(shoes => {
         res.render('shoes/sale', {
+          page,
+          maxPage,
           shoes: mutipleMongooseToObject(shoes),
           wishlistItems: wishlistItemIds
         })

@@ -60,4 +60,5 @@ router.get("/stored/order-detail/:id", meController.checkLoginAdmin, meControlle
 
 router.get("/home", meController.checkLoginAdmin, meController.index);
 
+
 module.exports = router;

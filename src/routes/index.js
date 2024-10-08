@@ -12,6 +12,9 @@ function route (app) {
     app.use('/me', meRouter)
     app.use('/shoes', shoesRouter)
     app.use('/', siteRouter)
+    app.use((req, res, next) => {
+        res.render('supports/error')
+    })
 
 }
 

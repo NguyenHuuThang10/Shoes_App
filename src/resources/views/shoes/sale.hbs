@@ -37,7 +37,8 @@
                         <span class="pro-sale">SALE<br> OFF </span>
                     </div>
                     <a href="/shoes/{{this.slug}}">
-                        <img loading="lazy" class="img-fluid box-img-shoes" src="/uploads/{{this.image}}" alt="" width="100%">
+                        <img loading="lazy" class="img-fluid box-img-shoes" src="/uploads/{{this.image}}" alt=""
+                            width="100%">
                     </a>
                     <div class="caption ml-2">
                         <div class="row">
@@ -81,7 +82,22 @@
             </div>
             {{/each}}
         </div>
+        
+        <nav aria-label="Page navigation example" class="mt-5">
+            <ul class="pagination">
+                {{#backPage page newUrl}}
+                {{this}}
+                {{/backPage}}
 
+                {{#eachPage page maxPage newUrl}}
+                {{this}}
+                {{/eachPage}}
+
+                {{#nextPage page maxPage newUrl}}
+                {{this}}
+                {{/nextPage}}
+            </ul>
+        </nav>
     </div>
 </div>
 

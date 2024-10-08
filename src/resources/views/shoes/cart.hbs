@@ -60,12 +60,14 @@
                         <td>{{this.price}}.000 <u>đ</u></td>
                         <td>
                             <form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT" class="quantity">
-                                <button type="submit" class="btn-decrease" name="action" value="decrease"><i
-                                        class="fa-solid fa-minus"></i></button>
-                                <input type="text" class="tiny-size" value="{{this.amount}}" name="quantity"
-                                    data-item-id="{{this._id}}">
-                                <button type="submit" class="btn-increase" name="action" value="increase"><i
-                                        class="fa-solid fa-plus"></i></button>
+                                <button type="submit" class="btn-decrease" name="action" value="decrease"
+                                    data-action="decrease"><i class="fa-solid fa-minus"></i></button>
+
+                                <input type="text" class="tiny-size input-quantity" value="{{this.amount}}"
+                                    name="quantity" data-item-id="{{this._id}}" readonly>
+
+                                <button type="submit" class="btn-increase" name="action" value="increase"
+                                    data-action="increase"><i class="fa-solid fa-plus"></i></button>
 
                             </form>
                         </td>
@@ -100,7 +102,9 @@
                         </div>
                         <div class="col mt-2 text-right">
                             <ul>
-                                <li>{{#if order.orderItems}} {{formatCurrency order.itemsPrice}},000 <u>đ</u> {{else}} 0
+                                <li>{{#if order.orderItems}} <span class="items-price">{{formatCurrency
+                                        order.itemsPrice}}</span>,000
+                                    <u>đ</u> {{else}} 0
                                     <u>đ</u> {{/if}}
                                 </li>
                                 <li>{{#if order.orderItems}} {{order.shippingPrice}},000 <u>đ</u> {{else}} 0 <u>đ</u>
@@ -110,14 +114,16 @@
                     </div>
                     <hr width="90%" align="right">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-5">
                             <ul>
                                 <li>Tổng Tiền</li>
                             </ul>
                         </div>
-                        <div class="col total text-right">
+                        <div class="col-7 text-right">
                             <ul>
-                                <li>{{#if order.orderItems}} {{formatCurrency order.totalPrice}},000 <u>đ</u> {{else}} 0
+                                <li class="ss total">{{#if order.orderItems}} <span
+                                        class="total-amount">{{formatCurrency order.totalPrice}}</span>,000 <u>đ</u>
+                                    {{else}} 0
                                     <u>đ</u> {{/if}}
                                 </li>
                             </ul>
@@ -131,30 +137,6 @@
                 </div>
             </div>
     </div>
-
-    {{!-- <div class="cart-address">
-        <p>Thông tin đăt hàng</p>
-        <form method="post" action="/shoes/update-cart/{{order._id}}">
-            <input type="text" required id="name" name="fullName"
-                value="{{#if currentUser.name}} {{currentUser.name}} {{/if}}" placeholder="Họ tên">
-            <input type="text" required id="phone" name="phone"
-                value="{{#if currentUser.phone}} {{currentUser.phone}} {{/if}}" placeholder="Số điện thoại">
-
-            <textarea name="city" id="" class="form-control" placeholder="Nhập tỉnh/thành phố"
-                required>{{#if currentUser.shippingAddress.city}} {{currentUser.shippingAddress.city}} {{/if}}</textarea>
-
-            <textarea name="district" id="" class="form-control" placeholder="Nhập quận/huyện"
-                required>{{#if currentUser.shippingAddress.district}} {{currentUser.shippingAddress.district}} {{/if}}</textarea>
-
-            <textarea name="ward" id="" class="form-control" placeholder="Nhập phường/xã"
-                required>{{#if currentUser.shippingAddress.ward}} {{currentUser.shippingAddress.ward}} {{/if}}</textarea>
-
-            <textarea name="address" id="" class="form-control" placeholder="Nhập địa chỉ"
-                required>{{#if currentUser.shippingAddress.address}} {{currentUser.shippingAddress.address}} {{/if}}</textarea>
-            --}}
-            {{!--
-    </div> --}}
-
 
     <div id="content-step2" class="content-step" style="display:none;">
         <div class="row">
@@ -243,8 +225,8 @@
                 <div class="cart-product-total">
                     <div class="row">
                         <div class="col-7" style="color: #969696;">Tổng tiền hàng:</div>
-                        <div class="col-5">{{#if order.orderItems}} {{formatCurrency
-                            order.itemsPrice}},000 <u>đ</u> {{else}} 0
+                        <div class="col-5">{{#if order.orderItems}} <span class="items-price">{{formatCurrency
+                                order.itemsPrice}}</span>,000 <u>đ</u> {{else}} 0
                             <u>đ</u> {{/if}}
                         </div>
                     </div>
@@ -258,8 +240,8 @@
                     <hr width="85%" align="left">
                     <div class="row">
                         <div class="col-7">Tổng cộng:</div>
-                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} {{formatCurrency
-                            order.totalPrice}},000 <u>đ</u>
+                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} <span
+                                class="total-amount">{{formatCurrency order.totalPrice}}</span>,000 <u>đ</u>
                             {{else}} 0 <u>đ</u>
                             {{/if}}</div>
                     </div>
@@ -287,38 +269,47 @@
                             </div>
 
                             <div class="payment-option form-check">
-                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2"
-                                    value="PayPal">
-                                <label class="form-check-label" for="paymentMethod2">
-                                    <img src="/img/iconPaypal.png" alt="">
-                                    Thanh toán bằng Paypal
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod4"
+                                    value="VietQR">
+                                <label class="form-check-label" for="paymentMethod4">
+                                    <img src="/img/iconVietQR.png" alt="">
+                                    Chuyển khoản qua mã VietQR
                                 </label>
                             </div>
 
                             <div class="payment-option form-check">
                                 <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod3"
-                                    value="ZaloPay">
+                                    value="ATM">
                                 <label class="form-check-label" for="paymentMethod3">
                                     <img src="/img/iconZaloPay.png" alt="">
-                                    Thanh toán bằng ZaloPay
+                                    Thẻ ATM nội địa qua cổng ZaloPay
                                 </label>
                             </div>
 
                             <div class="payment-option form-check">
-                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod4"
-                                    value="Thanh toán bằng ZaloPay">
-                                <label class="form-check-label" for="paymentMethod4">
-                                    <img src="/img/iconVietQR.png" alt="">
-                                    Thanh toán bằng VietQR
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod6"
+                                    value="ZaloPayQR">
+                                <label class="form-check-label" for="paymentMethod6">
+                                    <img src="/img/iconZaloPay.png" alt="">
+                                    ZaloPay bằng QRCode
                                 </label>
                             </div>
 
                             <div class="payment-option form-check">
                                 <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod5"
-                                    value="Thanh toán bằng ZaloPay">
+                                    value="Visa">
                                 <label class="form-check-label" for="paymentMethod5">
-                                    <img src="/img/iconVNPay.png" alt="">
-                                    Thanh toán bằng VNPay
+                                    <img src="/img/iconZaloPay.png" alt="">
+                                    Thẻ Visa/Master/JCB qua cổng ZaloPay
+                                </label>
+                            </div>
+
+                            <div class="payment-option form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2"
+                                    value="PayPal">
+                                <label class="form-check-label" for="paymentMethod2">
+                                    <img src="/img/iconPaypal.png" alt="">
+                                    Paypal
                                 </label>
                             </div>
                         </div>
@@ -356,8 +347,8 @@
                 <div class="cart-product-total">
                     <div class="row">
                         <div class="col-7" style="color: #969696;">Tổng tiền hàng:</div>
-                        <div class="col-5">{{#if order.orderItems}} {{formatCurrency
-                            order.itemsPrice}},000 <u>đ</u> {{else}} 0
+                        <div class="col-5">{{#if order.orderItems}} <span class="items-price">{{formatCurrency
+                                order.itemsPrice}}</span>,000 <u>đ</u> {{else}} 0
                             <u>đ</u> {{/if}}
                         </div>
                     </div>
@@ -371,8 +362,8 @@
                     <hr width="80%" align="left">
                     <div class="row">
                         <div class="col-7">Tổng cộng:</div>
-                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} {{formatCurrency
-                            order.totalPrice}},000 <u>đ</u>
+                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} <span
+                                class="total-amount">{{formatCurrency order.totalPrice}}</span>,000 <u>đ</u>
                             {{else}} 0 <u>đ</u>
                             {{/if}}</div>
                     </div>
@@ -404,6 +395,90 @@
 {{!-- Chuyển sang các bước --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const quantityForms = document.querySelectorAll(".quantity");
+
+        quantityForms.forEach((form) => {
+            const btnDecrease = form.querySelector(".btn-decrease");
+            const btnIncrease = form.querySelector(".btn-increase");
+            const itemId = form.querySelector("input[data-item-id]").getAttribute("data-item-id");
+
+            // Xử lý sự kiện nhấn nút giảm
+            btnDecrease.addEventListener("click", function (event) {
+                event.preventDefault();
+                updateQuantity(itemId, "decrease");
+            });
+
+            // Xử lý sự kiện nhấn nút tăng
+            btnIncrease.addEventListener("click", function () {
+                event.preventDefault();
+                updateQuantity(itemId, "increase");
+            });
+        });
+
+        function formatCurrency(number) {
+            // Chuyển số thành chuỗi và thêm dấu chấm vào các phần nghìn
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Hàm cập nhật số lượng bằng fetch API
+        async function updateQuantity(itemId, action) {
+            try {
+                // Gửi request tới server với itemId và action (increase hoặc decrease)
+                const response = await fetch(`/shoes/quantity/${itemId}?_method=PUT`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ action }), // Gửi hành động
+                });
+
+                if (response.ok) {
+                    // Lấy dữ liệu phản hồi từ server
+                    const data = await response.json();
+
+                    // Cập nhật lại số lượng, tổng giá trị sản phẩm trên giao diện
+                    if (data.success) {
+                        const updatedOrder = data.updatedOrder; // Lấy thông tin đơn hàng cập nhật từ server
+                        const updatedItem = updatedOrder.orderItems.find(item => item._id === itemId); // Tìm item vừa cập nhật trong orderItems
+
+                        // Cập nhật số lượng sản phẩm trên trang
+                        if (updatedItem) {
+                            //const quantityInput = document.querySelector(`input[name='quantity']`);
+                            const quantityInput = document.querySelector(`input[data-item-id='${itemId}']`);
+                            quantityInput.value = updatedItem.amount;
+
+                            // Cập nhật tổng số lượng và tổng tiền  
+                            const totalAmount = updatedOrder.orderItems.reduce((total, item) => total + item.amount, 0);
+                            const itemsPrice = updatedOrder.itemsPrice;
+                            const totalPrice = updatedOrder.totalPrice;
+
+                            document.querySelector(".shopping-cart p b").innerText = `${totalAmount} sản phẩm`;
+                            const itemsPriceElements = document.querySelectorAll(".items-price");
+                            itemsPriceElements.forEach(el => {
+                                el.innerText = `${formatCurrency(itemsPrice)}`;
+                            });
+
+                            const totalAmountElements = document.querySelectorAll(".total-amount");
+                            totalAmountElements.forEach(el => {
+                                el.innerText = `${formatCurrency(totalPrice)}`;
+                            });
+
+                        } else {
+                            console.error("Không tìm thấy sản phẩm trong danh sách đơn hàng.");
+                        }
+                    } else {
+                        console.error("Cập nhật số lượng thất bại:", data.message);
+                    }
+                } else {
+                    console.error("Có lỗi xảy ra:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Lỗi trong quá trình cập nhật số lượng:", error);
+            }
+        }
+
+        //-------------------------------------------------------------------------
+        //Xử lý chuyển step
         var btnToStep2 = document.getElementById('btn-to-step2');
         var btnBackToStep1 = document.getElementById('btn-back-to-step1');
         var btnToStep3 = document.getElementById('btn-to-step3'); // Bước 2 tới bước 3
@@ -464,18 +539,20 @@
             processSteps[1].classList.add('completed'); // Bước 2 vẫn hoàn thành
             processSteps[2].classList.remove('active'); // Bỏ trạng thái đang thực hiện của bước 3
         };
-    });
+    })
 
 </script>
-{{!-- Truyền các mã địa chỉ đã chọn từ server đến client --}}
+
 <script>
     const selectedCityCode = "{{currentUser.shippingAddress.city}}"; // Mã Tỉnh/Thành phố đã chọn
     const selectedDistrictCode = "{{currentUser.shippingAddress.district}}"; // Mã Quận/Huyện đã chọn
     const selectedWardCode = "{{currentUser.shippingAddress.ward}}"; // Mã Phường/Xã đã chọn
 </script>
-{{!-- Lấy API địa chỉ --}}
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        //----------------------------------------------------------------------------------
+        // Xử lý phần API tỉnh, thành phố
         // Hàm để lấy dữ liệu từ API và cập nhật thẻ select
         function fetchAndFillSelect(url, selectElement, defaultOptionText) {
             return fetch(url)
@@ -485,7 +562,7 @@
                     selectElement.innerHTML = `<option value="">${defaultOptionText}</option>`;
                     // Duyệt qua dữ liệu và thêm các option mới vào thẻ select
                     data.forEach(item => {
-                        selectElement.innerHTML += `<option value="${item.code}" >${item.name}</option>`;
+                        selectElement.innerHTML += `<option value="${item.code}"  >${item.name}</option>`;
                     });
                 })
                 .catch(error => console.error('Error:', error));  // Bắt lỗi nếu có

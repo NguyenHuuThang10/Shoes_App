@@ -1236,6 +1236,10 @@ span#or-text {
   animation: fadeIn ease-in 0.2s;
 }
 
+.cart-dropdown-content.open {
+  display: block;
+}
+
 .cart-dropdown-content::after {
   content: "";
   position: absolute;
@@ -1250,6 +1254,7 @@ span#or-text {
 .cart-dropdown:hover .cart-dropdown-content {
   display: block;
 }
+
 
 .boxtitle {
   font-size: 20px;

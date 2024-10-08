@@ -15,9 +15,10 @@ router.get('/my-order', shoesController.checkLoginClient, shoesController.myOrde
 router.get('/my-order-detail/:id', shoesController.checkLoginClient, shoesController.myOrderDetail)
 router.delete("/my-order/:id/delete", shoesController.checkLoginClient, shoesController.deleteOrder);
 router.post('/add-to-cart', shoesController.checkLoginClient, shoesController.addToCart)
+router.get('/shoe-type/:type',shoesController.shoeType);
 router.get('/:slug', shoesController.show)
 
-router.get('/shoe-type/:type',shoesController.shoeType)
+router.get("*", shoesController.error)
 
 
 module.exports = router
