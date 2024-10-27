@@ -23,7 +23,8 @@ class SupportsController {
 
                 res.render("supports/wishlist", {
                     user: mongooseToObject(wishlist),
-                    wishlistEmpty: "Chưa có sản phẩm trong mục Yêu Thích."
+                    wishlistEmpty: "Chưa có sản phẩm trong mục Yêu Thích.",
+                    openCart: req.flash('openCart')
                 })
             } else {
                 res.redirect("/login");

@@ -41,7 +41,7 @@
                             {{/if}}
                         </select>
                         <input type="hidden" name="cityName" id="cityName"
-                            value="{{#if order.shippingAddress.cityName}} {{order.shippingAddress.cityName}} {{/if}}">
+                            value="{{#if order.shippingAddress.cityName}}{{order.shippingAddress.cityName}}{{/if}}">
                     </div>
 
                     <div class="row">
@@ -57,7 +57,7 @@
                                     {{/if}}
                                 </select>
                                 <input type="hidden" name="districtName" id="districtName"
-                                    value="{{#if order.shippingAddress.districtName}} {{order.shippingAddress.districtName}} {{/if}}">
+                                    value="{{#if order.shippingAddress.districtName}}{{order.shippingAddress.districtName}}{{/if}}">
                             </div>
                         </div>
                         <div class="col">
@@ -72,7 +72,7 @@
                                     {{/if}}
                                 </select>
                                 <input type="hidden" name="wardName" id="wardName"
-                                    value="{{#if order.shippingAddress.wardName}} {{order.shippingAddress.wardName}} {{/if}}">
+                                    value="{{#if order.shippingAddress.wardName}}{{order.shippingAddress.wardName}}{{/if}}">
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <label for="address">Địa chỉ cụ thể: Số nhà, Tên đường...</label>
                         <input type="text" name="address" id="address" class="form-control"
                             placeholder="Địa chỉ cụ thể: Số nhà, Tên đường..."
-                            value="{{#if order.shippingAddress.address}} {{order.shippingAddress.address}} {{/if}}"
+                            value="{{#if order.shippingAddress.address}}{{order.shippingAddress.address}}{{/if}}"
                             required>
                     </div>
                 </div>
@@ -91,20 +91,32 @@
                         <label for="paymentMethod">Phương thức thanh toán</label>
                         <select class="form-control" id="paymentMethod" name="paymentMethod">
                             <option value="" selected>-- Phương thức thanh toán --</option>
-                            <option value="Thanh toán bằng tiền mặt" {{#if order}} {{#ifEquals
-                                order.paymentMethod 'Thanh toán bằng tiền mặt' }}selected{{/ifEquals}} {{else}}
-                                {{#ifEquals old.paymentMethod 'Thanh toán bằng tiền mặt' }}selected{{/ifEquals}}
+                            <option value="COD" {{#if order}} {{#ifEquals
+                                order.paymentMethod 'COD' }}selected{{/ifEquals}} {{else}}
+                                {{#ifEquals old.paymentMethod 'COD' }}selected{{/ifEquals}}
                                 {{/if}}>Thanh toán bằng
                                 tiền mặt</option>
-                            <option value="paypal" {{#if order}} {{#ifEquals order.paymentMethod 'paypal'
-                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'paypal'
+                            <option value="ATM" {{#if order}} {{#ifEquals order.paymentMethod 'ATM'
+                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'ATM'
                                 }}selected{{/ifEquals}} {{/if}}>
-                                Thanh toán bằng
-                                Paypal</option>
+                                ATM</option>
 
-                            <option value="zalopay" {{#if order}} {{#ifEquals order.paymentMethod 'zalopay'
-                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'zalopay'
-                                }}selected{{/ifEquals}} {{/if}}> Thanh toán bằng Zalopay</option>
+                            <option value="ZaloPayQR" {{#if order}} {{#ifEquals order.paymentMethod 'ZaloPayQR'
+                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'ZaloPayQR'
+                                }}selected{{/ifEquals}} {{/if}}>Zalopay QR</option>
+
+                            <option value="Visa" {{#if order}} {{#ifEquals order.paymentMethod 'Visa'
+                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'Visa'
+                                }}selected{{/ifEquals}} {{/if}}>Visa</option>
+
+                            <option value="PayPal" {{#if order}} {{#ifEquals order.paymentMethod 'PayPal'
+                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'PayPal'
+                                }}selected{{/ifEquals}} {{/if}}>PayPal</option>
+
+
+                            <option value="VietQR" {{#if order}} {{#ifEquals order.paymentMethod 'VietQR'
+                                }}selected{{/ifEquals}} {{else}} {{#ifEquals old.paymentMethod 'VietQR'
+                                }}selected{{/ifEquals}} {{/if}}>VietQR</option>
                         </select>
                     </div>
                     <div class="form-group">

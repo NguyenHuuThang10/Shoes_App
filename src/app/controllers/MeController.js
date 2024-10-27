@@ -535,7 +535,7 @@ class MeController {
   updateOrder(req, res, next) {
     try {
       const orderId = req.params.id;
-      let { fullName, phone, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status } = req.body
+      let { fullName, phone, city, district, ward, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status } = req.body
       const regPhone = /^0\d{9}$/;
       isDelivered = isDelivered === "Đã giao hàng"
       isPaid = isPaid === 'Đã thanh toán'
@@ -546,16 +546,16 @@ class MeController {
       if (!fullName || !phone || !cityName || !districtName || !wardName || !address || !paymentMethod || !status ) {
         return res.render("me/editOrder", {
           err: "Vui lòng nhập đầy đủ thông tin!",
-          old: { fullName, phone, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status }
+          old: { fullName, phone, city, district, ward, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status }
         })
       } else if (!isCheckPhone) {
         return res.render("me/editOrder", {
           err: "Số điện thoại không đúng định dạng!",
-          old: { fullName, phone, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status }
+          old: { fullName, phone, city, district, ward, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status }
         })
       }
       Order.updateOne({ _id: orderId }, {
-        shippingAddress: { fullName, phone, cityName, districtName, wardName, address },
+        shippingAddress: { fullName, phone, city, district, ward, cityName, districtName, wardName, address },
         paymentMethod,
         isPaid,
         isDelivered,

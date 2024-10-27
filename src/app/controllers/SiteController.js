@@ -223,7 +223,6 @@ class SiteController {
         res.render("form/userForm", {
           err: "Đăng nhập thất bại!",
           old: req.body
-
         });
       })
       .catch(next);
