@@ -27,8 +27,8 @@
             {{/if}}
         </div>
 
-        <div class="col ">
-            <form action="/shoes/add-to-cart" method="post">
+        <div class="col product-content">
+            <form action="/shoes/add-to-cart" method="post" class="product-content-form">
                 <input type="hidden" name="shoeId" value="{{shoe._id}}">
                 <input type="hidden" name="amount" value="1">
 
@@ -69,19 +69,19 @@
                 </div>
                 <div class="order mt-4">
                     <div class="row">
-                        <div class="col-5">
-                            <button type="submit" class="btn order-buy">Mua Ngay</button>
+                        <div class="col-6 d-grid">
+                            <button type="submit" class="btn btn-block order-buy">Mua Ngay</button>
                         </div>
                     </div>
                 </div>
             </form>
             <div class="row mt-3">
-                <div class="col-5">
+                <div class="col-12 col-md-6 d-grid">
                     <form action="/add-wishlist" method="post">
                         <input type="hidden" name="shoeId" value="{{shoe._id}}">
-                        <input type="hidden" name="size" id="wishlistSize">
+                        <inpu typet="hidden" name="size" id="wishlistSize">
                         <input type="hidden" name="show" id="" value="add">
-                        <button class="btn btn-light btn-block"><i class="fa-regular fa-heart"></i> Thêm vào yêu
+                        <button class="btn btn-light btn-block order-wish"><i class="fa-regular fa-heart"></i> Thêm vào yêu
                             thích</button>
                     </form>
                 </div>

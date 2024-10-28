@@ -27,7 +27,7 @@
             </ul>
         </div>
 
-        <div class="col-md-9 shadow p-3 mb-5 bg-white rounded box-profile" style="border: solid #e6e6e6 1px;">
+        <div class="col-md-9 shadow p-3 mb-5 bg-white rounded box-profile">
             <h2>Đơn hàng của tôi</h2>
             <hr>
             {{#each orders}}
@@ -35,10 +35,10 @@
                 <div class="card-header">
                     <div class="col-12">
                         <div class="row">
-                            <div class="col-7">
+                            <div class="col-md-7 col-sm-6 col-id-mobile">
                                 <b>Mã đơn hàng - {{this._id}}</b>
                             </div>
-                            <div class="col-5 text-right">
+                            <div class="col-md-5 col-sm-6 text-right col-status-mobile">
                                 <button type="button" class="btn btn btn-success btn-sm">{{this.status}}</button>
                             </div>
                         </div>
@@ -48,37 +48,37 @@
                     <div class="col-12">
                         {{#each this.orderItems}}
                         <div class="row mt-1">
-                            <div class="col-2">
+                            <div class="col-md-2 col-sm-3">
                                 <img class="img-circle " src="/uploads/{{this.image}}" alt="" width="100%">
                             </div>
-                            <div class="col-8 mt-3">
+                            <div class="col-md-8 col-sm-6 mt-3">
                                 <b>{{this.name}}</b>
                                 <br><small>Phân loại hàng - size: {{this.size}} </small>
                             </div>
-                            <div class="col-2 mt-3">
+                            <div class="col-md-2 col-sm-3 mt-3 col-price-tab col-price-moblie">
                                 <br><small>x{{this.amount}}</small>
                                 <p class="text-danger">{{formatCurrency this.price}},000 <u>đ</u></p>
                             </div>
                         </div>
                         {{/each}}
-                        <hr>
-                        <div class="row">
-                            <div class="col-7">
+                        <hr class="hr-mobile">
+                        <div class="row"> 
+                            <div class="col-md-7 col-sm-6">
                             </div>
-                            <div class="col-3 text-right">
+                            <div class="col-md-3 col-sm-3 text-right col-ship-mobile">
                                 <p>Tiền ship: </p>
                             </div>
-                            <div class="col-2">
+                            <div class="col-md-2 col-sm-3 col-price-tab col-tprice-moblie">
                                 <p class="text-danger">30,000 <u>đ</u></p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-7">
+                            <div class="col-md-7 col-sm-6">
                             </div>
-                            <div class="col-3 text-right">
+                            <div class="col-md-3 col-sm-3 text-right col-ship-mobile">
                                 <p>Tổng số tiền: </p>
                             </div>
-                            <div class="col-2">
+                            <div class="col-md-2 col-sm-3 col-price-tab col-tprice-moblie">
                                 <p class="text-danger">{{formatCurrency this.totalPrice}},000 <u>đ</u></p>
                             </div>
                         </div>

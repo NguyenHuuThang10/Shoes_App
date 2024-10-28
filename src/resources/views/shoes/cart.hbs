@@ -31,7 +31,7 @@
         <p>Bạn đang có <b>{{#if totalAmount}} {{totalAmount}} {{else}}0{{/if}} sản phẩm</b> trong giỏ hàng.</p>
 
         <div class="cart-list">
-            <table class="table table-borderless">
+            <table class="table table-borderless table-pc-tab">
                 <thead>
                     <tr>
                         <th class="table-product">Sản Phẩm</th>
@@ -48,12 +48,20 @@
                     <tr>
                         <td>
                             <div class="row">
-                                <div class="col-3">
+
+                                <div class="col-md-3 col-sm-3">
                                     <a href="/shoes/{{this.shoe.slug}}"><img src="/uploads/{{this.image}}" alt="" width="100%"></a>
                                 </div>
-                                <div class="col-9">
+                                <div class="col-md-9 col-sm-9">
                                     <a style="color: #000;" href="/shoes/{{this.shoe.slug}}"><b>{{this.name}}</b></a>
                                      <br>
+
+                                {{!-- <div class="col-md-3 col-sm-3">
+                                    <img src="/uploads/{{this.image}}" alt="" width="100%">
+                                </div>
+                                <div class="col-md-9 col-sm-9">
+                                    <b>{{this.name}}</b> <br> --}}
+
                                 </div>
                             </div>
 
@@ -87,15 +95,53 @@
                 </tbody>
             </table>
         </div>
+        <div class="table-mobile table table-borderless">
+            {{#if order.orderItems}}
+            {{#each order.orderItems}}
+            <div class="cart-item-mob">
+                <div class="item-image-mob">
+                    <img src="/uploads/{{this.image}}" alt="">
+                </div>
+                <div class="item-info-mob">
+                    <b>{{this.name}}</b>
+                </div>
+                <div class="item-quantity-mob">
+                    <form method="post" action="/shoes/quantity/{{this._id}}?_method=PUT" class="quantity">
+                        <button type="submit" class="btn-decrease" name="action" value="decrease"
+                            data-action="decrease"><i class="fa-solid fa-minus"></i></button>
+
+                        <input type="text" class="tiny-size input-quantity" value="{{this.amount}}" name="quantity"
+                            data-item-id="{{this._id}}" readonly>
+
+                        <button type="submit" class="btn-increase" name="action" value="increase"
+                            data-action="increase"><i class="fa-solid fa-plus"></i></button>
+
+                    </form>
+                </div>
+                <div class="item-price-mob">{{this.price}},000 <u>đ</u></div>
+                <a href="#" class="btn-delete-order" data-id="{{this._id}}"><i class="fa fa-times"></i></a>
+            </div>
+            {{/each}}
+
+            {{else}}
+            <table class="table table-borderless">
+                <tr class="text-center">
+                    <td colspan="7">
+                        <p>{{cartEmpty}}</p>
+                    </td>
+                </tr>
+            </table>
+            {{/if}}
+        </div>
         <form method="post" action="/shoes/update-cart/{{order._id}}">
             <div class="row">
-                <div class="col-7 note-orders">
+                <div class="col-md-7 col-sm-5 note-orders">
                     <label for="note" class="note-label">Ghi chú đơn hàng</label>
                     <textarea name="note" id="note" class="form-control" rows="3"></textarea>
                 </div>
                 <div class="col cart-total">
                     <div class="row">
-                        <div class="col mt-2">
+                        <div class="col mt-2 cart-total-tab">
                             <ul>
                                 <li>Tổng Tiền Hàng</li>
                                 <li>Phí Vận Chuyển</li>
@@ -203,7 +249,7 @@
                         toán</button>
                 </div>
             </div>
-            <div class="col" style="border-left: 1px solid #ccc; padding-left: 50px;">
+            <div class="col col-cart-product">
                 <div class="cart-product-list">
                     <h1>Thông tin đơn hàng</h1>
                     {{#each order.orderItems}}
@@ -224,23 +270,24 @@
                 </div>
                 <div class="cart-product-total">
                     <div class="row">
-                        <div class="col-7" style="color: #969696;">Tổng tiền hàng:</div>
-                        <div class="col-5">{{#if order.orderItems}} <span class="items-price">{{formatCurrency
+                        <div class="col-md-7 sol-sm-8" style="color: #969696;">Tổng tiền hàng:</div>
+                        <div class="col-md-5 col-sm-4">{{#if order.orderItems}} <span
+                                class="items-price">{{formatCurrency
                                 order.itemsPrice}}</span>,000 <u>đ</u> {{else}} 0
                             <u>đ</u> {{/if}}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-7" style="color: #969696;">Phí vận chuyển:</div>
-                        <div class="col-5">{{#if order.orderItems}} {{order.shippingPrice}},000
+                        <div class="col-md-7 sol-sm-8" style="color: #969696;">Phí vận chuyển:</div>
+                        <div class="col-md-5 col-sm-4">{{#if order.orderItems}} {{order.shippingPrice}},000
                             <u>đ</u> {{else}} 0 <u>đ</u>
                             {{/if}}
                         </div>
                     </div>
                     <hr width="85%" align="left">
                     <div class="row">
-                        <div class="col-7">Tổng cộng:</div>
-                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} <span
+                        <div class="col-md-7 sol-sm-8">Tổng cộng:</div>
+                        <div class="col-md-5 col-sm-4 total">{{#if order.orderItems}} <span
                                 class="total-amount">{{formatCurrency order.totalPrice}}</span>,000 <u>đ</u>
                             {{else}} 0 <u>đ</u>
                             {{/if}}</div>
@@ -324,7 +371,7 @@
                         {{/if}}
                 </div>
             </div>
-            <div class="col" style="border-left: 1px solid #ccc; padding-left: 50px;">
+            <div class="col col-cart-product">
                 <div class="cart-product-list">
                     <h1>Thông tin đơn hàng</h1>
                     {{#each order.orderItems}}
@@ -361,8 +408,8 @@
                     <hr width="80%" align="left">
                     <div class="row">
                         <div class="col-7">Tổng cộng:</div>
-                        <div class="col-5" style="font-size: 25px;">{{#if order.orderItems}} <span
-                                class="total-amount">{{formatCurrency order.totalPrice}}</span>,000 <u>đ</u>
+                        <div class="col-5 total">{{#if order.orderItems}} <span class="total-amount">{{formatCurrency
+                                order.totalPrice}}</span>,000 <u>đ</u>
                             {{else}} 0 <u>đ</u>
                             {{/if}}</div>
                     </div>

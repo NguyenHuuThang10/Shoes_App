@@ -1,24 +1,56 @@
 document.addEventListener("DOMContentLoaded", function () {
     // sroll header
+    // var prevScrollpos = window.scrollY;
+    // window.onscroll = function () {
+    //     var currentScrollPos = window.scrollY;
+    //     if (prevScrollpos > currentScrollPos) {
+    //         if (currentScrollPos != 0) {
+    //             document.getElementById("navbar").style.top = "0px";
+    //         } else {
+    //             document.getElementById("navbar").style.top = "39px";
+    //         }
+    //     } else {
+
+    //         document.getElementById("navbar").style.top = "-114px";
+    //     }
+    //     prevScrollpos = currentScrollPos;
+    // }
     var prevScrollpos = window.scrollY;
     window.onscroll = function () {
         var currentScrollPos = window.scrollY;
-        if (prevScrollpos > currentScrollPos) {
-            if (currentScrollPos != 0) {
-                document.getElementById("navbar").style.top = "0px";
-            } else{
-                document.getElementById("navbar").style.top = "39px";
+
+        // Kiểm tra nếu màn hình nhỏ hơn 1024px (mobile và tablet)
+        if (window.innerWidth < 1024) {
+            if (prevScrollpos > currentScrollPos) {
+                // Khi cuộn lên
+                if (currentScrollPos !== 0) {
+                    document.getElementById("navbar").style.top = "0px";
+                } else {
+                    document.getElementById("navbar").style.top = "0px"; // Nếu ở đầu trang thì đặt lại 0px
+                }
+            } else {
+                // Khi cuộn xuống
+                document.getElementById("navbar").style.top = "-114px";
             }
-            
-
-            // }
-
         } else {
-
-            document.getElementById("navbar").style.top = "-114px";
+            // Đối với màn hình lớn hơn hoặc bằng 1024px
+            if (prevScrollpos >= currentScrollPos) {
+                // Khi cuộn lên
+                if (currentScrollPos !== 0) {
+                    document.getElementById("navbar").style.top = "0px";
+                } else {
+                    document.getElementById("navbar").style.top = "39px"; // Nếu ở đầu trang thì đặt lại 39px
+                }
+            } else {
+                // Khi cuộn xuống
+                document.getElementById("navbar").style.top = "-114px";
+            }
         }
+
         prevScrollpos = currentScrollPos;
     }
+
+
 
     // slideshow đầu trang
     var image = document.getElementById('image');
@@ -207,5 +239,5 @@ document.addEventListener("DOMContentLoaded", function () {
         filterShoes(searchTerm);
     });
 
-    
+
 });
