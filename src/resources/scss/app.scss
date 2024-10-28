@@ -869,7 +869,6 @@ span#or-text {
 
 .size-option {
   display: flex;
-  flex-wrap: wrap;
 }
 
 .size-option input[type="radio"] {
@@ -1938,6 +1937,7 @@ $c-text: #441151;
 
   .col-countWishlist {
     float: left;
+    text-align: left;
     font-size: 17px;
   }
 
@@ -1964,7 +1964,7 @@ $c-text: #441151;
     margin-top: -90px;
     margin-left: 70%;
   }
-  .price {
+  .price-mob {
     position: absolute;
     margin-top: -48px;
     margin-left: 61%;
