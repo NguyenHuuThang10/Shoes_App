@@ -13,9 +13,10 @@
 
   <!-- main content -->
   <div class="main-content" id="navbar">
+    {{!-- navbar PC --}}
     <nav class="navbar navbar-expand-sm  navbar-light header-client">
       <div class="container-fluid">
-        <a class="navbar-brand" style="margin: 0;" href="/">
+        <a class="navbar-brand" href="/">
           <div class="sparkle u-hover--sparkle">
             <img class="logo-header" src="/img/image-Photoroom.png" alt="">
           </div>
@@ -61,7 +62,7 @@
           </li>
         </ul>
         <!-- Search form -->
-        <form action="/search" method="get">
+        <form action="/search" method="get" class="navbar-search">
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text" id="btnGroupAddon"><i class="fa-solid fa-magnifying-glass fa-beat"></i>
@@ -117,7 +118,7 @@
                       {{#each orderData.orderItems}}
                       <tr>
                         <td style="width: 23%;"><img src="/uploads/{{this.image}}" alt="{{this.name}}"></td>
-                        <td colspan="3">
+                        <td colspan="3" class="cart-item-mobile">
                           <p>{{this.name}}</p>
                           <span style="font-size: 13px;">Kích thước: {{this.size}}</span>
                           <div class="row">
@@ -171,6 +172,75 @@
         {{!-- >>>>>>> frontend --}}
       </div>
     </nav>
+    {{!-- navbar tablet và mobile --}}
+    <div class="navbar-tablet-mobile">
+      <label for="navbar-tablet-input" class="navbars-btn">
+        <i class="fa-solid fa-bars"></i>
+      </label>
+
+      <input type="checkbox" hidden name="" id="navbar-tablet-input" class="nav-input">
+      <label for="navbar-tablet-input" class="nav-overlay"></label>
+
+      <nav class="navbar navbar-tablet">
+        <label for="navbar-tablet-input" class="navbar-tablet-close">
+          <i class="fa-solid fa-xmark"></i>
+        </label>
+
+        <ul class="navbar-nav mr-auto mt-4 mt-lg-0 " id="nav-tablet-list">
+          <li>
+            <input type="checkbox" hidden id="submenu-1" class="submenu-toggle">
+            <label for="submenu-1" class="nav-header nav-link nav-tablet-list-header">
+              <a href="/shoes/shoe-type/giay-cao-got">
+                Giày Nữ
+              </a>
+              <i class="fa-solid fa-chevron-up"></i>
+            </label>
+            <ul class="subnav nav-tablet-list-subnav">
+              <li><a href="/shoes/shoe-type/giay-cao-got">Giày Cao Gót</a></li>
+              <li><a href="/shoes/shoe-type/giay-bup-be">Giày Búp Bê</a></li>
+              <li><a href="/shoes/shoe-type/dep-nu">Dép Nữ</a></li>
+              <li><a href="/shoes/shoe-type/boot-nu">Boot Nữ</a></li>
+            </ul>
+          </li>
+          <li>
+            <input type="checkbox" hidden id="submenu-2" class="submenu-toggle">
+            <label for="submenu-2" class="nav-header nav-link nav-tablet-list-header">
+              <a href="/shoes/shoe-type/giay-tay">
+                Giày Nam
+              </a>
+              <i class="fa-solid fa-chevron-up"></i>
+            </label>
+            <ul class="subnav nav-tablet-list-subnav">
+              <li><a href="/shoes/shoe-type/giay-the-thao">Giày Thể Thao</a></li>
+              <li><a href="/shoes/shoe-type/boot-nam">Boot nam</a></li>
+              <li><a href="/shoes/shoe-type/dep-nam">Dép Nam</a></li>
+              <li><a href="/shoes/shoe-type/giay-tay">Giày Tây & SLip On</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-header nav-link nav-tablet-list-header" href="/shoes/shoe-type/giay-cap">Giày Cặp</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-header nav-link nav-tablet-list-header" href="/shoes/sale">Khuyến mãi</a>
+          </li>
+          <li>
+            <input type="checkbox" hidden id="submenu-3" class="submenu-toggle">
+            <label for="submenu-3" class="nav-header nav-link nav-tablet-list-header">
+              <a href="/blogs">
+                Chia sẻ
+              </a>
+              <i class="fa-solid fa-chevron-up"></i>
+            </label>
+            <ul class="subnav nav-tablet-list-subnav">
+              <li><a href="/blogs/xu-huong-thoi-trang">Xu hướng thời trang</a></li>
+              <li><a href="/blogs/tu-van-chon-size">Tư vấn chọn size</a></li>
+              <li><a href="/blogs/kinh-nghiem-hay">Kinh nghiệm hay</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
   </div>
   <!-- main content -->
 
@@ -266,4 +336,18 @@
         });
     });
   });
+</script>
+{{!-- Đoạn hover giỏ hàng sẽ mất khi ở chế độ Mobile --}}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cartIcon = document.querySelector('.js-btn-cart');
+    
+    cartIcon.addEventListener('click', function(event) {
+        // Kiểm tra kích thước màn hình
+        if (window.innerWidth <= 768) {
+            event.preventDefault(); // Ngăn chặn dropdown mở ra
+            window.location.href = '/shoes/cart'; // Điều hướng tới trang giỏ hàng
+        }
+    });
+});
 </script>
