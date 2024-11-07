@@ -32,13 +32,13 @@ class SiteController {
   async index(req, res, next) {
     try {
       const [shoeHight, shoeHightType, sandal, sandalType, baby, babyType, boot, bootType, discount] = await Promise.all([
-        Shoe.find({ typeDetail: "Giày cao gót" }).limit(6),
+        Shoe.find({ typeDetail: "Giày cao gót", priceDiscount: null }).limit(6),
         Shoe.findOne({ typeDetail: "Giày cao gót" }),
-        Shoe.find({ typeDetail: "Dép nam" }).limit(6),
+        Shoe.find({ typeDetail: "Dép nam", priceDiscount: null }).limit(6),
         Shoe.findOne({ typeDetail: "Dép nam" }),
-        Shoe.find({ typeDetail: "Giày búp bê" }).limit(6),
+        Shoe.find({ typeDetail: "Giày búp bê", priceDiscount: null }).limit(6),
         Shoe.findOne({ typeDetail: "Giày búp bê" }),
-        Shoe.find({ typeDetail: "Boot nam" }).limit(6),
+        Shoe.find({ typeDetail: "Boot nam", priceDiscount: null }).limit(6),
         Shoe.findOne({ typeDetail: "Boot nam" }),
         Shoe.find({ priceDiscount: { $ne: null } }).limit(6)
       ]);

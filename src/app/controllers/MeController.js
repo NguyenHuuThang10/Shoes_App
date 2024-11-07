@@ -71,7 +71,8 @@ class MeController {
       }
       await Shoe.createShoe(req.body);
       req.flash('success', 'Thêm sản phẩm thành công!');
-      res.redirect("/me/stored/shoes"); ///me/stored/shoes
+      res.redirect("back"); 
+      // res.redirect("/me/stored/shoes"); 
     } catch (error) {
       next(error);
     }
