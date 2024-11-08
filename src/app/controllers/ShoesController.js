@@ -123,6 +123,11 @@ class ShoesController {
             model: "User",
           });
 
+        if (order) {
+          order.orderItems = order.orderItems.filter(item => item.shoe);
+          await order.save();
+        }
+
         res.render("shoes/cart", {
           order: mongooseToObject(order),
           cartEmpty: "Giỏ hàng trống!",
