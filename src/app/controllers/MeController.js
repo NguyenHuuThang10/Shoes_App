@@ -55,10 +55,7 @@ class MeController {
           });
           path = path.substring(0, path.lastIndexOf(','));
           req.body.images = path;
-        } else {
-          req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
-          return res.redirect('back')
-        }
+        } 
       } else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
         return res.redirect('back')

@@ -1979,6 +1979,18 @@ $c-text: #441151;
     display: flex;
     justify-content: space-between;
   }
+  .navbars-mob-home {
+    position: absolute;
+    display: block;
+    top: 25%;
+    left: 22%;
+    font-size: 24px;
+    
+  }
+  .navbars-mob-home a {
+    color: #000;
+    text-decoration: none;
+  }
 }
 
 // Tablet: width >= 740px and width < 1024px
@@ -2037,6 +2049,9 @@ $c-text: #441151;
 
   .total {
     font-size: 20px;
+  }
+  .navbars-mob-home {
+    display: none;
   }
 }
 
