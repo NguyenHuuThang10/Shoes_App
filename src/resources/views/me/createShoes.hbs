@@ -8,6 +8,12 @@
             {{err}}
         </div>
         {{/if}}
+
+        {{#if success}}
+        <div class="alert alert-success" role="alert">
+            {{success}}
+        </div>
+        {{/if}}
         <form action="/me/store/shoes" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col mx-sm-3">

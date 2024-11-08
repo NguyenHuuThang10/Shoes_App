@@ -305,8 +305,8 @@ class ShoesController {
               payment_method: "PayPal",
             },
             redirect_urls: {
-              return_url: `http://localhost:3000/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
-              cancel_url: "http://localhost:3000/cancel",
+              return_url:  process.env.APP_URL+`/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
+              cancel_url:  process.env.APP_URL+"/cancel",
             },
             transactions: [
               {
@@ -350,7 +350,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["domestic_card", "account"],
-          "redirecturl": "http://localhost:3000/shoes/my-order"
+          "redirecturl":  process.env.APP_URL+"/shoes/my-order"
         };
 
         const items = [{}];
@@ -400,7 +400,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["vietqr"],
-          "redirecturl": "http://localhost:3000/shoes/my-order",
+          "redirecturl": process.env.APP_URL+"/shoes/my-order",
           "promotioninfo": "",
           "merchantinfo": "embeddata123"
         };
@@ -452,7 +452,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["zalopay_wallet"],
-          "redirecturl": "http://localhost:3000/shoes/my-order"
+          "redirecturl": process.env.APP_URL+"/shoes/my-order"
         };
 
         const items = [{}];
@@ -467,7 +467,7 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://dc2b-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+          callback_url: "https://3265-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
@@ -502,7 +502,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["international_card"],
-          "redirecturl": "http://localhost:3000/shoes/my-order"
+          "redirecturl":  process.env.APP_URL+"/shoes/my-order"
         };
 
         const items = [{}];

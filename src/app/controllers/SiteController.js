@@ -250,11 +250,17 @@ class SiteController {
 
         User.findOne({ _id: decodeToken._id })
           .then((data) => {
-            const countWishlist = data.wishlistItems.length;
-            data = mongooseToObject(data);
-            res.locals.countWishlist = countWishlist;
-            res.locals.currentUser = data;
-            next();
+            if(data) {
+              const countWishlist = data.wishlistItems.length;
+              data = mongooseToObject(data);
+              res.locals.countWishlist = countWishlist;
+              res.locals.currentUser = data;
+              next();
+            } else {
+              // Xóa cookie nếu không tìm thấy User
+              res.clearCookie("token");
+              return res.redirect("/login");
+            }
           })
           .catch((err) => {
             console.log("ERR: " + err);

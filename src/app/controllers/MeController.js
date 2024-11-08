@@ -31,7 +31,8 @@ class MeController {
   // [GET] /me/create/shoes
   createShoes(req, res, next) {
     res.render("me/createShoes", {
-      err: req.flash('err')
+      err: req.flash('err'),
+      success: req.flash('success'),
     });
   }
 
@@ -55,10 +56,7 @@ class MeController {
           });
           path = path.substring(0, path.lastIndexOf(','));
           req.body.images = path;
-        } else {
-          req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
-          return res.redirect('back')
-        }
+        } 
       } else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
         return res.redirect('back')
@@ -384,17 +382,6 @@ class MeController {
         });
       });
 
-      // User.findWithDeleted({ deleted: true })
-      //   .skip(offset)
-      //   .limit(PAGE_SIZE)
-      //   .then((users) => {
-      //     res.render("me/trashUsers", {
-      //       page,
-      //       maxPage,
-      //       users: mutipleMongooseToObject(users),
-      //     });
-      //   })
-      //   .catch(next);
     } catch (error) {
       console.log("ERR: " + error);
     }
