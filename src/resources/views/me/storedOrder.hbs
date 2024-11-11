@@ -2,7 +2,11 @@
     <div class="container-fluid ">
         <div class="content-header">
             <h1 class="mb-3">Quản lý đơn hàng:</h1>
-
+            {{#if err}}
+            <div class="alert alert-danger" role="alert">
+                {{err}}
+            </div>
+            {{/if}}
             {{#if deletedCount}}
             <a class="btn btn-secondary" href="/me/trash/orders"> <i class="fa-solid fa-trash-can"></i> Thùng rác (
                 {{deletedCount}} )</a>

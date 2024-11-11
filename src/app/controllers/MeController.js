@@ -422,6 +422,7 @@ class MeController {
     User.findById(req.params.id)
       .then((user) => {
         res.render("me/editUsers", {
+          err: req.flash("err"),
           user: mongooseToObject(user),
         });
       })
@@ -434,10 +435,8 @@ class MeController {
       const newUser = await User.upadteUser(req.body, req.params.id);
       res.redirect("/me/stored/users");
     } catch (error) {
-      res.render("me/editUsers", {
-        old: req.body,
-        err: error.message,
-      });
+      req.flash("err", error.message);
+      res.redirect("back");
     }
   }
 
@@ -484,6 +483,7 @@ class MeController {
           maxPage,
           deletedCount,
           newUrl: newUrl,
+          err: req.flash("error"),
           orders: mutipleMongooseToObject(orders),
         });
       });
@@ -645,11 +645,18 @@ class MeController {
           model: "User",
         });
 
+        if (order && order.user == null) {
+          await order.deleteOne();
+          req.flash("error", "Người dùng đã bị xóa, đơn hàng đã tự động hủy!")
+          return res.redirect("back");
+        }
+
       res.render("me/orderDetail", {
         order: mongooseToObject(order),
       });
     } catch (error) {
       console.log("ERR OrderDetail: " + error);
+      next(error)
     }
   }
 

@@ -101,7 +101,7 @@ class SiteController {
       })
     }
 
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email , authProvider: 'local'})
       .then((data) => {
         if (data) {
           return res.render("form/userForm", {
@@ -192,7 +192,7 @@ class SiteController {
 
     }
 
-    User.findOne({ email: req.body.email, status: 1 })
+    User.findOne({ email: req.body.email, status: 1 , authProvider: 'local'})
       .then((data) => {
         if (data) {
           const comparePassword = bcrypt.compareSync(password, data.password);
