@@ -25,8 +25,23 @@ class MeController {
   }
 
   // [GET] /me/home
-  index(req, res, next) {
-    res.render("me/home");
+  async index(req, res, next) {
+    try {
+      var countShoe = await Shoe.find({}).countDocuments();
+      var countUser = await User.find({}).countDocuments();
+      var countOrder = await Order.find({}).countDocuments();
+      var countBlog = await Blog.find({}).countDocuments();
+      
+      res.render("me/home", {
+        countShoe,
+        countUser,
+        countOrder,
+        countBlog
+      });
+    } catch (error) {
+      console.log("ERROR: ", error.message())
+      next(error);
+    }
   }
 
   // [GET] /me/create/shoes
@@ -55,8 +70,8 @@ class MeController {
           req.files.images.forEach((file) => {
             pathName += path.basename(file.key) + ',';
           });
-          pathName = pathName.substring(0, pathName.lastIndexOf(','));
-          req.body.images = pathName;
+          path = path.substring(0, path.lastIndexOf(','));
+          req.body.images = path;
         } 
       } else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');

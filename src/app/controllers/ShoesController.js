@@ -370,7 +370,7 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://dc2b-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+          callback_url: process.env.APP_URL + "/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
@@ -422,7 +422,7 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://dc2b-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+          callback_url: process.env.APP_URL + "/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
@@ -472,7 +472,7 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://3265-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+          callback_url: process.env.APP_URL + "/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item
@@ -522,7 +522,7 @@ class ShoesController {
           amount: totalPrice,
           description: `Thanh toán đơn hàng #${transID}`,
           bank_code: "",
-          callback_url: "https://dc2b-171-252-155-81.ngrok-free.app/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
+          callback_url: process.env.APP_URL + "/shoes/callback?id=" + orderId + "&paymethod=" + paymentMethod
         };
 
         // appid|app_trans_id|appuser|amount|apptime|embeddata|item

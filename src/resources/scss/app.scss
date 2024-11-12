@@ -1955,19 +1955,18 @@ $c-text: #441151;
   }
 
   .col-itemPri-mob {
-    position: absolute;
     margin-top: -128px;
-    margin-left: 68%;
+    display: flex;
+    justify-content: flex-end;
+  
   }
   .col-shipPri-mob {
-    position: absolute;
-    margin-top: -90px;
-    margin-left: 70%;
+    display: flex;
+    justify-content: flex-end;
   }
   .price-mob {
-    position: absolute;
-    margin-top: -48px;
-    margin-left: 61%;
+    display: flex;
+    justify-content: flex-end;
     font-size: 20px;
   }
 
@@ -1978,6 +1977,18 @@ $c-text: #441151;
   .col-small-mob {
     display: flex;
     justify-content: space-between;
+  }
+  .navbars-mob-home {
+    position: absolute;
+    display: block;
+    top: 25%;
+    left: 22%;
+    font-size: 24px;
+    
+  }
+  .navbars-mob-home a {
+    color: #000;
+    text-decoration: none;
   }
 }
 
@@ -2037,6 +2048,9 @@ $c-text: #441151;
 
   .total {
     font-size: 20px;
+  }
+  .navbars-mob-home {
+    display: none;
   }
 }
 
