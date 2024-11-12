@@ -4,9 +4,9 @@ const createUploadMiddleware = require('../app/middlewares/upload')
 
 const meController = require("../app/controllers/MeController");
 
-const uploadBlog = createUploadMiddleware('../../public/uploads/blogs')
-const uploadPage = createUploadMiddleware('../../public/uploads/pages')
-const upload = createUploadMiddleware('../../public/uploads')
+const uploadBlog = createUploadMiddleware('blogs')
+const uploadPage = createUploadMiddleware('pages')
+const upload = createUploadMiddleware('shoes')
 
 router.put("/:id/edit/pages", meController.checkLoginAdmin, uploadPage.single('avatar'), meController.updatePages);
 router.get("/:id/edit/pages", meController.checkLoginAdmin, meController.editPages);

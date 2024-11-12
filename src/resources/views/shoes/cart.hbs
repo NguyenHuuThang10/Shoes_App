@@ -50,17 +50,11 @@
                             <div class="row">
 
                                 <div class="col-md-3 col-sm-3">
-                                    <a href="/shoes/{{this.shoe.slug}}"><img src="/uploads/{{this.image}}" alt="" width="100%"></a>
+                                    <a href="/shoes/{{this.shoe.slug}}"><img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}" alt="" width="100%"></a>
                                 </div>
                                 <div class="col-md-9 col-sm-9">
                                     <a style="color: #000;" href="/shoes/{{this.shoe.slug}}"><b>{{this.name}}</b></a>
                                      <br>
-
-                                {{!-- <div class="col-md-3 col-sm-3">
-                                    <img src="/uploads/{{this.image}}" alt="" width="100%">
-                                </div>
-                                <div class="col-md-9 col-sm-9">
-                                    <b>{{this.name}}</b> <br> --}}
 
                                 </div>
                             </div>
@@ -100,7 +94,7 @@
             {{#each order.orderItems}}
             <div class="cart-item-mob">
                 <div class="item-image-mob">
-                    <img src="/uploads/{{this.image}}" alt="">
+                    <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}" alt="">
                 </div>
                 <div class="item-info-mob">
                     <b>{{this.name}}</b>
@@ -255,7 +249,7 @@
                     {{#each order.orderItems}}
                     <div class="cart-item mt-2">
                         <div class="product-image-container">
-                            <img src="/uploads/{{this.image}}" alt="Product Image" class="product-image">
+                            <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}" alt="Product Image" class="product-image">
                         </div>
                         <div class="cart-item-details">
                             <h4>{{this.name}}</h4>
@@ -377,7 +371,7 @@
                     {{#each order.orderItems}}
                     <div class="cart-item mt-2">
                         <div class="product-image-container">
-                            <img src="/uploads/{{this.image}}" alt="Product Image" class="product-image">
+                            <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}" alt="Product Image" class="product-image">
                         </div>
                         <div class="cart-item-details">
                             <h4>{{this.name}}</h4>

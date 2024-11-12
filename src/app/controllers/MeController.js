@@ -3,6 +3,7 @@ const User = require("../models/User");
 const Order = require("../models/Order");
 const Blog = require("../models/Blog");
 const Page = require("../models/Page");
+const path = require("path");
 const url = require('url')
 const { URL, URLSearchParams } = require('url');
 const {
@@ -42,7 +43,7 @@ class MeController {
       if (req.files) {
         // Kiểm tra nếu req.files.image tồn tại
         if (req.files.image && req.files.image.length > 0) {
-          req.body.image = req.files.image[0].filename;
+          req.body.image = path.basename(req.files.image[0].key);
         } else {
           req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
           return res.redirect('back')
@@ -50,12 +51,12 @@ class MeController {
 
         // Kiểm tra nếu req.files.images tồn tại và không rỗng
         if (req.files.images && req.files.images.length > 0) {
-          let path = '';
+          let pathName = '';
           req.files.images.forEach((file) => {
-            path += file.filename + ',';
+            pathName += path.basename(file.key) + ',';
           });
-          path = path.substring(0, path.lastIndexOf(','));
-          req.body.images = path;
+          pathName = pathName.substring(0, pathName.lastIndexOf(','));
+          req.body.images = pathName;
         } 
       } else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
@@ -176,17 +177,6 @@ class MeController {
         });
       });
 
-      // Shoe.findWithDeleted({ deleted: true })
-      //   .skip(offset)
-      //   .limit(PAGE_SIZE)
-      //   .then((shoes) => {
-      //     res.render("me/trashShoes", {
-      //       page,
-      //       maxPage,
-      //       shoes: mutipleMongooseToObject(shoes),
-      //     });
-      //   })
-      //   .catch(next);
     } catch (error) {
       console.log("ERR: " + error);
     }
@@ -216,17 +206,17 @@ class MeController {
       if (req.files) {
         // Kiểm tra nếu req.files.image tồn tại
         if (req.files.image && req.files.image.length > 0) {
-          req.body.image = req.files.image[0].filename;
+          req.body.image = path.basename(req.files.image[0].key);
         }
 
         // Kiểm tra nếu req.files.images tồn tại và không rỗng
         if (req.files.images && req.files.images.length > 0) {
-          let path = '';
+          let pathName = '';
           req.files.images.forEach((file) => {
-            path += file.filename + ',';
+            pathName += path.basename(file.key) + ',';
           });
-          path = path.substring(0, path.lastIndexOf(','));
-          req.body.images = path;
+          pathName = pathName.substring(0, pathName.lastIndexOf(','));
+          req.body.images = pathName;
         }
       }
 
@@ -676,7 +666,7 @@ class MeController {
       req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
       return res.redirect('back')
     } else {
-      req.body.avatar = req.file.filename;
+      req.body.avatar = path.basename(req.files.image[0].key);
     }
 
     var newBlog = new Blog(req.body)
@@ -866,7 +856,7 @@ class MeController {
       }
 
       if (req.file) {
-        req.body.avatar = req.file.filename;
+        req.body.avatar = path.basename(req.files.image[0].key);
       }
 
       if (blogId) {
@@ -892,7 +882,7 @@ class MeController {
   //[POST] /me/create/pages
   storePages(req, res, next) {
     if (req.file) {
-      req.body.avatar = req.file.filename;
+      req.body.avatar = path.basename(req.files.image[0].key);
     }
 
     var newPage = new Page(req.body)
@@ -1083,7 +1073,7 @@ class MeController {
       }
 
       if (req.file) {
-        req.body.avatar = req.file.filename;
+        req.body.avatar = path.basename(req.files.image[0].key);
       }
 
       if (pageId) {

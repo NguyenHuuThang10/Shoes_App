@@ -7,8 +7,8 @@
                     <span class="pro-sale">SALE<br> OFF </span>
                 </div>
                 {{/if}}
-                <a href="/uploads/{{shoe.image}}" data-fancybox="gallery">
-                    <img src="/uploads/{{shoe.image}}" alt="{{shoe.name}}" width="100%" />
+                <a href="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{shoe.image}}" data-fancybox="gallery">
+                    <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{shoe.image}}" alt="{{shoe.name}}" width="100%" />
                 </a>
             </div>
             {{#if imageArr}}
@@ -16,9 +16,9 @@
                 <ul>
                     {{#each imageArr}}
                     <li class="w-30">
-                        <a href="/uploads/{{this}}" data-fancybox="gallery"
-                            data-media="(max-width: 799px);(min-width: 800px)" data-sources="/uploads/{{this}}">
-                            <img src="/uploads/{{this}}" alt="Image 2" />
+                        <a href="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this}}" data-fancybox="gallery"
+                            data-media="(max-width: 799px);(min-width: 800px)" data-sources="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this}}">
+                            <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this}}" alt="Image 2" />
                         </a>
                     </li>
                     {{/each}}
