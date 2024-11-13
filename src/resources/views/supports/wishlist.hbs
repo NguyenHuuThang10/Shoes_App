@@ -21,8 +21,19 @@
                         <div class="col-md-9">
                             <div class="card-body">
                                 <h2 class="card-title col-namewish-mob">{{this.shoe.name}}</h2>
-                                <p class="card-text"><b>Giá:</b> {{this.shoe.price}}.000 VND</p>
-                                {{!-- <p class="card-text"><b>Size:</b> {{this.size}}</p> --}}
+                                {{#if this.shoe.priceDiscount}}
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <p class="card-text"><b>Giá:</b> <del>{{this.shoe.price}}.000 VND</del></p>
+                                        </div>
+                                        <div class="col">
+                                            <p style="color: red; font-weight: bold;" class="card-text">{{this.shoe.priceDiscount}}.000 VND</p>
+                                        </div>
+                                    </div>
+                                {{else}}
+                                    <p class="card-text"><b>Giá:</b> {{this.shoe.price}}.000 VND</p>
+                                {{/if}}
+
                                 <select name="size" class="form-control size" id="">
                                     <option {{#ifEquals this.size "36" }}selected{{/ifEquals}} value="36">36</option>
                                     <option {{#ifEquals this.size "37" }}selected{{/ifEquals}} value="37">37</option>

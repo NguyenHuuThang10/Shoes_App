@@ -58,18 +58,7 @@
             </ul>
           </li>
         </ul>
-        <!-- Search form -->
-        {{!-- <form action="/search" method="get" class="navbar-search">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text" id="btnGroupAddon"><i class="fa-solid fa-magnifying-glass fa-beat"></i>
-              </div>
-            </div>
-            <input type="text" class="form-control" placeholder="Tìm kiếm" name="keyWord"
-              aria-describedby="btnGroupAddon" id="search-input">
-            <div id="suggestions" class="suggestions-box"></div> <!-- Thêm div này -->
-          </div>
-        </form> --}}
+
 
 
         <div class="icon-header">
@@ -123,7 +112,12 @@
                               <p style="font-size: 13px;">Số lượng: {{this.amount}}</p>
                             </div>
                             <div class="col">
-                              <p class="item-price">{{this.price}},000 <u>đ</u></p>
+                              {{#if this.shoe.priceDiscount}}
+                                <p class="item-price"><del>{{this.shoe.price}},000 <u>đ</u></del></p>
+                                <p style="color: red; font-weight: bold;" class="item-price">{{this.price}},000 <u>đ</u></p>
+                              {{else}}
+                                <p class="item-price">{{this.price}},000 <u>đ</u></p>
+                              {{/if}}
                             </div>
                           </div>
                         </td>

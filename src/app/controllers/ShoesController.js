@@ -156,6 +156,10 @@ class ShoesController {
         if (!order) {
           Shoe.findOne({ _id: shoeId })
             .then((shoe) => {
+              let price = shoe.price;
+              if (shoe.priceDiscount) {
+                price = shoe.priceDiscount
+              }
               const newOrder = new Order({
                 orderItems: [
                   {
@@ -163,7 +167,7 @@ class ShoesController {
                     size: size,
                     amount: amount,
                     image: shoe.image,
-                    price: shoe.price,
+                    price: price,
                     shoe: shoe._id,
                   },
                 ],
@@ -194,12 +198,16 @@ class ShoesController {
             existingOrderItem.amount += amoutNum;
           } else {
             const shoe = await Shoe.findOne({ _id: shoeId });
+            let price = shoe.price;
+            if (shoe.priceDiscount) {
+              price = shoe.priceDiscount
+            }
             order.orderItems.push({
               name: shoe.name,
               size: size,
               amount: amount,
               image: shoe.image,
-              price: shoe.price,
+              price: price,
               shoe: shoe._id,
             });
           }
@@ -310,8 +318,8 @@ class ShoesController {
               payment_method: "PayPal",
             },
             redirect_urls: {
-              return_url:  process.env.APP_URL+`/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
-              cancel_url:  process.env.APP_URL+"/cancel",
+              return_url: process.env.APP_URL + `/shoes/pay-success?totalAmount=${totalAmount}&orderId=${orderId}`,
+              cancel_url: process.env.APP_URL + "/cancel",
             },
             transactions: [
               {
@@ -355,7 +363,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["domestic_card", "account"],
-          "redirecturl":  process.env.APP_URL+"/shoes/my-order"
+          "redirecturl": process.env.APP_URL + "/shoes/my-order"
         };
 
         const items = [{}];
@@ -405,7 +413,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["vietqr"],
-          "redirecturl": process.env.APP_URL+"/shoes/my-order",
+          "redirecturl": process.env.APP_URL + "/shoes/my-order",
           "promotioninfo": "",
           "merchantinfo": "embeddata123"
         };
@@ -457,7 +465,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["zalopay_wallet"],
-          "redirecturl": process.env.APP_URL+"/shoes/my-order"
+          "redirecturl": process.env.APP_URL + "/shoes/my-order"
         };
 
         const items = [{}];
@@ -507,7 +515,7 @@ class ShoesController {
 
         const embed_data = {
           "preferred_payment_method": ["international_card"],
-          "redirecturl":  process.env.APP_URL+"/shoes/my-order"
+          "redirecturl": process.env.APP_URL + "/shoes/my-order"
         };
 
         const items = [{}];

@@ -234,7 +234,7 @@ class SiteController {
       if (token) {
         var decodeToken = jwt.verify(token, "nht");
 
-        const order = await Order.findOne({ user: decodeToken._id, paymentMethod: null});
+        const order = await Order.findOne({ user: decodeToken._id, paymentMethod: null}).populate("orderItems.shoe");
         let countOrder = 0;
         if(order){
           order.orderItems.forEach(data => {
@@ -375,7 +375,7 @@ class SiteController {
 
     var passwordHash = bcrypt.hashSync(password, 10);
 
-    User.updateOne({ email }, { password: passwordHash })
+    User.updateOne({ email, authProvider: 'local', status: 1 }, { password: passwordHash })
       .then(data => {
         if (data) {
           res.redirect('/login')
