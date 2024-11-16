@@ -70,8 +70,8 @@ class MeController {
           req.files.images.forEach((file) => {
             pathName += path.basename(file.key) + ',';
           });
-          path = path.substring(0, path.lastIndexOf(','));
-          req.body.images = path;
+          pathName = pathName.substring(0, pathName.lastIndexOf(','));
+          req.body.images = pathName;
         } 
       } else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
