@@ -31,12 +31,84 @@ class MeController {
       var countUser = await User.find({}).countDocuments();
       var countOrder = await Order.find({}).countDocuments();
       var countBlog = await Blog.find({}).countDocuments();
-      
+
+      // Lấy số lượng từng loại sản phẩm
+      const shoeTypesArr = [
+        "Giày thể thao",
+        "Boot nam",
+        "Dép nam",
+        "Giày tây",
+        "Giày cao gót",
+        "Giày búp bê",
+        "Dép nữ",
+        "Boot nữ"
+      ];
+      const shoeCountsArr = await Promise.all(
+        shoeTypesArr.map(async (type) => {
+          const count = await Shoe.find({ typeDetail: type }).countDocuments();
+          return count;
+        })
+      );
+      const shoeCountsStr = shoeCountsArr.join(', ');
+      // END
+
+      // Lấy số lượng từng loại phương thức thanh toán
+      const paymentMethodArr = ["COD",
+        "ATM",
+        "ZaloPayQR",
+        "Visa",
+        "PayPal",
+        "VietQR"];
+      const paymentCountsArr = await Promise.all(
+        paymentMethodArr.map(async (payment) => {
+          const count = await Order.find({ paymentMethod: payment }).countDocuments();
+          return count;
+        })
+      );
+      const paymentCountsStr = paymentCountsArr.join(', ');
+      // END
+
+       // Tính tổng số tiền theo từng tháng
+    const monthlyTotalPrice = await Order.aggregate([
+      {
+        $match: {
+          totalPrice: { $exists: true },
+          paidAt: { $ne: null }, // Kiểm tra các đơn đã thanh toán
+        },
+      },
+      {
+        $project: {
+          year: { $year: "$paidAt" }, // Lấy năm
+          month: { $month: "$paidAt" }, // Lấy tháng
+          totalPrice: 1,
+        },
+      },
+      {
+        $group: {
+          _id: { year: "$year", month: "$month" },
+          total: { $sum: "$totalPrice" },
+        },
+      },
+      {
+        $sort: { "_id.year": 1, "_id.month": 1 }, // Sắp xếp theo năm và tháng
+      },
+    ]);
+
+    // Xử lý kết quả để tạo chuỗi tháng và tổng doanh thu
+    const monthsArr = monthlyTotalPrice.map(item => `Tháng ${item._id.month}`);
+    const totalRevenueArr = monthlyTotalPrice.map(item => (item.total+"000"));
+    const monthsStr = monthsArr.join(', ');
+    const totalRevenueStr = totalRevenueArr.join(', ');
+
       res.render("me/home", {
         countShoe,
         countUser,
         countOrder,
-        countBlog
+        countBlog,
+        shoeCountsStr,
+        paymentCountsStr,
+        monthsStr,
+        totalRevenueStr
       });
     } catch (error) {
       console.log("ERROR: ", error.message())
@@ -72,7 +144,7 @@ class MeController {
           });
           pathName = pathName.substring(0, pathName.lastIndexOf(','));
           req.body.images = pathName;
-        } 
+        }
       } else {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!');
         return res.redirect('back')
@@ -85,7 +157,7 @@ class MeController {
       }
       await Shoe.createShoe(req.body);
       req.flash('success', 'Thêm sản phẩm thành công!');
-      res.redirect("back"); 
+      res.redirect("back");
       // res.redirect("/me/stored/shoes"); 
     } catch (error) {
       next(error);
@@ -536,7 +608,7 @@ class MeController {
       const isCheckPhone = regPhone.test(phone);
 
 
-      if (!fullName || !phone || !cityName || !districtName || !wardName || !address || !paymentMethod || !status ) {
+      if (!fullName || !phone || !cityName || !districtName || !wardName || !address || !paymentMethod || !status) {
         return res.render("me/editOrder", {
           err: "Vui lòng nhập đầy đủ thông tin!",
           old: { fullName, phone, city, district, ward, cityName, districtName, wardName, address, paymentMethod, isPaid, isDelivered, status }
@@ -650,11 +722,11 @@ class MeController {
           model: "User",
         });
 
-        if (order && order.user == null) {
-          await order.deleteOne();
-          req.flash("error", "Người dùng đã bị xóa, đơn hàng đã tự động hủy!")
-          return res.redirect("back");
-        }
+      if (order && order.user == null) {
+        await order.deleteOne();
+        req.flash("error", "Người dùng đã bị xóa, đơn hàng đã tự động hủy!")
+        return res.redirect("back");
+      }
 
       res.render("me/orderDetail", {
         order: mongooseToObject(order),
