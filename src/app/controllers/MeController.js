@@ -962,7 +962,8 @@ class MeController {
   // [GET] /me/create/pages
   createPages(req, res, next) {
     res.render('me/createPages', {
-      success: req.flash('success')
+      success: req.flash('success'),
+      err: req.flash('err')
     })
   }
 
@@ -970,6 +971,12 @@ class MeController {
   storePages(req, res, next) {
     if (req.file) {
       req.body.avatar = path.basename(req.files.image[0].key);
+    }
+    const { title, category, content} = req.body;
+
+    if( !title || !category || !content) {
+        req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
+        return res.redirect('back')
     }
 
     var newPage = new Page(req.body)
