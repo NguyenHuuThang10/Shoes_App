@@ -84,7 +84,7 @@ class ShoesController {
         wishlistItemIds = user.wishlistItems.map(item => item.shoe._id.toString());
       }
 
-      Shoe.find({ slugType: type })
+      Shoe.find({ slugType: type, quantity: {$ne: "0"} })
         .skip(offset)
         .limit(PAGE_SIZE)
         .then(shoes => {
@@ -678,7 +678,9 @@ class ShoesController {
         .then(data => {
           res.render('shoes/myOrder', {
             user: res.locals.currentUser,
-            orders: mutipleMongooseToObject(data)
+            orders: mutipleMongooseToObject(data),
+            err: req.flash('err'),
+            success: req.flash('success')
           })
         })
         .catch(err => {
@@ -718,8 +720,28 @@ class ShoesController {
   // [DELETE] /shoes/my-order/:id/delete
   async deleteOrder(req, res, next) {
     try {
-      await Order.deleteOne({ _id: req.params.id });
-      res.redirect("back");
+      const orderId = req.params.id;
+      if(orderId){
+        const order = await Order.findById({ _id: orderId });
+
+        if (order) {
+          // Kiểm tra trạng thái đơn hàng
+          if (order.status === "Đang giao hàng") {
+            req.flash("err", "Đơn hàng của bạn hiện đang được giao, vì vậy bạn không thể hủy đơn hàng vào lúc này.");
+            return res.redirect("back"); 
+          }
+        } else {
+          req.flash("err", "Đơn hàng không tồn tại!");
+          return res.redirect("back"); 
+        }
+      }
+      
+      await Order.updateOne(
+        { _id: orderId },
+        { status: "Đã hủy" }
+      )
+      req.flash("success", "Đơn hàng của bạn đã được hủy.");
+      return res.redirect("back");
     } catch (error) {
       console.log("ERR: " + error)
       next(error);

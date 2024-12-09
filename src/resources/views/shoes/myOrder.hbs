@@ -28,7 +28,17 @@
         </div>
 
         <div class="col-md-9 shadow p-3 mb-5 bg-white rounded box-profile">
-            <h2>Đơn hàng của tôi</h2>
+            <h2>Đơn hàng của tôi</h2> 
+            {{#if err}}
+            <div class="alert alert-danger" role="alert">
+                {{err}}
+            </div>
+            {{/if}}
+            {{#if success}}
+            <div class="alert alert-success" role="alert">
+                {{success}}
+            </div>
+            {{/if}}
             <hr>
             {{#each orders}}
             <div class="card mt-2">
@@ -84,11 +94,12 @@
                         </div>
                         <div class="row text-right">
                             <div class="col-12 text-right">
-                                <button type="button" class="btn btn-outline-info mr-2"><a class="text-dark" href="/shoes/my-order-detail/{{this._id}}"
-                                        style="text-decoration: none">Xem chi tiết</a></button>
-                                <button type="button" class="btn btn-outline-info">
-                                    <a class="text-dark btn-delete-order" href="#" style="text-decoration: none" data-id="{{this._id}}">Hủy đơn hàng</a>
-                                </button>
+                                <a class="text-dark btn btn-outline-info mr-2" href="/shoes/my-order-detail/{{this._id}}"
+                                        style="text-decoration: none">Xem chi tiết</a>
+                                {{#ifNotEqualsOr this.status "Đã hủy" "Đã giao hàng"}}
+                                <a href="#" class="btn btn-outline-info text-dark btn-delete-order" data-id="{{this._id}}"
+                                        data-toggle="modal" data-target="#delete_myorder_model" style="text-decoration: none">Hủy đơn hàng</a>
+                                {{/ifNotEqualsOr}}
                             </div>
                         </div>
                     </div>
@@ -100,21 +111,44 @@
     </div>
 </div>
 
+<!-- Modal confirm delete shoe -->
+<div id="delete_myorder_model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bạn có chắc muốn hủy đơn hàng?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Hành động không thể khôi phục. Đơn hàng của bạn sẽ bị hủy!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-myorder" type="button" class="btn btn-danger">Xác nhận</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form name="delete-order-form" method="POST"></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var btnDeleteOrders = document.querySelectorAll('.btn-delete-order');
         var deleteOrderForm = document.forms['delete-order-form'];
+        var btnDeleteMyOrder = document.getElementById('btn-delete-myorder')
+        var orderItemId
 
-        btnDeleteOrders.forEach(function (btnDeleteOrder) {
-            var orderItemId = $(btnDeleteOrder).data('id');
+        $('#delete_myorder_model').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            orderItemId = button.data('id')
+        })
 
-            btnDeleteOrder.onclick = function () {
-                deleteOrderForm.action = '/shoes/my-order/' + orderItemId + '/delete?_method=DELETE';
-                deleteOrderForm.submit();
-            };
-        });
+        btnDeleteMyOrder.onclick = function () {
+            deleteOrderForm.action = '/shoes/my-order/' + orderItemId + '/delete?_method=DELETE';
+            deleteOrderForm.submit();
+        };
     })
 
 </script>

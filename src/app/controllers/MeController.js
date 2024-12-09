@@ -753,7 +753,7 @@ class MeController {
       req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
       return res.redirect('back')
     } else {
-      req.body.avatar = path.basename(req.files.image[0].key);
+      req.body.avatar = path.basename(req.file.key);
     }
 
     var newBlog = new Blog(req.body)
@@ -943,7 +943,7 @@ class MeController {
       }
 
       if (req.file) {
-        req.body.avatar = path.basename(req.files.image[0].key);
+        req.body.avatar = path.basename(req.file.key);
       }
 
       if (blogId) {
@@ -970,7 +970,7 @@ class MeController {
   //[POST] /me/create/pages
   storePages(req, res, next) {
     if (req.file) {
-      req.body.avatar = path.basename(req.files.image[0].key);
+      req.body.avatar = path.basename(req.file.key);
     }
     const { title, category, content} = req.body;
 
@@ -1167,7 +1167,7 @@ class MeController {
       }
 
       if (req.file) {
-        req.body.avatar = path.basename(req.files.image[0].key);
+        req.body.avatar = path.basename(req.file.key);
       }
 
       if (pageId) {

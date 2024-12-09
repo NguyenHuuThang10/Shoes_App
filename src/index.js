@@ -73,8 +73,17 @@ app.engine(
       sum: (a, b) => a + b,
       multi: (a, b) => a * b,
       ifEquals: function (arg1, arg2, options) {
-        // Chuyển đổi header của client thành header của admin
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+      },
+      ifNotEquals: function (arg1, arg2, options) {
+        return arg1 !== arg2 ? options.fn(this) : options.inverse(this);
+      },
+      ifNotEqualsOr: function (arg1, arg2, arg3, options) {
+        if (arg1 !== arg2 && arg1 !== arg3) {
+          return options.fn(this);
+        } else {
+          return options.inverse(this);
+        }
       },
       eachPage: function (page, maxPage, newUrl, options) {
         let result = '';

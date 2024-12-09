@@ -50,11 +50,13 @@
                             <div class="row">
 
                                 <div class="col-md-3 col-sm-3">
-                                    <a href="/shoes/{{this.shoe.slug}}"><img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}" alt="" width="100%"></a>
+                                    <a href="/shoes/{{this.shoe.slug}}"><img
+                                            src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}"
+                                            alt="" width="100%"></a>
                                 </div>
                                 <div class="col-md-9 col-sm-9">
                                     <a style="color: #000;" href="/shoes/{{this.shoe.slug}}"><b>{{this.name}}</b></a>
-                                     <br>
+                                    <br>
 
                                 </div>
                             </div>
@@ -127,7 +129,7 @@
             </table>
             {{/if}}
         </div>
-        <form method="post" action="/shoes/update-cart/{{order._id}}">
+        <form method="post" class="form-update-cart" action="/shoes/update-cart/{{order._id}}">
             <div class="row">
                 <div class="col-md-7 col-sm-5 note-orders">
                     <label for="note" class="note-label">Ghi chú đơn hàng</label>
@@ -185,17 +187,16 @@
                 <div class="cart-address">
                     <h1>Thông tin đặt hàng</h1>
                     <div class="form-group">
-                        <input type="text" required id="name" name="fullName" value="{{currentUser.name}}"
-                            placeholder="Họ tên">
+                        <input type="text" id="name" name="fullName" value="{{currentUser.name}}" placeholder="Họ tên">
                     </div>
 
                     <div class="form-group">
-                        <input type="text" required id="phone" name="phone" value="{{currentUser.phone}}"
+                        <input type="text" id="phone" name="phone" value="{{currentUser.phone}}"
                             placeholder="Số điện thoại">
                     </div>
 
                     <div class="form-group">
-                        <select name="city" id="city" class="form-control" required>
+                        <select name="city" id="city" class="form-control">
                             <option value="">Chọn Tỉnh/Thành</option>
                             <!-- Dữ liệu sẽ được load từ API -->
                             {{#if currentUser.shippingAddress.cityName}}
@@ -206,7 +207,7 @@
                             value="{{#if currentUser.shippingAddress.cityName}}{{currentUser.shippingAddress.cityName}}{{/if}}">
                     </div>
                     <div class="form-group">
-                        <select name="district" id="district" class="form-control" required>
+                        <select name="district" id="district" class="form-control">
                             <option value="">Chọn Quận/Huyện</option>
                             <!-- Dữ liệu sẽ được load từ API sau khi chọn Tỉnh/Thành -->
                             {{#if currentUser.shippingAddress.districtName}}
@@ -219,7 +220,7 @@
                     </div>
 
                     <div class="form-group">
-                        <select name="ward" id="ward" class="form-control" required>
+                        <select name="ward" id="ward" class="form-control">
                             <option value="">Chọn Phường/Xã</option>
                             <!-- Dữ liệu sẽ được load từ API sau khi chọn Quận/Huyện -->
                             {{#if currentUser.shippingAddress.wardName}}
@@ -234,8 +235,7 @@
                     <div class="form-group">
                         <input type="text" name="address" id="address"
                             placeholder="Địa chỉ cụ thể: Số nhà, Tên đường..."
-                            value="{{#if currentUser.shippingAddress.address}}{{currentUser.shippingAddress.address}}{{/if}}"
-                            required>
+                            value="{{#if currentUser.shippingAddress.address}}{{currentUser.shippingAddress.address}}{{/if}}">
                     </div>
 
                     <button type="button" class="btn cart-button" id="btn-back-to-step1">Giỏ hàng</button>
@@ -249,7 +249,8 @@
                     {{#each order.orderItems}}
                     <div class="cart-item mt-2">
                         <div class="product-image-container">
-                            <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}" alt="Product Image" class="product-image">
+                            <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}"
+                                alt="Product Image" class="product-image">
                         </div>
                         <div class="cart-item-details">
                             <h4>{{this.name}}</h4>
@@ -371,7 +372,8 @@
                     {{#each order.orderItems}}
                     <div class="cart-item mt-2">
                         <div class="product-image-container">
-                            <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}" alt="Product Image" class="product-image">
+                            <img src="https://my-shoes-app-s3.s3.ap-southeast-1.amazonaws.com/shoes/{{this.image}}"
+                                alt="Product Image" class="product-image">
                         </div>
                         <div class="cart-item-details">
                             <h4>{{this.name}}</h4>
@@ -494,7 +496,7 @@
 
                             document.querySelector(".shopping-cart p b").innerText = `${totalAmount} sản phẩm`;
                             document.querySelector(".count-badge").innerText = `${totalAmount}`;
-                            
+
                             const itemsPriceElements = document.querySelectorAll(".items-price");
                             itemsPriceElements.forEach(el => {
                                 el.innerText = `${formatCurrency(itemsPrice)}`;
@@ -732,6 +734,35 @@
         wardSelect.addEventListener('change', function () {
             const wardName = this.options[this.selectedIndex].text; // Lấy tên Phường/Xã
             document.getElementById('wardName').value = wardName; // Gán vào input hidden
+        });
+
+        // Kiểm tra thông tin giao hàng
+        function checkDeliveryInfo() {
+            const formNameValue = document.getElementById('name').value.trim();
+            const formPhoneValue = document.getElementById('phone').value.trim();
+            const formAddressValue = document.getElementById('address').value.trim();
+            const formCityValue = document.getElementById('cityName').value.trim();
+            const formDistrictValue = document.getElementById('districtName').value.trim();
+            const formWarmValue = document.getElementById('wardName').value.trim();
+
+            if (formNameValue == "" || formPhoneValue == "" || formAddressValue == "" || formCityValue == "" || formDistrictValue == "" || formWarmValue == "") {
+                return false;
+            }
+            return true;
+        }
+
+        function checkPhone() {
+            const regPhone = /^0\d{9}$/;
+            const formPhoneValue = document.getElementById('phone').value.trim();
+            return regPhone.test(formPhoneValue);
+        }
+
+        const completeOrderForm = document.querySelector('.form-update-cart');
+        completeOrderForm.addEventListener('submit', function (event) {
+            if (!checkDeliveryInfo() || !checkPhone()) {
+                event.preventDefault(); 
+                alert('Vui lòng kiểm tra lại thông tin giao hàng!');
+            }
         });
     });
 </script>

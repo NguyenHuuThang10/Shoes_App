@@ -34,8 +34,8 @@
                     <th scope="col">TT thanh toán
                         {{{sortable 'isPaid' _sort}}}
                     </th>
-                    <th scope="col">TT giao hàng
-                        {{{sortable 'isDelivered' _sort}}}
+                    <th scope="col">TT đơn hàng
+                        {{{sortable 'status' _sort}}}
                     </th>
                     <th scope="col">Tổng giá
                         {{{sortable 'totalPrice' _sort}}}
@@ -55,7 +55,7 @@
                     <td>{{this.shippingAddress.phone}}</td>
                     <td>{{this.shippingAddress.cityName}}</td>
                     <td>{{#ifEquals this.isPaid false}} Chưa thanh toán {{else}} Đã thanh toán {{/ifEquals}}</td>
-                    <td>{{#ifEquals this.isDelivered false}} Chưa giao hàng {{else}} Đã giao hàng {{/ifEquals}}</td>
+                    <td>{{this.status}}</td>
                     <td>{{formatCurrency this.totalPrice}},000 <u>đ</u></td>
                     <td>{{formatDate this.createdAt "Asia/Ho_Chi_Minh" "DD-MM-YYYY H:m:s"}}</td>
                     <td><a class="btn btn-info" href="/me/stored/order-detail/{{this._id}}"> Xem chi tiết </a></td>

@@ -32,15 +32,15 @@ class SiteController {
   async index(req, res, next) {
     try {
       const [shoeHight, shoeHightType, sandal, sandalType, baby, babyType, boot, bootType, discount] = await Promise.all([
-        Shoe.find({ typeDetail: "Giày cao gót", priceDiscount: null }).limit(6),
+        Shoe.find({ typeDetail: "Giày cao gót", priceDiscount: null, quantity: {$ne: "0"} }).limit(6),
         Shoe.findOne({ typeDetail: "Giày cao gót" }),
-        Shoe.find({ typeDetail: "Dép nam", priceDiscount: null }).limit(6),
+        Shoe.find({ typeDetail: "Dép nam", priceDiscount: null, quantity: {$ne: "0"} }).limit(6),
         Shoe.findOne({ typeDetail: "Dép nam" }),
-        Shoe.find({ typeDetail: "Giày búp bê", priceDiscount: null }).limit(6),
+        Shoe.find({ typeDetail: "Giày búp bê", priceDiscount: null, quantity: {$ne: "0"} }).limit(6),
         Shoe.findOne({ typeDetail: "Giày búp bê" }),
-        Shoe.find({ typeDetail: "Boot nam", priceDiscount: null }).limit(6),
+        Shoe.find({ typeDetail: "Boot nam", priceDiscount: null, quantity: {$ne: "0"} }).limit(6),
         Shoe.findOne({ typeDetail: "Boot nam" }),
-        Shoe.find({ priceDiscount: { $ne: null } }).limit(6)
+        Shoe.find({ priceDiscount: { $ne: null }, quantity: {$ne: "0"} }).limit(6)
       ]);
 
       let wishlistItemIds = null;
@@ -160,6 +160,8 @@ class SiteController {
       );
       if (checkToken) {
         res.redirect('/login')
+      }else{
+        res.render('supports/error')
       }
     } catch (error) {
       console.log("ERR: " + error)
@@ -421,11 +423,23 @@ class SiteController {
     try {
       const { name, email, phone, city, district, ward, address, cityName, districtName, wardName } = req.body;
       const userId = res.locals.currentUser
+      const regEmail = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+      const regPhone = /^0\d{9}$/;
+      const isCheckEmail = regEmail.test(email);
+      const isCheckPhone = regPhone.test(phone);
 
       if (!name || !email || !phone) {
         req.flash('err', 'Vui lòng nhập đầy đủ thông tin!')
-        res.redirect('back');
+        return res.redirect('back');
       } else {
+        if (!isCheckEmail) {
+          req.flash('err', 'Emai không đúng định dạng!')
+          return res.redirect('back');
+        } else if (!isCheckPhone) {
+          req.flash('err', 'Số điện thoại không đúng định dạng!')
+          return res.redirect('back');
+        }
+
         User.updateOne({ _id: userId }, {
           name,
           email,
